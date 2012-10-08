@@ -19,27 +19,47 @@
  */
 package org.spout.legacyapi.resource;
 
-import org.bukkit.plugin.Plugin;
-
 /**
  * 
+ * @param <T>
  */
-public interface Resource {
+public class Resource<T> {
+	private String name;
+	private long revision;
+	private T value;
+
 	/**
 	 * 
-	 * @return
+	 * @param name
+	 * @param revision
 	 */
-	public Plugin getPlugin();
+	public Resource(String name, long revision, T value) {
+		this.name = name;
+		this.revision = revision;
+		this.value = value;
+	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public ResourceType getType();
+	public String getName() {
+		return name;
+	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public long getRevision();
+	public long getRevision() {
+		return revision;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public T getValue() {
+		return value;
+	}
 }

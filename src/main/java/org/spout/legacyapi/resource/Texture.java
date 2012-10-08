@@ -27,7 +27,7 @@ import org.bukkit.plugin.Plugin;
 /**
  * 
  */
-public class Texture implements Resource {
+public class Texture {
 
 	private String name;
 	private Plugin plugin;
@@ -105,7 +105,6 @@ public class Texture implements Resource {
 	 * 
 	 * @return
 	 */
-	@Override
 	public Plugin getPlugin() {
 		if (parent != null) {
 			return parent.getPlugin();
@@ -162,22 +161,6 @@ public class Texture implements Resource {
 	 */
 	public int getHeight() {
 		return yTopLoc;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ResourceType getType() {
-		return ResourceType.TEXTURE;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public long getRevision() {
-		return 0;	//TODO
 	}
 
 }

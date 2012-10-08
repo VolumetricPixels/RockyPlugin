@@ -26,30 +26,24 @@ import org.spout.legacyapi.packet.PacketInputStream;
 import org.spout.legacyapi.packet.PacketOutputStream;
 import org.spout.legacyapi.packet.PacketType;
 import org.spout.legacyapi.player.SpoutPlayer;
+import org.spout.legacyapi.resource.Resource;
 
 /**
  * 
  */
 public class PacketFileCacheBegin implements Packet {
 
-	protected boolean isPreLoading;
-	protected String[] names;
-	protected long[] crcExpected;
-
+	protected Resource<?>[] resourceList;
+	protected String[] difResources;
+	
 	/**
 	 * 
 	 * @param isPreLoading
 	 * @param names
 	 * @param crcExpected
 	 */
-	public PacketFileCacheBegin(boolean isPreLoading, String[] names,
-			long[] crcExpected) {
-		if (names.length != crcExpected.length) {
-			throw new IllegalArgumentException("Invalid array");
-		}
-		this.isPreLoading = isPreLoading;
-		this.names = names;
-		this.crcExpected = crcExpected;
+	public PacketFileCacheBegin(Resource<?>[] resourceList) {
+		this.resourceList = resourceList;
 	}
 
 	/**
@@ -57,6 +51,7 @@ public class PacketFileCacheBegin implements Packet {
 	 */
 	@Override
 	public void readData(PacketInputStream input) throws IOException {
+		this.difResources = input.readUTFArray();
 	}
 
 	/**
@@ -64,10 +59,11 @@ public class PacketFileCacheBegin implements Packet {
 	 */
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
-		output.writeBoolean(isPreLoading);
-		output.writeUTFArray(names);
-		for (long crc : crcExpected)
-			output.writeLong(crc);
+		output.writeShort(resourceList.length);
+		for (Resource<?> resource : resourceList) {
+			output.writeUTF(resource.getName());
+			output.writeLong(resource.getRevision());
+		}
 	}
 
 	/**
@@ -75,6 +71,7 @@ public class PacketFileCacheBegin implements Packet {
 	 */
 	@Override
 	public void handle(SpoutPlayer player) {
+		//TODO: Send every file cache and finally file cache finish
 	}
 
 	/**

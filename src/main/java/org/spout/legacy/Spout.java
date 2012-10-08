@@ -77,7 +77,6 @@ public class Spout extends JavaPlugin implements Runnable {
 		// For each user online we need to override their values
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			SpoutPlayer sp = SpoutManager.getPlayer(player);
-			sp.setPreCachingComplete(true);
 			SpoutPlayerHandler.updateBukkitEntry(sp);
 			SpoutPlayerHandler.updateNetworkEntry(sp);
 			SpoutPlayerHandler.sendAuthentication(sp);

@@ -20,8 +20,8 @@
 package org.spout.legacyapi.resource;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.plugin.Plugin;
@@ -41,94 +41,6 @@ public interface ResourceManager {
 	 * @return list of names of cached files
 	 */
 	public List<String> getCache(Plugin plugin);
-
-	/**
-	 * Adds a file to the pre-login cache for clients. This file will only be
-	 * downloaded when clients login.
-	 * <p/>
-	 * This is advantageous because it will not cause any latency issues for
-	 * larger files or lots of media.
-	 * <p/>
-	 * Ideally, precached files should be set onEnable.
-	 * 
-	 * @param plugin
-	 *            caching the files.
-	 * @param file
-	 *            to pre-cache
-	 * @return true if the file was pre-cached
-	 */
-	public boolean addToPreLoginCache(Plugin plugin, File file);
-
-	/**
-	 * Adds a file to the pre-login cache for clients. This file will only be
-	 * downloaded when clients login.
-	 * <p/>
-	 * This is advantageous because it will not cause any latency issues for
-	 * larger files or lots of media.
-	 * <p/>
-	 * Ideally, precached files should be set onEnable.
-	 * 
-	 * @param plugin
-	 *            caching the files.
-	 * @param fileUrl
-	 *            to pre-cache
-	 * @return true if the file was pre-cached
-	 */
-	public boolean addToPreLoginCache(Plugin plugin, String fileUrl);
-
-	/**
-	 * Adds a list of files to the pre-login cache for clients. These files will
-	 * only be downloaded when clients login.
-	 * <p/>
-	 * This is advantageous because it will not cause any latency issues for
-	 * larger files or lots of media.
-	 * <p/>
-	 * Ideally, precached files should be set onEnable.
-	 * 
-	 * @param plugin
-	 *            caching the files.
-	 * @param files
-	 *            to pre-cache
-	 * @return true if the files were pre-cached
-	 */
-	public boolean addToPreLoginCache(Plugin plugin, Collection<File> files);
-
-	/**
-	 * Adds a list of files to the pre-login cache for clients. These files will
-	 * only be downloaded when clients login.
-	 * <p/>
-	 * This is advantageous because it will not cause any latency issues for
-	 * larger files or lots of media.
-	 * <p/>
-	 * Ideally, precached files should be set onEnable.
-	 * 
-	 * @param plugin
-	 *            caching the files.
-	 * @param fileUrls
-	 *            to pre-cache
-	 * @return true if the files were pre-cached
-	 */
-	public boolean addToPreLoginCache(Plugin plugin, List<String> fileUrls);
-
-	/**
-	 * Sends the contents of the input stream to clients during prelogin. The
-	 * contents of the steam will only be downloaded when clients login.
-	 * <p/>
-	 * This is advantageous because it will not cause any latency issues for
-	 * larger files or lots of media.
-	 * <p/>
-	 * Ideally, precached files should be set onEnable.
-	 * 
-	 * @param plugin
-	 *            caching the files.
-	 * @param input
-	 *            stream containing the bytes to be read
-	 * @param file
-	 *            name of the resulting file.
-	 * @return true if the files were pre-cached
-	 */
-	public boolean addToPreLoginCache(Plugin plugin, InputStream input,
-			String fileName);
 
 	/**
 	 * Adds a file to the cache for clients. This file will be downloaded
@@ -157,34 +69,6 @@ public interface ResourceManager {
 	public boolean addToCache(Plugin plugin, String fileUrl);
 
 	/**
-	 * Adds a list of files to the cache for clients. These files will be
-	 * downloaded immediately for any online players, and upon login of new
-	 * clients.
-	 * <p/>
-	 * This is not recommended for larger files, since the extra latency for
-	 * large downloads may disrupt the player's experience.
-	 * 
-	 * @param files
-	 *            to pre-cache
-	 * @return true if the files were pre-cached
-	 */
-	public boolean addToCache(Plugin plugin, Collection<File> file);
-
-	/**
-	 * Adds a list of files to the cache for clients. These files will be
-	 * downloaded immediately for any online players, and upon login of new
-	 * clients.
-	 * <p/>
-	 * This is not recommended for larger files, since the extra latency for
-	 * large downloads may disrupt the player's experience.
-	 * 
-	 * @param fileUrls
-	 *            to pre-cache
-	 * @return true if the files were pre-cached
-	 */
-	public boolean addToCache(Plugin plugin, List<String> fileUrls);
-
-	/**
 	 * Sends the contents of the input stream to clients. The contents of the
 	 * steam will only be downloaded immediately.
 	 * <p/>
@@ -199,7 +83,13 @@ public interface ResourceManager {
 	 *            name of the resulting file.
 	 * @return true if the files were pre-cached
 	 */
-	public boolean addToCache(Plugin plugin, InputStream input, String fileName);
+	public boolean addToCache(Plugin plugin, InputStream input, String fileName) throws IOException;
+
+	/**
+	 * 
+	 * @param plugin
+	 */
+	public void removeFromCache(Plugin plugin);
 
 	/**
 	 * Removes the given filename from the cache, if it exists.
@@ -212,19 +102,8 @@ public interface ResourceManager {
 	public void removeFromCache(Plugin plugin, String file);
 
 	/**
-	 * Removes the given filenames from the cache, if they exists.
-	 * 
-	 * @param plugin
-	 *            that the files are cached for
-	 * @param file
-	 *            names to remove
-	 */
-	public void removeFromCache(Plugin plugin, List<String> file);
-
-	/**
 	 * Checks if the file is approved for pre-caching. The file types approved
-	 * for pre-caching are as follows: .txt, .yml, .xml, .png, .jpg, .ogg,
-	 * .midi, .wav, .zip
+	 * for pre-caching are as follows: .yml, .png, .ogg, .midi, .wav, .zip
 	 * 
 	 * @param file
 	 *            to check

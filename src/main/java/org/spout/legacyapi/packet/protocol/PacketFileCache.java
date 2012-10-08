@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.spout.legacyapi.packet.protocol;
 
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class PacketFileCache<T> implements Packet {
 	public void writeData(PacketOutputStream output) throws IOException {
 		output.writeUTF(pluginName);
 		output.writeBoolean(isLocal);
-		if (isLocal)
+		if (!isLocal)
 			output.writeUTF((String) file);
 		else
 			output.write((byte[]) file);
