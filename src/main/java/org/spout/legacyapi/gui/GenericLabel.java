@@ -1,4 +1,23 @@
 /*
+ * This file is part of SpoutLegacy.
+ *
+ * Copyright (c) 2011-2012, VolumetricPixels <http://www.volumetricpixels.com/>
+ * SpoutLegacy is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutLegacy is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutLegacy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/*
  * This file is part of SpoutPlugin.
  *
  * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
@@ -317,7 +336,7 @@ public class GenericLabel extends GenericWidget implements Label {
 				9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 9, 9,
 				9, 5, 9, 9, 8, 7, 7, 8, 7, 8, 8, 8, 7, 8, 8, 7, 9, 9, 6, 7, 7,
 				7, 7, 7, 9, 6, 7, 8, 7, 6, 6, 9, 7, 6, 7, 1 };
-		final String allowedCharacters = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz {|}~?ÃƒÂ³ÃšÃ�?ÃµÃ“Ã•Ã¾Ã›Ã™ÃžÂ´Â¯Ã½â�?€â�?¼â•�?ÂµÃ£Â¶Ã·â€—Â¹Â¨Â Ã�â–„Â°ÃºÃ�ÃŽÃ¢ÃŸÃ�Â¾Â·Â±Ã�Â¬â•‘â�?�Â«Â¼Â¢â•�Ã­Â½â•—";
+		final String allowedCharacters = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz {|}~?ÃƒÂ³ÃšÃ�?ÃµÃ“Ã•Ã¾Ã›Ã™ÃžÂ´Â¯Ã½â�?€â�?¼â•�?ÂµÃ£Â¶Ã·â€—Â¹Â¨Â Ã�â–„Â°ÃºÃ�ÃŽÃ¢ÃŸÃ�Â¾Â·Â±Ã�Â¬â•‘â�?�Â«Â¼Â¢â•�Ã­Â½â•—";
 		int length = 0;
 		for (String line : ChatColor.stripColor(text).split("\n")) {
 			int lineLength = 0;

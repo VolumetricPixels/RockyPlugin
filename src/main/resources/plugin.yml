@@ -1,10 +1,10 @@
 name: SpoutLegacy
 version: ${buildNumber}
 description: SpoutLegacy is a plugin for Bukkit-based servers and a Minecraft client mod system that exposes new API for other plugins to utilize.
-author: SpoutDev
-website: http://www.spout.org
+author: VolumetricPixels
+website: http://www.volumetricpixels.com
 
-main: org.getspout.spout.Spout
+main: org.spout.legacy.Spout
 load: startup
 mcversion: ${minecraftVersion}
 
