@@ -85,9 +85,6 @@ public class SpoutBlock implements Block {
 		this.setBlockDesign(design);
 		this.blockItem = new SpoutItem(plugin, name);
 		this.material = new SpoutMaterialWrapper(this);
-		
-		SpoutManager.getResourceManager().addToCache(plugin,
-				design.getTexture().getName());
 	}
 
 	/**
@@ -131,9 +128,7 @@ public class SpoutBlock implements Block {
 					Integer.valueOf(dropType[1]));
 		}
 		// TODO: Get the material
-		// TODO: Get the design of the block
-		SpoutManager.getResourceManager().addToCache(plugin,
-				getBlockDesign().getTexture().getName());
+		// TODO: Get the design of the block;
 
 		return this;
 	}

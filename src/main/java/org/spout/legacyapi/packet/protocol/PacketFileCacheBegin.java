@@ -33,7 +33,7 @@ import org.spout.legacyapi.resource.Resource;
  */
 public class PacketFileCacheBegin implements Packet {
 
-	protected Resource<?>[] resourceList;
+	protected Resource[] resourceList;
 	protected String[] difResources;
 	
 	/**
@@ -42,7 +42,7 @@ public class PacketFileCacheBegin implements Packet {
 	 * @param names
 	 * @param crcExpected
 	 */
-	public PacketFileCacheBegin(Resource<?>[] resourceList) {
+	public PacketFileCacheBegin(Resource[] resourceList) {
 		this.resourceList = resourceList;
 	}
 
@@ -60,7 +60,7 @@ public class PacketFileCacheBegin implements Packet {
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
 		output.writeShort(resourceList.length);
-		for (Resource<?> resource : resourceList) {
+		for (Resource resource : resourceList) {
 			output.writeUTF(resource.getName());
 			output.writeLong(resource.getRevision());
 		}

@@ -19,6 +19,8 @@
  */
 package org.spout.legacyapi.material.generic;
 
+import java.util.List;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.spout.legacyapi.SpoutManager;
@@ -42,17 +44,17 @@ public class SpoutItem implements Item {
 	/**
 	 * 
 	 */
-	public SpoutItem() {	
+	public SpoutItem() {
 	}
-	
+
 	/**
 	 * 
 	 * @param plugin
 	 * @param name
 	 */
-	public SpoutItem(Plugin plugin, String name) {	
+	public SpoutItem(Plugin plugin, String name) {
 	}
-	
+
 	/**
 	 * 
 	 * @param plugin
@@ -61,15 +63,14 @@ public class SpoutItem implements Item {
 	 */
 	public SpoutItem(Plugin plugin, String name, Texture texture) {
 		if (texture == null) {
-			throw new IllegalArgumentException("SpoutItem Texture cannot be null");
+			throw new IllegalArgumentException(
+					"SpoutItem Texture cannot be null");
 		}
 		this.plugin = plugin;
 		this.name = name;
 		this.texture = texture;
 		this.itemID = SpoutManager.getMaterialManager().getRegisteredName(
 				plugin.getName() + "_" + name, MaterialType.ITEM);
-		SpoutManager.getResourceManager().addToCache(plugin,
-				texture.getName());
 	}
 
 	/**
@@ -149,8 +150,18 @@ public class SpoutItem implements Item {
 				plugin.getName() + "_" + name, MaterialType.ITEM);
 		this.isFuel = section.getBoolean("IsFuel", false);
 		this.isStackable = section.getBoolean("IsStackable", true);
-		//TODO: texture
+
+		List<String> data = section.getStringList("Texture");
+		if (data.size() == 1) {
+			this.texture = new Texture(plugin, data.get(0));
+		} else if (data.size() == 3) {
+			this.texture = new Texture(plugin, data.get(0),
+					Integer.valueOf(data.get(1)), Integer.valueOf(data.get(2)));
+		} else if (data.size() == 5) {
+			this.texture = new Texture(data.get(0),
+					Integer.valueOf(data.get(1)), Integer.valueOf(data.get(2)),
+					Integer.valueOf(data.get(3)), Integer.valueOf(data.get(4)));
+		}
 		return this;
 	}
-
 }

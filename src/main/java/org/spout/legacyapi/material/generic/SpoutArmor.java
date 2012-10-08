@@ -21,7 +21,6 @@ package org.spout.legacyapi.material.generic;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
-import org.spout.legacyapi.SpoutManager;
 import org.spout.legacyapi.material.Armor;
 import org.spout.legacyapi.material.ArmorModel;
 import org.spout.legacyapi.material.ArmorType;
@@ -36,7 +35,7 @@ public class SpoutArmor extends SpoutItem implements Armor {
 	private int durability;
 	private int defense;
 	private ArmorType type;
-	private String modelTextureFile;
+	private Texture[] modelTexture;
 	
 	/**
 	 * 
@@ -51,15 +50,13 @@ public class SpoutArmor extends SpoutItem implements Armor {
 	 * @param texture
 	 */
 	public SpoutArmor(Plugin plugin, String name, Texture texture,
-			String modelTextureFile) {
+			Texture[] modelTexture) {
 		super(plugin, name, texture);
 
-		this.modelTextureFile = modelTextureFile;
-
-		SpoutManager.getResourceManager().addToCache(plugin,
-				getModelTexture(ArmorModel.FRONT_MODEL));
-		SpoutManager.getResourceManager().addToCache(plugin,
-				getModelTexture(ArmorModel.BACK_MODEL));
+		if( modelTexture.length != 2 ) {
+			throw new IllegalArgumentException("Invalid Model Texture Lenght");
+		}
+		this.modelTexture = modelTexture;
 	}
 
 	/**
@@ -117,9 +114,9 @@ public class SpoutArmor extends SpoutItem implements Armor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getModelTexture(ArmorModel model) {
-		return (model == ArmorModel.FRONT_MODEL ? modelTextureFile + "_1.png"
-				: modelTextureFile + "_2.png");
+	public Texture getModelTexture(ArmorModel model) {
+		return (model == ArmorModel.FRONT_MODEL ? modelTexture[0]
+				: modelTexture[1]);
 	}
 
 	/**
@@ -132,12 +129,11 @@ public class SpoutArmor extends SpoutItem implements Armor {
 		this.durability = section.getInt("Durability", 100);
 		this.defense = section.getInt("Defense", 1);
 		this.type = ArmorType.valueOf(section.getString("Type"));
-		this.modelTextureFile = section.getString("Model");
 
-		SpoutManager.getResourceManager().addToCache(plugin,
-				getModelTexture(ArmorModel.FRONT_MODEL));
-		SpoutManager.getResourceManager().addToCache(plugin,
-				getModelTexture(ArmorModel.BACK_MODEL));
+		String modelTextureFile = section.getString("Model");
+		this.modelTexture = new Texture[2];
+		this.modelTexture[0] = new Texture(plugin, modelTextureFile + "_1.png");
+		this.modelTexture[1] = new Texture(plugin, modelTextureFile + "_2.png");
 		
 		return this;
 	}

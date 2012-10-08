@@ -139,7 +139,7 @@ public class SpoutWeapon extends SpoutItem implements Weapon {
 
 		this.durability = section.getInt("Durability", 100);
 		this.damage = section.getInt("Damage", 1);
-		this.attackSpeed = section.getInt("Speed", 215);
+		this.attackSpeed = section.getInt("AttackSpeed", 215);
 		this.type = WeaponType.valueOf(section.getString("Type"));
 		this.isBlockAllowed = (type == WeaponType.RANGE ? false :
 			section.getBoolean("IsBlocking", true));

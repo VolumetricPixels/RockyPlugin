@@ -22,7 +22,6 @@ package org.spout.legacyapi.resource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import org.bukkit.plugin.Plugin;
 
@@ -31,16 +30,24 @@ import org.bukkit.plugin.Plugin;
  */
 public interface ResourceManager {
 	/**
-	 * Gets a list of all the names of the files pre-cached on the client for
-	 * this plugin.
-	 * <p/>
-	 * The cache may be up to 60 seconds out of date.
 	 * 
-	 * @param plugin
-	 *            that the files are cached for
-	 * @return list of names of cached files
+	 * @param resource
 	 */
-	public List<String> getCache(Plugin plugin);
+	public void addResource(Plugin plugin, Resource resource);
+	
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean hasResource(String name);
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public <T extends Resource> T getResource(String name);
 
 	/**
 	 * Adds a file to the cache for clients. This file will be downloaded
@@ -83,7 +90,8 @@ public interface ResourceManager {
 	 *            name of the resulting file.
 	 * @return true if the files were pre-cached
 	 */
-	public boolean addToCache(Plugin plugin, InputStream input, String fileName) throws IOException;
+	public boolean addToCache(Plugin plugin, InputStream input, String fileName)
+			throws IOException;
 
 	/**
 	 * 

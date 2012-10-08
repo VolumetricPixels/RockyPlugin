@@ -19,6 +19,8 @@
  */
 package org.spout.legacyapi.material;
 
+import org.spout.legacyapi.resource.Texture;
+
 /**
  * 
  */
@@ -66,5 +68,5 @@ public interface Armor extends Item {
 	 * @param model
 	 * @return
 	 */
-	public String getModelTexture(ArmorModel model);
+	public Texture getModelTexture(ArmorModel model);
 }

@@ -28,11 +28,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.zip.Adler32;
 import java.util.zip.CheckedInputStream;
 
@@ -49,28 +48,51 @@ import org.spout.legacyapi.resource.ResourceManager;
 public class SpoutResourceManager implements ResourceManager {
 	private static final String[] VALID_EXTENSION = { "yml", "png", "ogg",
 			"midi", "wav" };
-	private Map<String, Map<String, Resource<?>>> resourceCache = new HashMap<String, Map<String, Resource<?>>>();
-	private List<Resource<?>> resourceList = new ArrayList<Resource<?>>();
-
+	protected Map<Plugin, Map<String, Resource>> cacheList = new HashMap<Plugin, Map<String, Resource>>();
+	protected Map<String, Resource> resourceList = new HashMap<String, Resource>();
+	protected ExecutorService service;
+	
 	/**
-	 * {@inheritDoc}
+	 * 
+	 */
+	public SpoutResourceManager() {
+		service = Executors.newCachedThreadPool();
+	}
+	
+	/**
+	 * {@inhericDoc}
 	 */
 	@Override
-	public List<String> getCache(Plugin plugin) {
-		if (plugin == null) {
-			throw new IllegalArgumentException("Plugin may not be null");
-		} else if (!resourceCache.containsKey(plugin.getName())) {
-			return null;
-		}
-		return Arrays.asList(resourceCache.get(plugin.getName()).keySet()
-				.toArray(new String[0]));
+	public void addResource(Plugin plugin, Resource resource) {
+		resourceList.put(resource.getName(), resource);
+		addToCache(plugin, resource.getName());
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inhericDoc}
+	 */
+	@Override
+	public boolean hasResource(String name) {
+		return resourceList.containsKey(name);
+	}
+
+	/**
+	 * {@inhericDoc}
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Resource> T getResource(String name) {
+		return (T) resourceList.get(name);
+	}
+
+	/**
+	 * {@inhericDoc}
 	 */
 	@Override
 	public boolean addToCache(Plugin plugin, File file) {
+		if (!canCache(file)) {
+			return false;
+		}
 		try {
 			return addToCache(plugin, new FileInputStream(file), file.getName());
 		} catch (FileNotFoundException e) {
@@ -84,10 +106,18 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inhericDoc}
 	 */
 	@Override
 	public boolean addToCache(Plugin plugin, String fileUrl) {
+		if (!canCache(fileUrl)) {
+			return false;
+		}
+		boolean isLocal = !(fileUrl.contains("http.") || fileUrl
+				.contains("www."));
+		if (isLocal) {
+			return addToCache(plugin, new File(fileUrl));
+		}
 		try {
 			URL url = new URL(fileUrl);
 			URLConnection connection = url.openConnection();
@@ -104,75 +134,99 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inhericDoc}
 	 */
 	@Override
-	public boolean addToCache(Plugin plugin, InputStream input, String fileName)
-			throws IOException {
+	public boolean addToCache(Plugin plugin, final InputStream input,
+			final String fileName) throws IOException {
 		if (plugin == null) {
 			throw new IllegalArgumentException("Plugin may not be null");
 		}
 
 		// We always get a valid pointer to a map structure.
-		Map<String, Resource<?>> resource;
-		if (!resourceCache.containsKey(plugin.getName())) {
-			resourceCache.put(plugin.getName(),
-					new HashMap<String, Resource<?>>());
+		final Map<String, Resource> resource;
+		final Resource resourceData = resourceList.get(fileName);
+		if (!cacheList.containsKey(plugin)) {
+			cacheList.put(plugin,
+					new HashMap<String, Resource>());
 		}
-		resource = resourceCache.get(plugin.getName());
+		resource = cacheList.get(plugin);
+		
+		// Create our worker
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				// Get the revision from the stream
+				long revision = getChecksum(input);
+				if (revision == 0) {
+					try {
+						input.close();
+					} catch (IOException e) {
+					}
+					SpoutManager
+							.printConsole("[Error] Cannot get revision from {"
+									+ fileName + "}");
+					return;
+				}
 
-		// Get the revision from the stream
-		long revision = getChecksum(input);
-		if (revision == 0) {
-			input.close();
-			throw new IOException("[Error] Cannot get revision from {"
-					+ fileName + "}");
-		}
+				boolean isLocal = !(fileName.contains("http.") || fileName
+						.contains("www."));
 
-		boolean isLocal = !(fileName.contains("http.") || fileName
-				.contains("www."));
-		Resource<?> resourceData;
-		if (!isLocal)
-			resourceData = new Resource<String>(fileName, revision, fileName);
-		else
-			resourceData = new Resource<byte[]>(fileName, revision, read(input));
-		resource.put(fileName, resourceData);
-		resourceList.add(resourceData);
-
-		input.close();
-
+				if (!isLocal)
+					resourceData.setData(fileName);
+				else
+					try {
+						resourceData.setData(read(input));
+					} catch (IOException e) {
+						SpoutManager.printConsole("[Error] Cannot read file {"
+								+ fileName + "}");
+						return;
+					} finally {
+						try {
+							input.close();
+						} catch (IOException e) {
+						}
+					}
+				resource.put(fileName, resourceData);
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
+			}
+		};
+		service.submit(runnable);
+		
 		return true;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inhericDoc}
 	 */
 	@Override
 	public void removeFromCache(Plugin plugin) {
 		if (plugin == null) {
 			throw new IllegalArgumentException("Plugin may not be null");
-		} else if (!resourceCache.containsKey(plugin.getName())) {
+		} else if (!cacheList.containsKey(plugin)) {
 			return;
 		}
-		resourceCache.get(plugin.getName()).clear();
+		cacheList.get(plugin.getName()).clear();
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inhericDoc}
 	 */
 	@Override
-	public void removeFromCache(Plugin plugin, String resource) {
+	public void removeFromCache(Plugin plugin, String file) {
 		if (plugin == null) {
 			throw new IllegalArgumentException("Parameters may not be null");
-		} else if (!resourceCache.containsKey(plugin.getName())) {
+		} else if (!cacheList.containsKey(plugin)) {
 			return;
 		}
-		resourceList.remove(resourceCache.get(plugin.getName())
-				.remove(resource));
+		resourceList.remove(cacheList.get(plugin).remove(file));
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inhericDoc}
 	 */
 	@Override
 	public boolean canCache(File file) {
@@ -180,7 +234,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inhericDoc}
 	 */
 	@Override
 	public boolean canCache(String fileUrl) {
@@ -198,8 +252,9 @@ public class SpoutResourceManager implements ResourceManager {
 	 * @param player
 	 */
 	public static void sendCustomData(SpoutPlayer player) {
-		Resource<?>[] resources = ((SpoutResourceManager) SpoutManager
-				.getResourceManager()).resourceList.toArray(new Resource[0]);
+		Resource[] resources = ((SpoutResourceManager) SpoutManager
+				.getResourceManager()).resourceList.values().toArray(
+				new Resource[0]);
 		player.sendPacket(new PacketFileCacheBegin(resources));
 	}
 

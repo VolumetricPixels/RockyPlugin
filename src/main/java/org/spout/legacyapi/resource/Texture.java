@@ -19,21 +19,51 @@
  */
 package org.spout.legacyapi.resource;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import org.bukkit.plugin.Plugin;
+import org.spout.legacy.Spout;
+import org.spout.legacyapi.SpoutManager;
 
 /**
  * 
  */
-public class Texture {
+public class Texture implements Resource {
 
 	private String name;
 	private Plugin plugin;
 	private Texture parent;
 	private List<Texture> textureList;
 	private int xLoc, yLoc, xTopLoc, yTopLoc;
+	private Object data;
+	private long revision;
+
+	/**
+	 * 
+	 * @param plugin
+	 * @param name
+	 */
+	public Texture(Plugin plugin, String name) {
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(new File(name));
+		} catch (IOException e) {
+			return;
+		}
+		this.plugin = plugin;
+		this.name = name;
+		this.xTopLoc = image.getWidth();
+		this.yTopLoc = image.getHeight();
+		this.textureList = new ArrayList<Texture>();
+		
+		SpoutManager.getResourceManager().addResource(plugin, this);
+	}
 
 	/**
 	 * 
@@ -48,6 +78,8 @@ public class Texture {
 		this.xTopLoc = width;
 		this.yTopLoc = height;
 		this.textureList = new ArrayList<Texture>();
+
+		SpoutManager.getResourceManager().addResource(plugin, this);
 	}
 
 	/**
@@ -58,8 +90,11 @@ public class Texture {
 	 * @param xTopLoc
 	 * @param yTopLoc
 	 */
-	public Texture(Texture parent, int xLoc, int yLoc, int xTopLoc, int yTopLoc) {
-		this.parent = parent;
+	public Texture(String parent, int xLoc, int yLoc, int xTopLoc, int yTopLoc) {
+		if (!SpoutManager.getResourceManager().hasResource(parent)) {
+			registerFullTexture(parent);
+		}
+		this.parent = SpoutManager.getResourceManager().getResource(parent);
 		this.xLoc = xLoc;
 		this.yLoc = yLoc;
 		this.xTopLoc = xTopLoc;
@@ -80,7 +115,7 @@ public class Texture {
 
 		for (int y = height; y >= 0; y -= spriteSize)
 			for (int x = 0; x < width; x += spriteSize)
-				textureList.add(new Texture(this, x, y, x + spriteSize, y
+				textureList.add(new Texture(name, x, y, x + spriteSize, y
 						+ spriteSize));
 	}
 
@@ -100,7 +135,7 @@ public class Texture {
 	public Texture getTexture(int index) {
 		return textureList.get(index);
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -163,4 +198,55 @@ public class Texture {
 		return yTopLoc;
 	}
 
+	/**
+	 * {@inhericDoc}
+	 */
+	@Override
+	public long getRevision() {
+		return revision;
+	}
+
+	/**
+	 * {@inhericDoc}
+	 */
+	@Override
+	public void setRevision(long revision) {
+		this.revision = revision;
+	}
+
+	/**
+	 * {@inhericDoc}
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getData() {
+		return (T) data;
+	}
+
+	/**
+	 * {@inhericDoc}
+	 */
+	@Override
+	public <T> void setData(T data) {
+		this.data = data;
+	}
+
+	/**
+	 * 
+	 * @param texture
+	 */
+	private static void registerFullTexture(String texture) {
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(new File(texture));
+		} catch (IOException e) {
+			return;
+		}
+		int width = image.getWidth();
+		int height = image.getHeight();
+
+		Texture resource = new Texture(Spout.getInstance(), texture, width,
+				height);
+		SpoutManager.getResourceManager().addResource(resource.getPlugin(), resource);
+	}
 }

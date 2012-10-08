@@ -23,43 +23,35 @@ package org.spout.legacyapi.resource;
  * 
  * @param <T>
  */
-public class Resource<T> {
-	private String name;
-	private long revision;
-	private T value;
+public interface Resource {
 
 	/**
 	 * 
-	 * @param name
+	 * @return
+	 */
+	public String getName();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public long getRevision();
+
+	/**
+	 * 
 	 * @param revision
 	 */
-	public Resource(String name, long revision, T value) {
-		this.name = name;
-		this.revision = revision;
-		this.value = value;
-	}
+	public void setRevision(long revision);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public String getName() {
-		return name;
-	}
+	public <T> T getData();
 
 	/**
 	 * 
-	 * @return
+	 * @param data
 	 */
-	public long getRevision() {
-		return revision;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public T getValue() {
-		return value;
-	}
+	public <T> void setData(T data);
 }
