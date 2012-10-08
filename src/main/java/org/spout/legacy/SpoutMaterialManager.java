@@ -310,7 +310,7 @@ public class SpoutMaterialManager implements MaterialManager {
 			}
 			addMaterial(material);
 		}
-		SpoutManager.printConsole("%d has been load from '%s'", values.size(),
+		SpoutManager.printConsole("%d item has been loaded from '%s'", values.size(),
 				MATERIAL_FILE);
 	}
 
@@ -336,6 +336,9 @@ public class SpoutMaterialManager implements MaterialManager {
 		}
 		List<? extends Map<String, ?>> recipeList = (List<? extends Map<String, ?>>) configuration
 				.getList("Recipes");
+		if (recipeList == null) {
+			return;
+		}
 		for (Map<String, ?> recipe : recipeList) {
 			String type = (String) recipe.get("Type");
 			int amount = recipe.containsKey("Amount") ? (Integer) recipe
@@ -381,5 +384,7 @@ public class SpoutMaterialManager implements MaterialManager {
 				SpoutRecipeManager.addToCraftingManager(wRecipe);
 			}
 		}
+		SpoutManager.printConsole("%d recipes has been loaded from '%s'", recipeList.size(),
+				MATERIAL_FILE);
 	}
 }
