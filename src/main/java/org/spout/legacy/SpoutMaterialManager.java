@@ -17,25 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*
- * This file is part of SpoutPlugin.
- *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
- * SpoutPlugin is licensed under the GNU Lesser General Public License.
- *
- * SpoutPlugin is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SpoutPlugin is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.spout.legacy;
 
 import java.io.File;
@@ -45,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.server.Block;
 import net.minecraft.server.Item;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -52,6 +34,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
+import org.spout.legacy.block.SpoutBlock;
 import org.spout.legacy.item.SpoutItem;
 import org.spout.legacy.item.SpoutItemArmor;
 import org.spout.legacy.item.SpoutItemFood;
@@ -65,10 +48,10 @@ import org.spout.legacyapi.inventory.SpoutRecipeManager;
 import org.spout.legacyapi.inventory.SpoutShapedRecipe;
 import org.spout.legacyapi.inventory.SpoutShapelessRecipe;
 import org.spout.legacyapi.material.Armor;
-import org.spout.legacyapi.material.Block;
 import org.spout.legacyapi.material.Food;
 import org.spout.legacyapi.material.Material;
 import org.spout.legacyapi.material.MaterialManager;
+import org.spout.legacyapi.material.MaterialType;
 import org.spout.legacyapi.material.Tool;
 import org.spout.legacyapi.material.Weapon;
 import org.spout.legacyapi.material.generic.SpoutArmor;
@@ -81,22 +64,27 @@ import org.spout.legacyapi.player.SpoutPlayer;
  * 
  */
 public class SpoutMaterialManager implements MaterialManager {
-	/**
-	 * 
-	 */
-	private final static String RECIPE_FILE = "recipe.yml";
-	/**
-	 * 
-	 */
-	private final static String MATERIAL_FILE = "material.yml";
-	/**
-	 * 
-	 */
-	private final static int MAX_FREE_INDEX = 32000 - SpoutItem.DEFAULT_PLACEHOLDER_ID;
+	public final static int DEFAULT_ITEM_PLACEHOLDER_ID = 3000;
+	public final static int DEFAULT_ITEM_FOR_VANILLA = 318;
 
-	private Map<String, Integer> registeredList = new HashMap<String, Integer>();
+	public final static int DEFAULT_BLOCK_PLACEHOLDER_ID = 196;
+	public final static int DEFAULT_BLOCK_FOR_VANILLA = 1;
+
+	private final static int MAX_FREE_ITEM_INDEX = 32000 - DEFAULT_ITEM_PLACEHOLDER_ID;
+	private final static int MAX_FREE_BLOCK_INDEX = 4096 - DEFAULT_BLOCK_PLACEHOLDER_ID;
+
+	private final static String RECIPE_FILE = "recipe.yml";
+	private final static String MATERIAL_FILE = "material.yml";
+
+	private Map<String, Integer> itemNameList = new HashMap<String, Integer>();
+	private Map<String, Integer> blockNameList = new HashMap<String, Integer>();
+
 	private Map<Integer, Material> itemList = new HashMap<Integer, Material>();
-	private BitSet indexList = new BitSet(MAX_FREE_INDEX);
+	private Map<Integer, Material> blockList = new HashMap<Integer, Material>();
+
+	private BitSet itemIndexList = new BitSet(MAX_FREE_ITEM_INDEX);
+	private BitSet blockIndexList = new BitSet(MAX_FREE_BLOCK_INDEX);
+
 	private Map<String, Class<? extends Material>> registeredTypes = new HashMap<String, Class<? extends Material>>();
 
 	/**
@@ -145,20 +133,23 @@ public class SpoutMaterialManager implements MaterialManager {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getRegisteredName(String name) {
-		if (registeredList.containsKey(name)) {
-			return registeredList.get(name);
+	public int getRegisteredName(String name, MaterialType type) {
+		if (type == MaterialType.ITEM && itemNameList.containsKey(name)) {
+			return itemNameList.get(name);
+		} else if (type == MaterialType.BLOCK
+				&& blockNameList.containsKey(name)) {
+			return blockNameList.get(name);
 		}
-		return registerName(name);
+		return registerName(name, type);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int registerName(String name) {
-		int id = getNextFreeIndex();
-		registerName(name, id);
+	public int registerName(String name, MaterialType type) {
+		int id = getNextFreeIndex(type);
+		registerName(name, id, type);
 		return id;
 	}
 
@@ -166,17 +157,22 @@ public class SpoutMaterialManager implements MaterialManager {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void registerName(String name, int id) {
-		registeredList.put(name, id);
-		indexList.set(id);
+	public void registerName(String name, int id, MaterialType type) {
+		if (type == MaterialType.ITEM) {
+			itemNameList.put(name, id);
+			itemIndexList.set(id);
+			return;
+		}
+		blockNameList.put(name, id);
+		blockIndexList.set(id);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Map<String, Integer> getRegisteredNames() {
-		return registeredList;
+	public Map<String, Integer> getRegisteredNames(MaterialType type) {
+		return (type == MaterialType.ITEM ? itemNameList : blockNameList);
 	}
 
 	/**
@@ -186,12 +182,24 @@ public class SpoutMaterialManager implements MaterialManager {
 	public void addMaterial(Material material) {
 		if (material == null) {
 			throw new IllegalArgumentException("Argument cannot be null");
-		} else if (itemList.containsKey(material.getId())) {
+		} else if (material instanceof org.spout.legacyapi.material.Item
+				&& itemList.containsKey(material.getId())) {
 			throw new IllegalArgumentException(
-					"Use replace(Material) instead for replacing items");
+					"Use replace instead for replacing items");
+		} else if (material instanceof org.spout.legacyapi.material.Block
+				&& blockList.containsKey(material.getId())) {
+			throw new IllegalArgumentException(
+					"Use replace instead for replacing blocks");
 		}
-		itemList.put(material.getId(), material);
-		Item.byId[material.getId()] = getVanillaType(material.getId(), material);
+		if (material instanceof org.spout.legacyapi.material.Item) {
+			itemList.put(material.getId(), material);
+			Item.byId[material.getId()] = getVanillaType(material.getId(),
+					material);
+			return;
+		}
+		blockList.put(material.getId(), material);
+		Block.byId[material.getId()] = new SpoutBlock(material.getId(),
+				(org.spout.legacyapi.material.Block) material);
 	}
 
 	/**
@@ -201,12 +209,22 @@ public class SpoutMaterialManager implements MaterialManager {
 	public void deleteMaterial(Material material) {
 		if (material == null) {
 			throw new IllegalArgumentException("Argument cannot be null");
-		} else if (!registeredList.containsKey(material.getPlugin().getName()
-				+ ":" + material.getName())) {
+		} else if (material instanceof org.spout.legacyapi.material.Item
+				&& !itemList.containsKey(material.getId())) {
+			throw new IllegalArgumentException(
+					"Trying to remove an invalid Material");
+		} else if (material instanceof org.spout.legacyapi.material.Block
+				&& !blockList.containsKey(material.getId())) {
 			throw new IllegalArgumentException(
 					"Trying to remove an invalid Material");
 		}
-		itemList.remove(material.getId());
+		if (material instanceof org.spout.legacyapi.material.Item) {
+			itemList.remove(material.getId());
+			Item.byId[material.getId()] = null;
+			return;
+		}
+		blockList.remove(material.getId());
+		Block.byId[material.getId()] = null;
 	}
 
 	/**
@@ -216,21 +234,38 @@ public class SpoutMaterialManager implements MaterialManager {
 	public void replaceMaterial(Material source, Material destination) {
 		if (source == null || destination == null) {
 			throw new IllegalArgumentException("Arguments cannot be null");
-		} else if (!registeredList.containsKey(source.getPlugin().getName()
-				+ ":" + source.getName())) {
+		} else if (source instanceof org.spout.legacyapi.material.Item
+				&& !itemList.containsKey(source.getId())) {
 			throw new IllegalArgumentException(
 					"Trying to replace an invalid Material");
+		} else if (source instanceof org.spout.legacyapi.material.Block
+				&& !blockList.containsKey(source.getId())) {
+			throw new IllegalArgumentException(
+					"Trying to replace an invalid Material");
+		} else if (!source.getClass().equals(destination.getClass())) {
+			throw new IllegalArgumentException(
+					"Trying to replace two different things");
 		}
-		itemList.put(source.getId(), destination);
-		Item.byId[source.getId()] = getVanillaType(source.getId(), destination);
+		if (source instanceof org.spout.legacyapi.material.Item) {
+			itemList.put(source.getId(), destination);
+			Item.byId[source.getId()] = getVanillaType(source.getId(),
+					destination);
+			return;
+		}
+		blockList.put(source.getId(), destination);
+		Block.byId[source.getId()] = new SpoutBlock(source.getId(),
+				(org.spout.legacyapi.material.Block) destination);
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	private int getNextFreeIndex() {
-		return indexList.nextClearBit(SpoutItem.DEFAULT_PLACEHOLDER_ID);
+	private int getNextFreeIndex(MaterialType type) {
+		if (type == MaterialType.ITEM) {
+			return itemIndexList.nextClearBit(DEFAULT_ITEM_PLACEHOLDER_ID);
+		}
+		return blockIndexList.nextClearBit(DEFAULT_BLOCK_PLACEHOLDER_ID);
 	}
 
 	/**
@@ -241,8 +276,6 @@ public class SpoutMaterialManager implements MaterialManager {
 	private Item getVanillaType(int id, Material material) {
 		if (material instanceof Armor) {
 			return new SpoutItemArmor(id, (Armor) material);
-		} else if (material instanceof Block) {
-			// TODO: Not yet implemented
 		} else if (material instanceof Food) {
 			return new SpoutItemFood(id, (Food) material);
 		} else if (material instanceof Tool) {
@@ -266,7 +299,7 @@ public class SpoutMaterialManager implements MaterialManager {
 		if (Character.isDigit(data.charAt(0))) {
 			return Integer.valueOf(data);
 		}
-		return getRegisteredName(data);
+		return getRegisteredName(data, MaterialType.ITEM);
 	}
 
 	/**
@@ -310,8 +343,8 @@ public class SpoutMaterialManager implements MaterialManager {
 			}
 			addMaterial(material);
 		}
-		SpoutManager.printConsole("%d item has been loaded from '%s'", values.size(),
-				MATERIAL_FILE);
+		SpoutManager.printConsole("%d item has been loaded from '%s'",
+				values.size(), MATERIAL_FILE);
 	}
 
 	/**
@@ -384,7 +417,7 @@ public class SpoutMaterialManager implements MaterialManager {
 				SpoutRecipeManager.addToCraftingManager(wRecipe);
 			}
 		}
-		SpoutManager.printConsole("%d recipes has been loaded from '%s'", recipeList.size(),
-				MATERIAL_FILE);
+		SpoutManager.printConsole("%d recipes has been loaded from '%s'",
+				recipeList.size(), MATERIAL_FILE);
 	}
 }

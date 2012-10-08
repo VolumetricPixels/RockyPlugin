@@ -17,52 +17,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spout.legacy;
+package org.spout.legacyapi.material;
 
 /**
  * 
  */
-public enum SpoutPermission {
+public enum MaterialType {
 	/**
 	 * 
 	 */
-	MINIMAP("spout.client.minimap"),
+	ITEM,
 	/**
 	 * 
 	 */
-	OVERVIEW_MAP("spout.client.overviewmap"),
-	/**
-	 * 
-	 */
-	SORT_INVENTORY("spout.client.sortinventory"),
-	/**
-	 * 
-	 */
-	SIGN_COLOR("spout.client.signcolor"),
-	/**
-	 * 
-	 */
-	FORCE_SPOUT("spout.plugin.forcespoutcraft"),
-	/**
-	 * 
-	 */
-	IGNORE_SPOUT("spout.plugin.ignorespoutcraft");
-
-	private String node;
-	/**
-	 * 
-	 * @param node
-	 */
-	private SpoutPermission(String node) {
-		this.node = node;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getNode() {
-		return node;
-	}
-
+	BLOCK
 }

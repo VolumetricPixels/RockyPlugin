@@ -17,25 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*
- * This file is part of SpoutPlugin.
- *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
- * SpoutPlugin is licensed under the GNU Lesser General Public License.
- *
- * SpoutPlugin is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SpoutPlugin is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.spout.legacy.packet;
 
 import java.util.concurrent.LinkedBlockingDeque;
@@ -43,7 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.fest.reflect.core.Reflection;
 import org.spout.legacy.Spout;
-import org.spout.legacy.item.SpoutItem;
+import org.spout.legacy.SpoutMaterialManager;
 import org.spout.legacyapi.SpoutManager;
 import org.spout.legacyapi.player.SpoutPlayer;
 
@@ -222,12 +203,13 @@ public class SpoutPacketHandler extends NetServerHandler {
 	 */
 	@Override
 	public void a(Packet102WindowClick packet) {
-		//if (packet.item != null) {
-		//	ItemStack custom = SpoutManager.getPlayer(getPlayer()).getHandle().inventory.items[packet.slot];
-		//	if (custom != null & custom.id >= SpoutItem.DEFAULT_PLACEHOLDER_ID) {
-		//		packet.item = custom;
-		//	}
-		//}
+		// if (packet.item != null) {
+		// ItemStack custom =
+		// SpoutManager.getPlayer(getPlayer()).getHandle().inventory.items[packet.slot];
+		// if (custom != null & custom.id >= SpoutItem.DEFAULT_PLACEHOLDER_ID) {
+		// packet.item = custom;
+		// }
+		// }
 		super.a(packet);
 	}
 
@@ -248,8 +230,8 @@ public class SpoutPacketHandler extends NetServerHandler {
 					.get();
 			break;
 		case 20:
-			if (((Packet20NamedEntitySpawn) packet).h >= SpoutItem.DEFAULT_PLACEHOLDER_ID)
-				((Packet20NamedEntitySpawn) packet).h = SpoutItem.DEFAULT_ITEM_FOR_VANILLA;
+			if (((Packet20NamedEntitySpawn) packet).h >= SpoutMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
+				((Packet20NamedEntitySpawn) packet).h = SpoutMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
 			break;
 		case 103:
 			stack = ((Packet103SetSlot) packet).c;
@@ -258,8 +240,8 @@ public class SpoutPacketHandler extends NetServerHandler {
 			ItemStack[] stacks = ((Packet104WindowItems) packet).b;
 			for (ItemStack itemStack : stacks)
 				if (itemStack != null
-						&& itemStack.id >= SpoutItem.DEFAULT_PLACEHOLDER_ID)
-					itemStack.id = SpoutItem.DEFAULT_ITEM_FOR_VANILLA;
+						&& itemStack.id >= SpoutMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
+					itemStack.id = SpoutMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
 			break;
 		case 107:
 			stack = ((Packet107SetCreativeSlot) packet).b;
@@ -267,8 +249,9 @@ public class SpoutPacketHandler extends NetServerHandler {
 		}
 
 		// The stack contain a custom id and we don't have a custom client
-		if (stack != null && stack.id >= SpoutItem.DEFAULT_PLACEHOLDER_ID) {
-			stack.id = SpoutItem.DEFAULT_ITEM_FOR_VANILLA;
+		if (stack != null
+				&& stack.id >= SpoutMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID) {
+			stack.id = SpoutMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
 		}
 	}
 }

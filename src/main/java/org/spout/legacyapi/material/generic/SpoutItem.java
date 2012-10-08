@@ -24,6 +24,7 @@ import org.bukkit.plugin.Plugin;
 import org.spout.legacyapi.SpoutManager;
 import org.spout.legacyapi.material.Item;
 import org.spout.legacyapi.material.Material;
+import org.spout.legacyapi.material.MaterialType;
 import org.spout.legacyapi.resource.Texture;
 
 /**
@@ -48,6 +49,14 @@ public class SpoutItem implements Item {
 	 * 
 	 * @param plugin
 	 * @param name
+	 */
+	public SpoutItem(Plugin plugin, String name) {	
+	}
+	
+	/**
+	 * 
+	 * @param plugin
+	 * @param name
 	 * @param texture
 	 */
 	public SpoutItem(Plugin plugin, String name, Texture texture) {
@@ -58,7 +67,7 @@ public class SpoutItem implements Item {
 		this.name = name;
 		this.texture = texture;
 		this.itemID = SpoutManager.getMaterialManager().getRegisteredName(
-				plugin.getName() + "_" + name);
+				plugin.getName() + "_" + name, MaterialType.ITEM);
 		SpoutManager.getResourceManager().addToCache(plugin,
 				texture.getName());
 	}
@@ -137,7 +146,7 @@ public class SpoutItem implements Item {
 		this.plugin = plugin;
 		this.name = section.getString("Name", "Undefined");
 		this.itemID = SpoutManager.getMaterialManager().getRegisteredName(
-				plugin.getName() + "_" + name);
+				plugin.getName() + "_" + name, MaterialType.ITEM);
 		this.isFuel = section.getBoolean("IsFuel", false);
 		this.isStackable = section.getBoolean("IsStackable", true);
 		//TODO: texture

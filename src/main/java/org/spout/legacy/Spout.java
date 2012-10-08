@@ -17,25 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*
- * This file is part of SpoutPlugin.
- *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
- * SpoutPlugin is licensed under the GNU Lesser General Public License.
- *
- * SpoutPlugin is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SpoutPlugin is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.spout.legacy;
 
 import java.io.File;
@@ -44,6 +25,7 @@ import java.util.Map;
 
 import net.minecraft.server.Packet;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -60,6 +42,7 @@ import org.spout.legacyapi.event.spout.SpoutEnableEvent;
 import org.spout.legacyapi.event.spout.SpoutFailedEvent;
 import org.spout.legacyapi.event.spout.SpoutFinishedLoadingEvent;
 import org.spout.legacyapi.event.spout.SpoutLoadingEvent;
+import org.spout.legacyapi.material.MaterialType;
 import org.spout.legacyapi.player.SpoutPlayer;
 
 /**
@@ -70,7 +53,7 @@ public class Spout extends JavaPlugin implements Runnable {
 
 	private SpoutConfig configuration;
 	private Map<String, Integer> playerTimer = new HashMap<String, Integer>();
-	
+
 	/**
 	 * 
 	 */
@@ -124,18 +107,20 @@ public class Spout extends JavaPlugin implements Runnable {
 				this);
 		Bukkit.getPluginManager().registerEvents(new SpoutPlayerListener(),
 				this);
-		Bukkit.getPluginManager().registerEvents(SpoutManager.getMaterialManager(),
-				this);
+		Bukkit.getPluginManager().registerEvents(
+				SpoutManager.getMaterialManager(), this);
 		getCommand("spout").setExecutor(new SpoutCommand());
 
 		// Load the current material registered
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		try {
 			itemConfig.load(new File(getDataFolder(), "itemMap.yml"));
-			Map<String, Object> listData = itemConfig.getValues(true);
+			Map<String, Object> listData = itemConfig.getValues(false);
 			for (String data : listData.keySet()) {
+				ConfigurationSection section = itemConfig.getConfigurationSection(data);
 				SpoutManager.getMaterialManager().registerName(data,
-						itemConfig.getInt(data));
+						section.getInt("ID"),
+						MaterialType.valueOf(section.getString("Type")));
 			}
 
 		} catch (Throwable e) {
@@ -162,9 +147,16 @@ public class Spout extends JavaPlugin implements Runnable {
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		try {
 			Map<String, Integer> itemArray = SpoutManager.getMaterialManager()
-					.getRegisteredNames();
+					.getRegisteredNames(MaterialType.ITEM);
 			for (String item : itemArray.keySet()) {
-				itemConfig.set(item, itemArray.get(item));
+				itemConfig.set(item + ".ID", itemArray.get(item));
+				itemConfig.set(item + ".Type", MaterialType.ITEM.name());
+			}
+			itemArray = SpoutManager.getMaterialManager().getRegisteredNames(
+					MaterialType.BLOCK);
+			for (String item : itemArray.keySet()) {
+				itemConfig.set(item + ".ID", itemArray.get(item));
+				itemConfig.set(item + ".Type", MaterialType.BLOCK.name());
 			}
 			itemConfig.save(new File(getDataFolder(), "itemMap.yml"));
 		} catch (Throwable e) {
@@ -230,7 +222,6 @@ public class Spout extends JavaPlugin implements Runnable {
 				playerTimer.put(name, tickLeft);
 		}
 	}
-
 
 	/**
 	 * 
