@@ -60,7 +60,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 	
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void addResource(Plugin plugin, Resource resource) {
@@ -69,7 +69,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean hasResource(String name) {
@@ -77,7 +77,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -86,7 +86,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean addToCache(Plugin plugin, File file) {
@@ -106,7 +106,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean addToCache(Plugin plugin, String fileUrl) {
@@ -134,7 +134,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean addToCache(Plugin plugin, final InputStream input,
@@ -200,7 +200,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void removeFromCache(Plugin plugin) {
@@ -213,7 +213,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void removeFromCache(Plugin plugin, String file) {
@@ -226,7 +226,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean canCache(File file) {
@@ -234,7 +234,7 @@ public class SpoutResourceManager implements ResourceManager {
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean canCache(String fileUrl) {
