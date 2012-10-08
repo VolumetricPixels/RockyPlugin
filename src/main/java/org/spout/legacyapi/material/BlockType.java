@@ -26,10 +26,6 @@ public enum BlockType {
 	/**
 	 * 
 	 */
-	NORMAL,
-	/**
-	 * 
-	 */
 	SOLID,
 	/**
 	 * 

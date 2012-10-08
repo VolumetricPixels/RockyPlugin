@@ -51,7 +51,8 @@ public class SpoutBlock implements Block {
 	protected ItemStack dropStack;
 	protected List<BlockDesign> design = new LinkedList<BlockDesign>();
 	protected boolean allowRotation;
-
+	protected net.minecraft.server.Material material;
+	
 	/**
 	 * 
 	 */
@@ -83,7 +84,8 @@ public class SpoutBlock implements Block {
 		this.allowRotation = true;
 		this.setBlockDesign(design);
 		this.blockItem = new SpoutItem(plugin, name);
-
+		this.material = new SpoutMaterialWrapper(this);
+		
 		SpoutManager.getResourceManager().addToCache(plugin,
 				design.getTexture().getName());
 	}
@@ -128,7 +130,7 @@ public class SpoutBlock implements Block {
 					.getRegisteredName(dropType[0], MaterialType.ITEM),
 					Integer.valueOf(dropType[1]));
 		}
-
+		// TODO: Get the material
 		// TODO: Get the design of the block
 		SpoutManager.getResourceManager().addToCache(plugin,
 				getBlockDesign().getTexture().getName());
@@ -308,6 +310,14 @@ public class SpoutBlock implements Block {
 	@Override
 	public boolean allowRotation() {
 		return allowRotation;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public net.minecraft.server.Material getMaterial() {
+		return material;
 	}
 
 }

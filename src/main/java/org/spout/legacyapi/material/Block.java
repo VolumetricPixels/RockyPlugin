@@ -30,6 +30,11 @@ public interface Block extends Material {
 	 * 
 	 * @return
 	 */
+	public net.minecraft.server.Material getMaterial();
+	/**
+	 * 
+	 * @return
+	 */
 	public String getName();
 
 	/**

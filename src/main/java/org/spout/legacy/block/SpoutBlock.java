@@ -19,6 +19,8 @@
  */
 package org.spout.legacy.block;
 
+import org.fest.reflect.core.Reflection;
+
 import net.minecraft.server.Block;
 
 /**
@@ -32,7 +34,12 @@ public class SpoutBlock extends Block {
 	 * @param material
 	 */
 	public SpoutBlock(int id, org.spout.legacyapi.material.Block material) {
-		super(id, null);
+		super(id, material.getMaterial());
+
+		Reflection.field("frictionFactor").ofType(float.class).in(this)
+				.set(material.getFriction());
+		Reflection.field("co").ofType(float.class).in(this)
+				.set(material.getHardness());
 	}
 
 }
