@@ -52,7 +52,7 @@ If you do not already have repo.spout.org in your repository list, you will need
 
 [Author Logo]: http://cdn.spout.org/img/logo/spout_305x135.png
 [License]: http://www.gnu.org/licenses/lgpl.html
-[Website]: http://www.volumetricpixels.org
+[Website]: http://www.volumetricpixels.com
 [Forums]: http://volumetricpixels.com/forums/
 [GitHub]: https://github.com/Wolftein/SpoutLegacy
 [Jenkins]: http://ci.massiveminecraft.com/job/SpoutLegacy%20Plugin/
