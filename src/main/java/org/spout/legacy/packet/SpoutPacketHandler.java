@@ -1,7 +1,7 @@
 /*
  * This file is part of SpoutLegacy.
  *
- * Copyright (c) 2011-2012, VolumetricPixels <http://www.volumetricpixels.com/>
+ * Copyright (c) 2012-2012, VolumetricPixels <http://www.volumetricpixels.com/>
  * SpoutLegacy is licensed under the GNU Lesser General Public License.
  *
  * SpoutLegacy is free software: you can redistribute it and/or modify
@@ -22,10 +22,13 @@ package org.spout.legacy.packet;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.bukkit.Bukkit;
 import org.fest.reflect.core.Reflection;
 import org.spout.legacy.Spout;
 import org.spout.legacy.SpoutMaterialManager;
 import org.spout.legacyapi.SpoutManager;
+import org.spout.legacyapi.event.player.PlayerEnterPlayerArea;
+import org.spout.legacyapi.event.player.PlayerLeavePlayerArea;
 import org.spout.legacyapi.player.SpoutPlayer;
 
 import net.minecraft.server.EntityPlayer;
@@ -41,6 +44,7 @@ import net.minecraft.server.Packet107SetCreativeSlot;
 import net.minecraft.server.Packet14BlockDig;
 import net.minecraft.server.Packet20NamedEntitySpawn;
 import net.minecraft.server.Packet250CustomPayload;
+import net.minecraft.server.Packet29DestroyEntity;
 
 /**
  * 
@@ -110,6 +114,7 @@ public class SpoutPacketHandler extends NetServerHandler {
 		}
 		checkForInvalidStack(packet);
 		queueOutputPacket(packet);
+		checkForPostPacket(packet);
 	}
 
 	/**
@@ -254,4 +259,35 @@ public class SpoutPacketHandler extends NetServerHandler {
 			stack.id = SpoutMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
 		}
 	}
+
+	/**
+	 * 
+	 * @param packet
+	 */
+	private void checkForPostPacket(Packet packet) {
+		SpoutPlayer player = null;
+		switch (packet.k()) {
+		case 0x14:
+			player = SpoutManager
+					.getPlayerFromId(((Packet20NamedEntitySpawn) packet).a);
+			if (player != null) {
+				Bukkit.getPluginManager().callEvent(
+						new PlayerEnterPlayerArea(player, SpoutManager
+								.getPlayer(getPlayer())));
+			}
+			break;
+		case 0x1D:
+			int[] ids = ((Packet29DestroyEntity) packet).a;
+			for (int id : ids) {
+				player = SpoutManager.getPlayerFromId(id);
+				if (player != null)
+					Bukkit.getPluginManager().callEvent(
+							new PlayerLeavePlayerArea(player, SpoutManager
+									.getPlayer(getPlayer())));
+			}
+			break;
+		}
+
+	}
+
 }

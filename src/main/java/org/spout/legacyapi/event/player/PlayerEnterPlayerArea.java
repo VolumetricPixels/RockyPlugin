@@ -17,67 +17,60 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spout.legacyapi.world;
+package org.spout.legacyapi.event.player;
+
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+import org.spout.legacyapi.player.SpoutPlayer;
 
 /**
  * 
  */
-public class Waypoint {
-	private double x, y, z;
-	private String name;
+public class PlayerEnterPlayerArea extends Event {
+	private final static HandlerList handlers = new HandlerList();
+	private final SpoutPlayer player;
+	private final SpoutPlayer trigger;
+
+	/**
+	 * 
+	 * @param player
+	 * @param trigger
+	 */
+	public PlayerEnterPlayerArea(SpoutPlayer player, SpoutPlayer trigger) {
+		this.player = player;
+		this.trigger = trigger;
+	}
+
+	/**
+	 * Gets the player associated with this event.
+	 * 
+	 * @return
+	 */
+	public SpoutPlayer getPlayer() {
+		return player;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public SpoutPlayer getTriggerPlayer() {
+		return trigger;
+	}
 	
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param name
+	 * {@inhericDoc}
 	 */
-	public Waypoint(double x, double y, double z, String name) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.name = name;
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public String getName() {
-		return name;
+	public static HandlerList getHandlerList() {
+		return handlers;
 	}
-
-	/**
-	 * 
-	 * @param name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public double getX() {
-		return x;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public double getY() {
-		return y;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public double getZ() {
-		return z;
-	}
-
-} 
+}

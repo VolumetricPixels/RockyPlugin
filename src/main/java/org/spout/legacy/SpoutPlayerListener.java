@@ -1,7 +1,7 @@
 /*
  * This file is part of SpoutLegacy.
  *
- * Copyright (c) 2011-2012, VolumetricPixels <http://www.volumetricpixels.com/>
+ * Copyright (c) 2012-2012, VolumetricPixels <http://www.volumetricpixels.com/>
  * SpoutLegacy is licensed under the GNU Lesser General Public License.
  *
  * SpoutLegacy is free software: you can redistribute it and/or modify
@@ -31,6 +31,8 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.spout.legacy.player.SpoutPlayerHandler;
 import org.spout.legacyapi.SpoutManager;
+import org.spout.legacyapi.event.player.PlayerEnterPlayerArea;
+import org.spout.legacyapi.packet.protocol.PacketPlayerAppearance;
 import org.spout.legacyapi.player.SpoutPlayer;
 
 /**
@@ -105,6 +107,17 @@ public class SpoutPlayerListener implements Listener {
 	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
 		SpoutPlayer splr = SpoutManager.getPlayer(event.getPlayer());
 		splr.updateWaypoints();
+	}
+
+	/**
+	 * 
+	 * @param event
+	 */
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerEnterPlayerArea(PlayerEnterPlayerArea event) {
+		if (event.getPlayer().isSpoutEnabled())
+			event.getPlayer().sendPacket(
+					new PacketPlayerAppearance(event.getTriggerPlayer()));
 	}
 
 }

@@ -1,7 +1,7 @@
 /*
  * This file is part of SpoutLegacy.
  *
- * Copyright (c) 2011-2012, VolumetricPixels <http://www.volumetricpixels.com/>
+ * Copyright (c) 2012-2012, VolumetricPixels <http://www.volumetricpixels.com/>
  * SpoutLegacy is licensed under the GNU Lesser General Public License.
  *
  * SpoutLegacy is free software: you can redistribute it and/or modify
