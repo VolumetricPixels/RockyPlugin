@@ -46,6 +46,6 @@ For those using [Maven](http://maven.apache.org/download.html) to manage project
 [Author Logo]: http://volumetricpixels.com/wp-content/uploads/2012/04/vp_concept2_6.png
 [License]: http://www.gnu.org/licenses/lgpl.html
 [Website]: http://www.volumetricpixels.com
-[Forums]: http://volumetricpixels.com/forums/
-[GitHub]: https://github.com/Wolftein/SpoutLegacy
-[Jenkins]: http://ci.massiveminecraft.com/job/SpoutLegacy/
+[Forums]: http://volumetricpixels.com/forums/#rocky-spoutlegacy.56
+[GitHub]: https://github.com/Wolftein/RockyPlugin/
+[Jenkins]: http://ci.massiveminecraft.com/job/RockyPlugin/
