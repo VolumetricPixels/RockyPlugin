@@ -26,22 +26,6 @@ public enum SpoutPermission {
 	/**
 	 * 
 	 */
-	MINIMAP("spout.client.minimap"),
-	/**
-	 * 
-	 */
-	OVERVIEW_MAP("spout.client.overviewmap"),
-	/**
-	 * 
-	 */
-	SORT_INVENTORY("spout.client.sortinventory"),
-	/**
-	 * 
-	 */
-	SIGN_COLOR("spout.client.signcolor"),
-	/**
-	 * 
-	 */
 	FORCE_SPOUT("spout.plugin.forcespoutcraft"),
 	/**
 	 * 

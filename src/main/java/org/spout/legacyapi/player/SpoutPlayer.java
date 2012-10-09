@@ -19,17 +19,17 @@
  */
 package org.spout.legacyapi.player;
 
+import java.util.List;
+
 import net.minecraft.server.EntityPlayer;
 
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import org.spout.legacyapi.gui.InGameHUD;
 import org.spout.legacyapi.gui.Screen;
 import org.spout.legacyapi.gui.ScreenType;
-import org.spout.legacyapi.material.Material;
 import org.spout.legacyapi.math.Color;
 import org.spout.legacyapi.packet.Packet;
 import org.spout.legacyapi.packet.PacketVanilla;
@@ -103,24 +103,12 @@ public interface SpoutPlayer extends Player {
 	public void setMaximumRenderDistance(RenderDistance maximum);
 
 	/**
-	 * Releases the maximum render distance, and allows the player to change the
-	 * distance with no maximum restriction
-	 */
-	public void resetMaximumRenderDistance();
-
-	/**
 	 * Gets the minimum render distance that the player can view, or null if
 	 * unknown
 	 * 
 	 * @return minimum distance
 	 */
 	public RenderDistance getMinimumRenderDistance();
-
-	/**
-	 * Releases the minimum render distance, and allows the player to change the
-	 * distance with no minimum restriction
-	 */
-	public void resetMinimumRenderDistance();
 
 	/**
 	 * Sets the minimum render distance that the player can view
@@ -190,7 +178,7 @@ public interface SpoutPlayer extends Player {
 	 * 
 	 * @return gravity multiplier
 	 */
-	public double getGravityMultiplier();
+	public float getGravityMultiplier();
 
 	/**
 	 * Modifies the effects of gravity on the player's y axis movement.
@@ -205,7 +193,7 @@ public interface SpoutPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setGravityMultiplier(double multiplier);
+	public void setGravityMultiplier(float multiplier);
 
 	/**
 	 * Gets the swimming multiplier for this player
@@ -214,7 +202,7 @@ public interface SpoutPlayer extends Player {
 	 * 
 	 * @return swimming multiplier
 	 */
-	public double getSwimmingMultiplier();
+	public float getSwimmingMultiplier();
 
 	/**
 	 * Modifies the default swimming speed for this player
@@ -229,7 +217,7 @@ public interface SpoutPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setSwimmingMultiplier(double multiplier);
+	public void setSwimmingMultiplier(float multiplier);
 
 	/**
 	 * Gets the walking multiplier for this player
@@ -238,7 +226,7 @@ public interface SpoutPlayer extends Player {
 	 * 
 	 * @return walking multiplier
 	 */
-	public double getWalkingMultiplier();
+	public float getWalkingMultiplier();
 
 	/**
 	 * Modifies the default walking speed for this player
@@ -253,7 +241,7 @@ public interface SpoutPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setWalkingMultiplier(double multiplier);
+	public void setWalkingMultiplier(float multiplier);
 
 	/**
 	 * Gets the jumping multiplier for this player
@@ -262,7 +250,7 @@ public interface SpoutPlayer extends Player {
 	 * 
 	 * @return jumping multiplier
 	 */
-	public double getJumpingMultiplier();
+	public float getJumpingMultiplier();
 
 	/**
 	 * Modifies the default jumping speed for this player
@@ -277,7 +265,7 @@ public interface SpoutPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setJumpingMultiplier(double multiplier);
+	public void setJumpingMultiplier(float multiplier);
 
 	/**
 	 * Gets the air speed multiplier for this player
@@ -286,7 +274,7 @@ public interface SpoutPlayer extends Player {
 	 * 
 	 * @return air speed multiplier
 	 */
-	public double getAirSpeedMultiplier();
+	public float getAirSpeedMultiplier();
 
 	/**
 	 * Modifies the default air speed for this player
@@ -301,7 +289,7 @@ public interface SpoutPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setAirSpeedMultiplier(double multiplier);
+	public void setAirSpeedMultiplier(float multiplier);
 
 	/**
 	 * Resets all modified movement speeds, including walking, swimming,
@@ -326,27 +314,12 @@ public interface SpoutPlayer extends Player {
 	public void setCanFly(boolean fly);
 
 	/**
-	 * Gets the location that the player clicked on last, or null if there was
-	 * no previous click locations
-	 * 
-	 * @return
-	 */
-	public Location getLastClickedLocation();
-
-	/**
 	 * Sends a MCPacket to the client
 	 * 
 	 * @param packet
 	 *            to send
 	 */
 	public void sendPacket(PacketVanilla packet);
-
-	/**
-	 * True if the player has completed precaching files
-	 * 
-	 * @return true if precaching files is complete
-	 */
-	public boolean isPreCachingComplete();
 
 	/**
 	 * Sends the packet immediately. Packets sent using this method are placed
@@ -435,27 +408,12 @@ public interface SpoutPlayer extends Player {
 	public void openScreen(ScreenType type);
 
 	/**
-	 * Sends a request to the client to send a screenshot to the server.
-	 */
-	public void sendScreenshotRequest();
-
-	/**
 	 * Sets the skin of this player
 	 * 
 	 * @param url
 	 *            to set to
 	 */
 	public void setSkin(String url);
-
-	/**
-	 * Sets the skin of this player, only visibile to the viewingPlayer
-	 * 
-	 * @param viewingPlayer
-	 *            that this skin will be visible to
-	 * @param url
-	 *            to set to
-	 */
-	public void setSkinFor(SpoutPlayer viewingPlayer, String url);
 
 	/**
 	 * Gets the skin url that this player is using
@@ -465,26 +423,9 @@ public interface SpoutPlayer extends Player {
 	public String getSkin();
 
 	/**
-	 * Gets the skin url that is visible to the viewingPlayer
-	 * 
-	 * @param viewingPlayer
-	 *            that this skin is visible to
-	 * @return skin
-	 */
-	public String getSkin(SpoutPlayer viewingPlayer);
-
-	/**
 	 * Resets the skin to the default
 	 */
 	public void resetSkin();
-
-	/**
-	 * Resets the skin to the default for the viewing player
-	 * 
-	 * @param viewingPlayer
-	 *            to reset the skin for
-	 */
-	public void resetSkinFor(SpoutPlayer viewingPlayer);
 
 	/**
 	 * Sets the cape url of this player
@@ -495,17 +436,6 @@ public interface SpoutPlayer extends Player {
 	public void setCape(String url);
 
 	/**
-	 * Sets the cape url of this player, that is only visible to the
-	 * viewingPlayer
-	 * 
-	 * @param viewingPlayer
-	 *            that this cape is visible for
-	 * @param url
-	 *            to set to
-	 */
-	public void setCapeFor(SpoutPlayer viewingPlayer, String url);
-
-	/**
 	 * Gets the cape that this player is wearing
 	 * 
 	 * @return cape url
@@ -513,26 +443,9 @@ public interface SpoutPlayer extends Player {
 	public String getCape();
 
 	/**
-	 * Gets the cape that is visible to the viewingPlayer
-	 * 
-	 * @param viewingPlayer
-	 *            that this cape is visible for
-	 * @return cape url
-	 */
-	public String getCape(SpoutPlayer viewingPlayer);
-
-	/**
 	 * Resets the cape that this player is wearing
 	 */
 	public void resetCape();
-
-	/**
-	 * Resets the cape that is visible for the viewingPlayer
-	 * 
-	 * @param viewingPlayer
-	 *            to reset the cape for
-	 */
-	public void resetCapeFor(SpoutPlayer viewingPlayer);
 
 	/**
 	 * Sets the overhead title for the player.
@@ -605,24 +518,6 @@ public interface SpoutPlayer extends Player {
 	public void resetTitleFor(SpoutPlayer viewingPlayer);
 
 	/**
-	 * Resets the entity skin for the target entity.
-	 * 
-	 * @param target
-	 *            to reset the skin for
-	 */
-	public void resetEntitySkin(LivingEntity target);
-
-	/**
-	 * Tests the skin/cape url for correctness. Will throw an
-	 * {@link UnsupportedOperationException} if it fails.
-	 * 
-	 * @param url
-	 *            to test
-	 * @throws UnsupportedOperationException
-	 */
-	public void checkUrl(String url);
-
-	/**
 	 * Internal use only
 	 * 
 	 * @param type
@@ -631,20 +526,36 @@ public interface SpoutPlayer extends Player {
 	public void openScreen(ScreenType type, boolean packet);
 
 	/**
-	 * Internal use only
 	 * 
-	 * @param complete
+	 * @param player
+	 * @return
 	 */
-	public void setPreCachingComplete(boolean complete);
-
+	public boolean hasObserver(Player player);
+	
 	/**
-	 * Internal use only
 	 * 
-	 * @param currentRender
-	 * @param update
+	 * @return
 	 */
-	public void setRenderDistance(RenderDistance currentRender, boolean update);
-
+	public List<Player> getObservers();
+	
+	/**
+	 * 
+	 * @param player
+	 */
+	public void addObserver(Player player);
+	
+	/**
+	 * 
+	 * @param player
+	 */
+	public void removeObserver(Player player);
+	
+	/**
+	 * 
+	 * @param packet
+	 */
+	public void sendPacketToObservers(Packet packet);
+	
 	/**
 	 * Internal use only
 	 * 
@@ -658,54 +569,6 @@ public interface SpoutPlayer extends Player {
 	 * @param packet
 	 */
 	public void sendDelayedPacket(Packet packet);
-
-	/**
-	 * Internal use only
-	 * 
-	 * @param keys
-	 */
-	public void updateKeys(byte[] keys);
-
-	/**
-	 * Sends the current value of the node to the client.
-	 * 
-	 * @param node
-	 *            the node to update
-	 */
-	public void updatePermission(String node);
-
-	/**
-	 * Sends the current value of all given nodes to the client.
-	 * 
-	 * @param nodes
-	 *            the nodes to update
-	 */
-	public void updatePermissions(String... nodes);
-
-	/**
-	 * Sends the current value of all permissions that the player has to the
-	 * client
-	 */
-	public void updatePermissions();
-
-	/**
-	 * Sends a packet to the client to spawn a text entity
-	 * 
-	 * @param text
-	 *            the text that should be displayed
-	 * @param location
-	 *            the location of the entity
-	 * @param scale
-	 *            the scale of the entity, where 1.0f is one block high
-	 * @param duration
-	 *            if not 0, this will despawn the entity after the given
-	 *            duration (in ticks)
-	 * @param movement
-	 *            the entity will move by the given vector each tick
-	 * @returns if the packet for the entity could be send
-	 */
-	public boolean spawnTextEntity(String text, Location location, float scale,
-			int duration, Vector movement);
 
 	/**
 	 * Adds a waypoint to the minimap of the client, with the given loation and
@@ -784,20 +647,6 @@ public interface SpoutPlayer extends Player {
 	public void setCloudHeight(int y);
 
 	/**
-	 * Is true if the clouds are visible for the given player
-	 * 
-	 * @return true if clouds are visible
-	 */
-	public boolean isCloudsVisible();
-
-	/**
-	 * Enables or disables the rendering of clouds for the given player
-	 * 
-	 * @param visible
-	 */
-	public void setCloudsVisible(boolean visible);
-
-	/**
 	 * Gets the frequency of stars overhead at night. The default frequency is
 	 * 1500. Higher frequencies cause more stars, lower, less
 	 * 
@@ -812,20 +661,6 @@ public interface SpoutPlayer extends Player {
 	 * @param frequency
 	 */
 	public void setStarFrequency(int frequency);
-
-	/**
-	 * Is true if the stars are visible for the given player player
-	 * 
-	 * @return if the stars are visible
-	 */
-	public boolean isStarsVisible();
-
-	/**
-	 * Enables or disables the rendering of stars for the given player
-	 * 
-	 * @param visible
-	 */
-	public void setStarsVisible(boolean visible);
 
 	/**
 	 * Gets the percent size of the sun, relative to the default size. 100
@@ -845,20 +680,6 @@ public interface SpoutPlayer extends Player {
 	 *            to set
 	 */
 	public void setSunSizePercent(int percent);
-
-	/**
-	 * Is true if the sun will ever render
-	 * 
-	 * @return true if the sun will ever render
-	 */
-	public boolean isSunVisible();
-
-	/**
-	 * Enables or disables rendering of the sun during daytime
-	 * 
-	 * @param visible
-	 */
-	public void setSunVisible(boolean visible);
 
 	/**
 	 * Gets the custom url of the custom sun texture, or null if no custom
@@ -896,20 +717,6 @@ public interface SpoutPlayer extends Player {
 	 *            to set
 	 */
 	public void setMoonSizePercent(int percent);
-
-	/**
-	 * Is true if the moon will ever render
-	 * 
-	 * @return true if the moon will ever render
-	 */
-	public boolean isMoonVisible();
-
-	/**
-	 * Enables or disables rendering of the moon during nighttime
-	 * 
-	 * @param visible
-	 */
-	public void setMoonVisible(boolean visible);
 
 	/**
 	 * Gets the custom url of the custom moon texture, or null if no custom

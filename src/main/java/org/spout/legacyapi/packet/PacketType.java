@@ -72,6 +72,18 @@ public enum PacketType {
 	 * {@see PacketWaypoint}
 	 */
 	PacketWaypoint(11, PacketWaypoint.class),
+	/**
+	 * {@see PacketRenderDistanceAddon}
+	 */
+	PacketRenderDistanceAddon(12, PacketRenderDistanceAddon.class),
+	/**
+	 * {@see PacketAccessory}
+	 */
+	PacketAccessory(13, PacketAccessory.class),
+	/**
+	 * {@see PacketPlayerAppearance}
+	 */
+	PacketPlayerAppearance(14, PacketPlayerAppearance.class),
 	
 	/**
 	 * {@see PacketWidget}

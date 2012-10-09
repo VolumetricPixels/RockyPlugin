@@ -101,11 +101,4 @@ public class SpoutPlayerManager implements PlayerManager {
 				new SpoutBuildSetEvent(player, build));
 	}
 
-	/**
-	 * 
-	 * @param player
-	 */
-	public static void sendCustomData(SpoutPlayer player) {
-		
-	}
 }

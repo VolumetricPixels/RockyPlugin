@@ -19,7 +19,11 @@
  */
 package org.spout.legacy.player;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 import net.minecraft.server.DedicatedServer;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.INetworkManager;
@@ -30,22 +34,38 @@ import net.minecraft.server.Packet250CustomPayload;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
+import org.bukkit.ChatColor;
 import org.fest.reflect.core.Reflection;
 import org.spout.legacy.Spout;
+import org.spout.legacy.packet.PacketCompression;
+import org.spout.legacy.packet.SpoutPacket;
 import org.spout.legacy.packet.SpoutPacketHandler;
+import org.spout.legacyapi.gui.GenericOverlayScreen;
 import org.spout.legacyapi.gui.InGameHUD;
+import org.spout.legacyapi.gui.InGameScreen;
+import org.spout.legacyapi.gui.OverlayScreen;
 import org.spout.legacyapi.gui.Screen;
+import org.spout.legacyapi.gui.ScreenAction;
 import org.spout.legacyapi.gui.ScreenType;
 import org.spout.legacyapi.math.Color;
+import org.spout.legacyapi.packet.CompressiblePacket;
 import org.spout.legacyapi.packet.Packet;
 import org.spout.legacyapi.packet.PacketVanilla;
+import org.spout.legacyapi.packet.protocol.PacketAccessory;
+import org.spout.legacyapi.packet.protocol.PacketAlert;
+import org.spout.legacyapi.packet.protocol.PacketMovementAddon;
+import org.spout.legacyapi.packet.protocol.PacketPlayerAppearance;
+import org.spout.legacyapi.packet.protocol.PacketRenderDistanceAddon;
+import org.spout.legacyapi.packet.protocol.PacketScreenAction;
+import org.spout.legacyapi.packet.protocol.PacketSkyAddon;
+import org.spout.legacyapi.packet.protocol.PacketWaypoint;
+import org.spout.legacyapi.packet.protocol.PacketWidget;
 import org.spout.legacyapi.player.AccessoryType;
 import org.spout.legacyapi.player.RenderDistance;
 import org.spout.legacyapi.player.SpoutPlayer;
@@ -56,6 +76,41 @@ import org.spout.legacyapi.world.Waypoint;
  */
 public class SpoutPlayerHandler extends CraftPlayer implements SpoutPlayer {
 
+	private int build = -1;
+	private List<Packet> delayedPackets = new LinkedList<Packet>();
+	private List<Packet> queuePackets = new LinkedList<Packet>();
+	private boolean isAllowedToFly = false;
+	private Map<AccessoryType, String> accessories = new HashMap<AccessoryType, String>();
+	private InGameScreen mainScreen;
+	private ScreenType activeScreen = ScreenType.GAME_SCREEN;
+	private GenericOverlayScreen currentScreen;
+	private List<Player> observers = new LinkedList<Player>();
+	private String skin, cape, title;
+	private Map<String, String> titleFor;
+
+	/**
+	 * Movement Addon variables
+	 */
+	private float[] movementModifier = new float[] { 1.0f, 1.0f, 1.0f, 1.0f,
+			1.0f };
+	private boolean needMovementUpdate = false;
+
+	/**
+	 * Sky Addon variables
+	 */
+	private boolean needSkyUpdate = false;
+	private int skyCloudHeight = 108, skyStarFrequency = 1500,
+			skySunPercent = 100, skyMoonPercent = 100;
+	private String skySunUrl = "[R]", skyMoonUrl = "[R]";
+	private Color skyColor = Color.White, skyFogColor = Color.White,
+			skyCloudColor = Color.White;
+
+	/**
+	 * View Distance Addon
+	 */
+	private RenderDistance minimumDistance, maximumDistance, currentDistance;
+	private boolean needDistanceUpdate = false;
+
 	/**
 	 * 
 	 * @param server
@@ -65,697 +120,899 @@ public class SpoutPlayerHandler extends CraftPlayer implements SpoutPlayer {
 		super(server, entity);
 	}
 
+	/**
+	 * {@inhericDoc}
+	 */
 	@Override
 	public InGameHUD getMainScreen() {
-		// TODO Auto-generated method stub
-		return null;
+		return mainScreen;
 	}
 
+	/**
+	 * {@inhericDoc}
+	 */
 	@Override
 	public Screen getCurrentScreen() {
-		// TODO Auto-generated method stub
-		return null;
+		if (getActiveScreen() == ScreenType.GAME_SCREEN)
+			return getMainScreen();
+		else
+			return currentScreen;
+
 	}
 
+	/**
+	 * {@inhericDoc}
+	 */
 	@Override
 	public boolean isSpoutEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return (build != -1);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RenderDistance getRenderDistance() {
-		// TODO Auto-generated method stub
-		return null;
+		return currentDistance;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setRenderDistance(RenderDistance distance) {
-		// TODO Auto-generated method stub
-
+		if (distance.ordinal() < minimumDistance.ordinal()
+				|| distance.ordinal() > maximumDistance.ordinal()) {
+			return;
+		}
+		currentDistance = distance;
+		needDistanceUpdate = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RenderDistance getMaximumRenderDistance() {
-		// TODO Auto-generated method stub
-		return null;
+		return maximumDistance;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setMaximumRenderDistance(RenderDistance maximum) {
-		// TODO Auto-generated method stub
-
+		maximumDistance = maximum;
+		if (currentDistance.ordinal() > maximum.ordinal()) {
+			setRenderDistance(maximum);
+		}
+		needDistanceUpdate = true;
 	}
 
-	@Override
-	public void resetMaximumRenderDistance() {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RenderDistance getMinimumRenderDistance() {
-		// TODO Auto-generated method stub
-		return null;
+		return minimumDistance;
 	}
 
-	@Override
-	public void resetMinimumRenderDistance() {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setMinimumRenderDistance(RenderDistance minimum) {
-		// TODO Auto-generated method stub
-
+		minimumDistance = minimum;
+		if (currentDistance.ordinal() < minimum.ordinal()) {
+			setRenderDistance(minimum);
+		}
+		needDistanceUpdate = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void sendNotification(String title, String message, Material toRender) {
+		sendNotification(title, message, toRender, (short) 0, 20 * 5);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void sendNotification(String title, String message,
-			org.spout.legacyapi.material.Material toRender) {
-		// TODO Auto-generated method stub
-
+			Material toRender, short data, int time) {
+		if (!isSpoutEnabled()) {
+			return;
+		}
+		if (toRender == null || toRender == Material.AIR) {
+			throw new IllegalArgumentException(
+					"The item to render may not be null or air");
+		}
+		if (ChatColor.stripColor(title).length() > 26 || title.length() > 78) {
+			throw new UnsupportedOperationException(
+					"Notification titles can not be greater than 26 chars + 26 colors");
+		}
+		if (ChatColor.stripColor(message).length() > 26
+				|| message.length() > 78) {
+			throw new UnsupportedOperationException(
+					"Notification messages can not be greater than 26 chars + 26 colors");
+		}
+		sendPacket(new PacketAlert(title, message, toRender.getId(), data, time));
 	}
 
-	@Override
-	public void sendNotification(String title, String message,
-			org.spout.legacyapi.material.Material toRender, short data,
-			int time) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void sendNotification(String title, String message, ItemStack item,
 			int time) {
-		// TODO Auto-generated method stub
-
+		sendNotification(title, message, item.getType(), item.getDurability(),
+				time);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public double getGravityMultiplier() {
-		// TODO Auto-generated method stub
-		return 0;
+	public float getGravityMultiplier() {
+		return movementModifier[0];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void setGravityMultiplier(double multiplier) {
-		// TODO Auto-generated method stub
-
+	public void setGravityMultiplier(float multiplier) {
+		movementModifier[0] = multiplier;
+		needMovementUpdate = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public double getSwimmingMultiplier() {
-		// TODO Auto-generated method stub
-		return 0;
+	public float getSwimmingMultiplier() {
+		return movementModifier[1];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void setSwimmingMultiplier(double multiplier) {
-		// TODO Auto-generated method stub
-
+	public void setSwimmingMultiplier(float multiplier) {
+		movementModifier[1] = multiplier;
+		needMovementUpdate = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public double getWalkingMultiplier() {
-		// TODO Auto-generated method stub
-		return 0;
+	public float getWalkingMultiplier() {
+		return movementModifier[2];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void setWalkingMultiplier(double multiplier) {
-		// TODO Auto-generated method stub
-
+	public void setWalkingMultiplier(float multiplier) {
+		movementModifier[2] = multiplier;
+		needMovementUpdate = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public double getJumpingMultiplier() {
-		// TODO Auto-generated method stub
-		return 0;
+	public float getJumpingMultiplier() {
+		return movementModifier[3];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void setJumpingMultiplier(double multiplier) {
-		// TODO Auto-generated method stub
-
+	public void setJumpingMultiplier(float multiplier) {
+		movementModifier[3] = multiplier;
+		needMovementUpdate = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public double getAirSpeedMultiplier() {
-		// TODO Auto-generated method stub
-		return 0;
+	public float getAirSpeedMultiplier() {
+		return movementModifier[4];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void setAirSpeedMultiplier(double multiplier) {
-		// TODO Auto-generated method stub
-
+	public void setAirSpeedMultiplier(float multiplier) {
+		movementModifier[4] = multiplier;
+		needMovementUpdate = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void resetMovement() {
-		// TODO Auto-generated method stub
-
+		for (int i = 0; i < movementModifier.length; i++) {
+			movementModifier[i] = 1.0f;
+		}
+		needMovementUpdate = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean canFly() {
-		// TODO Auto-generated method stub
-		return false;
+		return isAllowedToFly;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setCanFly(boolean fly) {
-		// TODO Auto-generated method stub
-
+		this.isAllowedToFly = fly;
 	}
 
-	@Override
-	public Location getLastClickedLocation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void sendPacket(PacketVanilla packet) {
-		// TODO Auto-generated method stub
-
+		getHandle().netServerHandler.sendPacket((SpoutPacket) packet);
 	}
 
-	@Override
-	public boolean isPreCachingComplete() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void sendImmediatePacket(PacketVanilla packet) {
-		// TODO Auto-generated method stub
-
+		if (getHandle().netServerHandler instanceof SpoutPacketHandler)
+			getNetServerHandler().sendImmediatePacket((SpoutPacket) packet);
+		else
+			sendPacket(packet);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reconnect(String message, String hostname, int port) {
-		// TODO Auto-generated method stub
-
+		if (hostname.contains(":")) {
+			throw new IllegalArgumentException(
+					"Hostnames may not contain the : symbol");
+		}
+		if (message == null) {
+			message = "[Redirect] Please reconnect to";
+		} else if (message.contains(":")) {
+			throw new IllegalArgumentException(
+					"Kick messages may not contain the : symbol");
+		}
+		if (port == 25565)
+			this.kickPlayer(message + " : " + hostname);
+		else
+			this.kickPlayer(message + " : " + hostname + ":" + port);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reconnect(String message, String hostname) {
-		// TODO Auto-generated method stub
-
+		if (hostname.contains(":")) {
+			String[] split = hostname.split(":");
+			if (split.length != 2) {
+				throw new IllegalArgumentException(
+						"Improperly formatted hostname: " + hostname);
+			}
+			try {
+				reconnect(message, split[0], Integer.parseInt(split[1]));
+			} catch (NumberFormatException nfe) {
+				throw new IllegalArgumentException(
+						"Unable to parse port number: " + split[1] + " in "
+								+ hostname);
+			}
+		} else
+			reconnect(message, hostname, 25565);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reconnect(String hostname, int port) {
-		// TODO Auto-generated method stub
-
+		reconnect(null, hostname, port);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reconnect(String hostname) {
-		// TODO Auto-generated method stub
-
+		reconnect(null, hostname);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ScreenType getActiveScreen() {
-		// TODO Auto-generated method stub
-		return null;
+		return activeScreen;
 	}
 
-	@Override
-	public void openScreen(ScreenType type) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void sendScreenshotRequest() {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setSkin(String url) {
-		// TODO Auto-generated method stub
-
+		this.skin = url;
+		sendPacketToObservers(new PacketPlayerAppearance(this));
 	}
 
-	@Override
-	public void setSkinFor(SpoutPlayer viewingPlayer, String url) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getSkin() {
-		// TODO Auto-generated method stub
-		return null;
+		return skin;
 	}
 
-	@Override
-	public String getSkin(SpoutPlayer viewingPlayer) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void resetSkin() {
-		// TODO Auto-generated method stub
-
+		setSkin("http://s3.amazonaws.com/MinecraftSkins/" + getName() + ".png");
 	}
 
-	@Override
-	public void resetSkinFor(SpoutPlayer viewingPlayer) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setCape(String url) {
-		// TODO Auto-generated method stub
-
+		this.cape = url;
+		sendPacketToObservers(new PacketPlayerAppearance(this));
 	}
 
-	@Override
-	public void setCapeFor(SpoutPlayer viewingPlayer, String url) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getCape() {
-		// TODO Auto-generated method stub
-		return null;
+		return cape;
 	}
 
-	@Override
-	public String getCape(SpoutPlayer viewingPlayer) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void resetCape() {
-		// TODO Auto-generated method stub
-
+		setCape("http://s3.amazonaws.com/MinecraftCloaks/" + getName() + ".png");
 	}
 
-	@Override
-	public void resetCapeFor(SpoutPlayer viewingPlayer) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setTitle(String title) {
-		// TODO Auto-generated method stub
-
+		this.title = title;
+		sendPacketToObservers(new PacketPlayerAppearance(this));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setTitleFor(SpoutPlayer viewingPlayer, String title) {
-		// TODO Auto-generated method stub
-
+		if (hasObserver(viewingPlayer)) {
+			viewingPlayer.sendPacket(new PacketPlayerAppearance(this));
+		}
+		titleFor.put(viewingPlayer.getName(), title);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return title;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getTitleFor(SpoutPlayer viewingPlayer) {
-		// TODO Auto-generated method stub
-		return null;
+		return titleFor.get(viewingPlayer.getName());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void hideTitle() {
-		// TODO Auto-generated method stub
-
+		setTitle("[Hide]");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void hideTitleFrom(SpoutPlayer viewingPlayer) {
-		// TODO Auto-generated method stub
-
+		setTitleFor(viewingPlayer, "[Hide]");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void resetTitle() {
-		// TODO Auto-generated method stub
-
+		setTitle(getName());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void resetTitleFor(SpoutPlayer viewingPlayer) {
-		// TODO Auto-generated method stub
-
+		setTitleFor(viewingPlayer, getName());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void resetEntitySkin(LivingEntity target) {
-		// TODO Auto-generated method stub
-
+	public void openScreen(ScreenType type) {
+		openScreen(type, true);
 	}
 
-	@Override
-	public void checkUrl(String url) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void openScreen(ScreenType type, boolean packet) {
-		// TODO Auto-generated method stub
-
+		if (type == activeScreen) {
+			return;
+		}
+		activeScreen = type;
+		if (packet) {
+			sendPacket(new PacketScreenAction(ScreenAction.Open, type));
+		}
+		if (activeScreen != ScreenType.GAME_SCREEN
+				&& activeScreen != ScreenType.CUSTOM_SCREEN) {
+			currentScreen = (GenericOverlayScreen) new GenericOverlayScreen(
+					getEntityId(), getActiveScreen()).setX(0).setY(0);
+			PacketWidget packetW = new PacketWidget(currentScreen,
+					currentScreen.getId());
+			sendPacket(packetW);
+			currentScreen.onTick();
+		} else
+			currentScreen = null;
 	}
 
-	@Override
-	public void setPreCachingComplete(boolean complete) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setRenderDistance(RenderDistance currentRender, boolean update) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void sendPacket(Packet packet) {
-		// TODO Auto-generated method stub
-
+		if (!isSpoutEnabled()) {
+			queuePackets.add(packet);
+			return;
+		} else if (packet instanceof CompressiblePacket) {
+			CompressiblePacket compressible = ((CompressiblePacket) packet);
+			if (!compressible.isCompressed()) {
+				PacketCompression.add(compressible, this);
+				return;
+			}
+		}
+		getNetServerHandler().sendPacket(new SpoutPacket(packet));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasObserver(Player player) {
+		return observers.contains(player);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Player> getObservers() {
+		return observers;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addObserver(Player player) {
+		observers.add(player);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void removeObserver(Player player) {
+		observers.remove(player);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void sendPacketToObservers(Packet packet) {
+		for (Player player : observers)
+			if (player instanceof SpoutPlayer)
+				((SpoutPlayer) player).sendPacket(packet);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void sendDelayedPacket(Packet packet) {
-		// TODO Auto-generated method stub
-
+		delayedPackets.add(packet);
 	}
 
-	@Override
-	public void updateKeys(byte[] keys) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updatePermission(String node) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updatePermissions(String... nodes) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updatePermissions() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean spawnTextEntity(String text, Location location, float scale,
-			int duration, Vector movement) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void addWaypoint(Waypoint waypoint) {
-		// TODO Auto-generated method stub
-
+		sendPacket(new PacketWaypoint(waypoint.getX(), waypoint.getY(),
+				waypoint.getZ(), waypoint.getName()));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getBuildVersion() {
-		// TODO Auto-generated method stub
-		return 0;
+		return build;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getVersionString() {
-		// TODO Auto-generated method stub
-		return null;
+		return (build != -1 ? "SpoutLegacy v" + build : "Minecraft");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean hasAccessory(AccessoryType type) {
-		// TODO Auto-generated method stub
-		return false;
+		return accessories.containsKey(type);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void addAccessory(AccessoryType type, String url) {
-		// TODO Auto-generated method stub
-
+		sendPacketToObservers(new PacketAccessory(getName(), type, url));
+		accessories.put(type, url);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String removeAccessory(AccessoryType type) {
-		// TODO Auto-generated method stub
-		return null;
+		sendPacketToObservers(new PacketAccessory(getName(), type, ""));
+		return accessories.remove(type);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getAccessoryURL(AccessoryType type) {
-		// TODO Auto-generated method stub
-		return null;
+		return accessories.get(type);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getCloudHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return skyCloudHeight;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setCloudHeight(int y) {
-		// TODO Auto-generated method stub
-
+		this.needSkyUpdate = true;
+		this.skyCloudHeight = y;
 	}
 
-	@Override
-	public boolean isCloudsVisible() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setCloudsVisible(boolean visible) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getStarFrequency() {
-		// TODO Auto-generated method stub
-		return 0;
+		return skyStarFrequency;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setStarFrequency(int frequency) {
-		// TODO Auto-generated method stub
-
+		this.needSkyUpdate = true;
+		this.skyStarFrequency = frequency;
 	}
 
-	@Override
-	public boolean isStarsVisible() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setStarsVisible(boolean visible) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getSunSizePercent() {
-		// TODO Auto-generated method stub
-		return 0;
+		return skySunPercent;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setSunSizePercent(int percent) {
-		// TODO Auto-generated method stub
-
+		this.needSkyUpdate = true;
+		this.skySunPercent = percent;
 	}
 
-	@Override
-	public boolean isSunVisible() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setSunVisible(boolean visible) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getSunTextureUrl() {
-		// TODO Auto-generated method stub
-		return null;
+		return skySunUrl;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setSunTextureUrl(String url) {
-		// TODO Auto-generated method stub
-
+		this.needSkyUpdate = true;
+		this.skySunUrl = url;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getMoonSizePercent() {
-		// TODO Auto-generated method stub
-		return 0;
+		return skyMoonPercent;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setMoonSizePercent(int percent) {
-		// TODO Auto-generated method stub
-
+		this.needSkyUpdate = true;
+		this.skyMoonPercent = percent;
 	}
 
-	@Override
-	public boolean isMoonVisible() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setMoonVisible(boolean visible) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getMoonTextureUrl() {
-		// TODO Auto-generated method stub
-		return null;
+		return skyMoonUrl;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setMoonTextureUrl(String url) {
-		// TODO Auto-generated method stub
-
+		this.skyMoonUrl = url;
+		this.needSkyUpdate = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setSkyColor(Color skyColor) {
-		// TODO Auto-generated method stub
-
+		this.needSkyUpdate = true;
+		this.skyColor = skyColor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Color getSkyColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return skyColor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setFogColor(Color fogColor) {
-		// TODO Auto-generated method stub
-
+		this.needSkyUpdate = true;
+		this.skyFogColor = fogColor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Color getFogColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return skyFogColor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setCloudColor(Color cloudColor) {
-		// TODO Auto-generated method stub
-
+		this.needSkyUpdate = true;
+		this.skyCloudColor = cloudColor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Color getCloudColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return skyCloudColor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void playSoundEffect(String effect) {
-		// TODO Auto-generated method stub
-
+		playSoundEffect(effect, getLocation());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void playSoundEffect(String effect, Location location) {
-		// TODO Auto-generated method stub
-
+		playSoundEffect(effect, location, 0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void playSoundEffect(String effect, Location location, int distance) {
-		// TODO Auto-generated method stub
-
+		playSoundEffect(effect, location, distance, 100);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void playSoundEffect(String effect, Location location, int distance,
 			int volumePercent) {
-		// TODO Auto-generated method stub
-
+		//TODO
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void playMusic(String music) {
-		// TODO Auto-generated method stub
-
+		playMusic(music, 100);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void playMusic(String music, int volumePercent) {
-		// TODO Auto-generated method stub
-
+		//TODO
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stopMusic() {
-		// TODO Auto-generated method stub
-
+		stopMusic(false);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stopMusic(boolean resetTimer) {
-		// TODO Auto-generated method stub
-
+		stopMusic(resetTimer, 15);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stopMusic(boolean resetTimer, int fadeOutTime) {
-		// TODO Auto-generated method stub
-
+		//TODO
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setBuildVersion(int build) {
-		// TODO Auto-generated method stub
-
+		this.build = build;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onTick() {
+		if (!isSpoutEnabled()) {
+			return;
+		}
+		// Tick the current screen we're at
+		mainScreen.onTick();
+		Screen currentScreen = getCurrentScreen();
+		if (currentScreen != null && currentScreen instanceof OverlayScreen) {
+			currentScreen.onTick();
+		}
+
+		// Check if the movement addon needs update
+		if (needMovementUpdate) {
+			needMovementUpdate = false;
+			sendPacket(new PacketMovementAddon(this));
+		}
+
+		// Check if the sky addon needs update
+		if (needSkyUpdate) {
+			needSkyUpdate = false;
+			sendPacket(new PacketSkyAddon(this));
+		}
+
+		// Check if the render distance addon needs update
+		if (needDistanceUpdate) {
+			needDistanceUpdate = false;
+			sendPacket(new PacketRenderDistanceAddon(this));
+		}
+
+		// Send our delayed packets
+		for (Packet packet : delayedPackets) {
+			sendPacket(packet);
+		}
+		delayedPackets.clear();
+
+		// Flush the entire queue packet
 		getNetServerHandler().syncFlushPacketQueue();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void updateWaypoints() {
+		List<Waypoint> waypoints = Spout.getInstance().getConfiguration()
+				.getWaypoints(getWorld().getName().toLowerCase());
+		for (Waypoint p : waypoints)
+			addWaypoint(p);
 	}
 
 	/**
@@ -828,5 +1085,5 @@ public class SpoutPlayerHandler extends CraftPlayer implements SpoutPlayer {
 		((SpoutPlayerHandler) player).getNetServerHandler()
 				.sendImmediatePacket(loginPacket);
 	}
-	
+
 }

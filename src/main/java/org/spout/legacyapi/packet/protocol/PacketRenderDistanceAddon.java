@@ -30,7 +30,7 @@ import org.spout.legacyapi.player.SpoutPlayer;
 /**
  * 
  */
-public class PacketMovementAddon implements Packet {
+public class PacketRenderDistanceAddon implements Packet {
 
 	private SpoutPlayer player;
 	
@@ -38,7 +38,7 @@ public class PacketMovementAddon implements Packet {
 	 * 
 	 * @param player
 	 */
-	public PacketMovementAddon(SpoutPlayer player) {
+	public PacketRenderDistanceAddon(SpoutPlayer player) {
 		this.player = player;
 	}
 	
@@ -55,11 +55,9 @@ public class PacketMovementAddon implements Packet {
 	 */
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
-		output.writeFloat(player.getGravityMultiplier());
-		output.writeFloat(player.getWalkingMultiplier());
-		output.writeFloat(player.getSwimmingMultiplier());
-		output.writeFloat(player.getJumpingMultiplier());
-		output.writeFloat(player.getAirSpeedMultiplier());
+		output.writeByte((byte)player.getMinimumRenderDistance().ordinal());
+		output.writeByte((byte)player.getRenderDistance().ordinal());
+		output.writeByte((byte)player.getMaximumRenderDistance().ordinal());
 	}
 
 	/**
@@ -91,6 +89,6 @@ public class PacketMovementAddon implements Packet {
 	 */
 	@Override
 	public PacketType getType() {
-		return PacketType.PacketMovementAddon;
+		return PacketType.PacketRenderDistanceAddon;
 	}
 }

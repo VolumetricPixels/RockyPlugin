@@ -76,6 +76,8 @@ public class WidgetType {
 	public static WidgetType ComboBox = new WidgetType(GenericComboBox.class,
 			21);
 	public static WidgetType Slot = new WidgetType(GenericSlot.class, 22);
+	public static WidgetType OverlayScreen = new WidgetType(
+			GenericOverlayScreen.class, 23);
 
 	private final int id;
 	private final boolean server;

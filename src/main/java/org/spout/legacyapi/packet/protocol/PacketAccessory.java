@@ -25,23 +25,30 @@ import org.spout.legacyapi.packet.Packet;
 import org.spout.legacyapi.packet.PacketInputStream;
 import org.spout.legacyapi.packet.PacketOutputStream;
 import org.spout.legacyapi.packet.PacketType;
+import org.spout.legacyapi.player.AccessoryType;
 import org.spout.legacyapi.player.SpoutPlayer;
 
 /**
  * 
  */
-public class PacketMovementAddon implements Packet {
+public class PacketAccessory implements Packet {
 
-	private SpoutPlayer player;
-	
+	private String name;
+	private AccessoryType type;
+	private String url;
+
 	/**
 	 * 
-	 * @param player
+	 * @param name
+	 * @param type
+	 * @param url
 	 */
-	public PacketMovementAddon(SpoutPlayer player) {
-		this.player = player;
+	public PacketAccessory(String name, AccessoryType type, String url) {
+		this.name = name;
+		this.type = type;
+		this.url = url;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -55,11 +62,9 @@ public class PacketMovementAddon implements Packet {
 	 */
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
-		output.writeFloat(player.getGravityMultiplier());
-		output.writeFloat(player.getWalkingMultiplier());
-		output.writeFloat(player.getSwimmingMultiplier());
-		output.writeFloat(player.getJumpingMultiplier());
-		output.writeFloat(player.getAirSpeedMultiplier());
+		output.writeUTF(name);
+		output.writeByte(type.ordinal());
+		output.writeUTF(url);
 	}
 
 	/**
@@ -91,6 +96,6 @@ public class PacketMovementAddon implements Packet {
 	 */
 	@Override
 	public PacketType getType() {
-		return PacketType.PacketMovementAddon;
+		return PacketType.PacketAccessory;
 	}
 }

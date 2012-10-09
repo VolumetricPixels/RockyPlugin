@@ -239,14 +239,10 @@ public class Spout extends JavaPlugin implements Runnable {
 
 		// Send each custom data.
 		SpoutMaterialManager.sendCustomData(player);
-		SpoutPlayerManager.sendCustomData(player);
 		SpoutResourceManager.sendCustomData(player);
 
 		// Our key bindings
 		SpoutManager.getKeyBindingManager().sendKeyBinding(player);
-
-		// Refresh the permissions
-		player.updatePermissions();
 
 		// Call custom event that tell us that a player has been enabled
 		Bukkit.getServer().getPluginManager()

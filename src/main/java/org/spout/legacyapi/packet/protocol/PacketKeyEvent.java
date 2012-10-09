@@ -37,7 +37,6 @@ import org.spout.legacyapi.player.SpoutPlayer;
 public class PacketKeyEvent implements Packet {
 	private boolean pressDown;
 	private byte key;
-	private byte settingKeys[] = new byte[10];
 	private int screenType = -1;
 
 	/**
@@ -48,8 +47,6 @@ public class PacketKeyEvent implements Packet {
 		this.key = (byte) input.read();
 		this.pressDown = input.readBoolean();
 		this.screenType = input.readInt();
-		for (int i = 0; i < 10; i++)
-			this.settingKeys[i] = (byte) input.read();
 	}
 
 	/**
@@ -65,7 +62,6 @@ public class PacketKeyEvent implements Packet {
 	 */
 	@Override
 	public void handle(SpoutPlayer player) {
-		player.updateKeys(settingKeys);
 		Bukkit.getServer()
 				.getPluginManager()
 				.callEvent(

@@ -33,7 +33,7 @@ import org.spout.legacyapi.player.SpoutPlayer;
 public class PacketAlert implements Packet {
 
 	private String title, message;
-	private short id, data, time;
+	private int id, data, time;
 
 	/**
 	 * 
@@ -41,7 +41,7 @@ public class PacketAlert implements Packet {
 	 * @param message
 	 * @param id
 	 */
-	public PacketAlert(String title, String message, short id, short data, short time) {
+	public PacketAlert(String title, String message, int id, short data, int time) {
 		this.title = title;
 		this.message = message;
 		this.id = id;
@@ -64,9 +64,9 @@ public class PacketAlert implements Packet {
 	public void writeData(PacketOutputStream output) throws IOException {
 		output.writeUTF(title);
 		output.writeUTF(message);
-		output.writeShort(id);
+		output.writeInt(id);
 		output.writeShort(data);
-		output.writeShort(time);
+		output.writeInt(time);
 	}
 
 	/**

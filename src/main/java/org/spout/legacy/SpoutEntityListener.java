@@ -23,9 +23,7 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
 import org.spout.legacyapi.packet.protocol.PacketWaypoint;
 import org.spout.legacyapi.player.SpoutPlayer;
 
@@ -33,28 +31,6 @@ import org.spout.legacyapi.player.SpoutPlayer;
  * 
  */
 public class SpoutEntityListener implements Listener {
-
-	/**
-	 * 
-	 * @param event
-	 */
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onEntityDamage(EntityDamageEvent event) {
-		if (event.getEntity() instanceof SpoutPlayer)
-			event.setCancelled(!((SpoutPlayer) event.getEntity())
-					.isPreCachingComplete());
-	}
-
-	/**
-	 * 
-	 * @param event
-	 */
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onEntityTarget(EntityTargetEvent event) {
-		if (event.getTarget() instanceof SpoutPlayer)
-			event.setCancelled(!((SpoutPlayer) event.getTarget())
-					.isPreCachingComplete());
-	}
 
 	/**
 	 * 
