@@ -72,18 +72,18 @@ public class GenericItem implements Item {
 		this.plugin = plugin;
 		this.name = name;
 		this.texture = texture;
-		this.itemID = RockyManager.getMaterialManager().getRegisteredName(
-				plugin.getName() + "_" + name, MaterialType.ITEM);
+		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
+				MaterialType.ITEM);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getTypeId() {	
+	public int getTypeId() {
 		return 0;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -157,8 +157,8 @@ public class GenericItem implements Item {
 	public Material load(Plugin plugin, ConfigurationSection section) {
 		this.plugin = plugin;
 		this.name = section.getString("Name", "Undefined");
-		this.itemID = RockyManager.getMaterialManager().getRegisteredName(
-				plugin.getName() + "_" + name, MaterialType.ITEM);
+		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
+				MaterialType.ITEM);
 		this.isFuel = section.getBoolean("IsFuel", false);
 		this.isStackable = section.getBoolean("IsStackable", true);
 
@@ -187,6 +187,5 @@ public class GenericItem implements Item {
 		out.writeBoolean(isStackable);
 		texture.writeToPacket(out);
 	}
-	
-	
+
 }

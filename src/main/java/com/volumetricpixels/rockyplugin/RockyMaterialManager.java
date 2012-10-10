@@ -294,7 +294,7 @@ public class RockyMaterialManager implements MaterialManager {
 		if (Character.isDigit(data.charAt(0))) {
 			return Integer.valueOf(data);
 		}
-		return getRegisteredName(data, MaterialType.ITEM);
+		return itemNameList.get(data);
 	}
 
 	/**
@@ -367,17 +367,17 @@ public class RockyMaterialManager implements MaterialManager {
 		if (recipeList == null) {
 			return;
 		}
-		for (Map<String, ?> recipe : recipeList) {
+		for(int i = 0; i < recipeList.size(); i++) {
+			Map<String, ?> recipe = recipeList.get(i);
 			String type = (String) recipe.get("Type");
 			int amount = recipe.containsKey("Amount") ? (Integer) recipe
 					.get("Amount") : 1;
 			int result = getItemID((String) recipe.get("Result"));
-
 			if (type.equals("Furnace")) {
 				RockyFurnaceRecipe fRecipe = new RockyFurnaceRecipe(
 						getItemID((String) recipe.get("Ingredient")),
 						new ItemStack(result, amount),
-						(Float) recipe.get("BurnSpeed"));
+						Float.valueOf((String)recipe.get("BurnSpeed")));
 				RockyRecipeManager.addToFurnaceManager(fRecipe);
 			} else if (type.equals("Shaped")) {
 
@@ -413,7 +413,7 @@ public class RockyMaterialManager implements MaterialManager {
 			}
 		}
 		RockyManager.printConsole("%d recipes has been loaded from '%s'",
-				recipeList.size(), MATERIAL_FILE);
+				recipeList.size(), RECIPE_FILE);
 	}
 
 	/**

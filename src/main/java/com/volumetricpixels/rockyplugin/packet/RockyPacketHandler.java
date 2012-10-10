@@ -33,6 +33,7 @@ import net.minecraft.server.Packet104WindowItems;
 import net.minecraft.server.Packet107SetCreativeSlot;
 import net.minecraft.server.Packet14BlockDig;
 import net.minecraft.server.Packet20NamedEntitySpawn;
+import net.minecraft.server.Packet21PickupSpawn;
 import net.minecraft.server.Packet250CustomPayload;
 import net.minecraft.server.Packet29DestroyEntity;
 
@@ -222,6 +223,10 @@ public class RockyPacketHandler extends NetServerHandler {
 		case 0x14:
 			if (((Packet20NamedEntitySpawn) packet).h >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
 				((Packet20NamedEntitySpawn) packet).h = RockyMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
+			break;
+		case 0x15:
+			if (((Packet21PickupSpawn) packet).h >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
+				((Packet21PickupSpawn) packet).h = RockyMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
 			break;
 		case 0x67:
 			stack = ((Packet103SetSlot) packet).c;

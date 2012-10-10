@@ -244,7 +244,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 		// Call custom event that tell us that a player has been enabled
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new RockyEnableEvent(player));
-
+		
 		// Update map waypoints
 		player.updateWaypoints();
 	}

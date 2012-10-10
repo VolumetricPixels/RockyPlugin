@@ -111,8 +111,7 @@ public class GenericBlock implements Block {
 	public Material load(Plugin plugin, ConfigurationSection section) {
 		this.plugin = plugin;
 		this.name = section.getName();
-		this.id = RockyManager.getMaterialManager().getRegisteredName(
-				plugin.getName() + "_" + name, MaterialType.BLOCK);
+		this.id = RockyManager.getMaterialManager().getRegisteredName(name, MaterialType.BLOCK);
 		this.allowRotation = section.getBoolean("IsRotated", false);
 		this.blockItem = new GenericItem(plugin, name);
 		this.stepSound = section.getString("StepSound", "Default");
