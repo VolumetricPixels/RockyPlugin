@@ -22,7 +22,27 @@ package com.volumetricpixels.rockyapi.packet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.volumetricpixels.rockyapi.packet.protocol.*;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketAccessory;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketAlert;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketAllowAddon;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketCustomItem;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCache;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCacheBegin;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCacheFinish;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketKeyBinding;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketKeyEvent;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketMovementAddon;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketPlaySound;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketRenderDistanceAddon;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketScreenAction;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketSkyAddon;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketStopMusic;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketVersion;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketWaypoint;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketWidget;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketWidgetComboBox;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketWidgetRemove;
 
 /**
  * 

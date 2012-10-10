@@ -21,7 +21,6 @@ package com.volumetricpixels.rockyplugin.packet;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
-
 import com.volumetricpixels.rockyapi.packet.CompressiblePacket;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 

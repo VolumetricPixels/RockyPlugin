@@ -21,7 +21,6 @@ package com.volumetricpixels.rockyapi.event.screen;
 
 import org.bukkit.event.HandlerList;
 
-
 import com.volumetricpixels.rockyapi.gui.Screen;
 import com.volumetricpixels.rockyapi.gui.ScreenType;
 import com.volumetricpixels.rockyapi.gui.Slider;

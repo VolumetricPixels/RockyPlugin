@@ -22,7 +22,6 @@ package com.volumetricpixels.rockyapi.packet.protocol;
 import java.io.IOException;
 import java.util.UUID;
 
-
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.keyboard.KeyBinding;
 import com.volumetricpixels.rockyapi.keyboard.Keyboard;

@@ -19,12 +19,12 @@
  */
 package com.volumetricpixels.rockyplugin.item;
 
+import net.minecraft.server.EnumArmorMaterial;
+import net.minecraft.server.ItemArmor;
+
 import org.fest.reflect.core.Reflection;
 
 import com.volumetricpixels.rockyapi.material.ArmorType;
-
-import net.minecraft.server.EnumArmorMaterial;
-import net.minecraft.server.ItemArmor;
 
 /**
  * 

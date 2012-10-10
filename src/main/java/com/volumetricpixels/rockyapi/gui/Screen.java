@@ -24,7 +24,6 @@ import java.util.UUID;
 
 import org.bukkit.plugin.Plugin;
 
-
 import com.volumetricpixels.rockyapi.event.screen.ScreenCloseEvent;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 

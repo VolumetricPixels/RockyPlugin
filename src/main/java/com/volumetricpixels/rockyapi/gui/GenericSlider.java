@@ -21,7 +21,6 @@ package com.volumetricpixels.rockyapi.gui;
 
 import java.io.IOException;
 
-
 import com.volumetricpixels.rockyapi.event.screen.SliderDragEvent;
 import com.volumetricpixels.rockyapi.math.Color;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;

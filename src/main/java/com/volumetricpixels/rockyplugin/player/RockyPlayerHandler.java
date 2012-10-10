@@ -33,6 +33,7 @@ import net.minecraft.server.NetServerHandler;
 import net.minecraft.server.Packet250CustomPayload;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
@@ -40,7 +41,6 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.ChatColor;
 import org.fest.reflect.core.Reflection;
 
 import com.volumetricpixels.rockyapi.gui.GenericOverlayScreen;
