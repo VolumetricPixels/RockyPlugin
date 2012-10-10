@@ -4,7 +4,7 @@ description: RockyPlugin is a plugin for Bukkit-based servers and a Minecraft cl
 author: VolumetricPixels
 website: http://www.volumetricpixels.com
 
-main: com.volumetricpixels.Rocky
+main: com.volumetricpixels.rockyplugin.Rocky
 load: startup
 mcversion: ${minecraftVersion}
 
