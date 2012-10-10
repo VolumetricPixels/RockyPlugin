@@ -1,37 +1,22 @@
-name: SpoutLegacy
+name: RockyPlugin
 version: ${buildNumber}
-description: SpoutLegacy is a plugin for Bukkit-based servers and a Minecraft client mod system that exposes new API for other plugins to utilize.
+description: RockyPlugin is a plugin for Bukkit-based servers and a Minecraft client mod system that exposes new API for other plugins to utilize.
 author: VolumetricPixels
 website: http://www.volumetricpixels.com
 
-main: org.spout.legacy.Spout
+main: com.volumetricpixels.Rocky
 load: startup
 mcversion: ${minecraftVersion}
 
 commands:
-    spout:
-        aliases: [spoutcommand, spoutcmd, spcmd]
-        description: Various Spout commands.
+    rocky:
+        aliases: [rockycommand, rockycmd, rkcmd]
+        description: Various Rocky commands.
         usage: |
             Usage: /<command> version [player]
             Usage: /<command> verify [motd]
 
 permissions:
-    spout.plugin.forcespoutcraft:
-        description: Forces players to join with Spoutcraft even if the server doesn't force Spoutcraft in the config.
+    rocky.plugin.force:
+        description: Forces players to join with Rocky even if the server doesn't force Rocky in the config.
         default: false
-    spout.plugin.ignorespoutcraft:
-        description: Allows players without Spoutcraft to join even if the server forces Spoutcraft in the config.
-        default: false
-    spout.client.minimap:
-        description: Allows to use the minimap feature.
-        default: true
-    spout.client.overviewmap:
-        description: Allows to use the overview map feature.
-        default: true
-    spout.client.sortinventory:
-        description: Allows the button to sort the inventory.
-        default: true
-    spout.client.signcolor:
-        description: Allows colored signs
-        default: true
