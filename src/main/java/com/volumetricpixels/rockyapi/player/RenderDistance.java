@@ -26,19 +26,23 @@ public enum RenderDistance {
 	/**
 	 * 
 	 */
-	FAR(0),
+	VERY_FAR(4),
 	/**
 	 * 
 	 */
-	NORMAL(1),
+	FAR(3),
 	/**
 	 * 
 	 */
-	SHORT(2),
+	NORMAL(2),
 	/**
 	 * 
 	 */
-	TINY(3);
+	SHORT(1),
+	/**
+	 * 
+	 */
+	TINY(0);
 
 	private final int value;
 

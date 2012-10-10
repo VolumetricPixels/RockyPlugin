@@ -51,7 +51,6 @@ import com.volumetricpixels.rockyapi.gui.Screen;
 import com.volumetricpixels.rockyapi.gui.ScreenAction;
 import com.volumetricpixels.rockyapi.gui.ScreenType;
 import com.volumetricpixels.rockyapi.math.Color;
-import com.volumetricpixels.rockyapi.packet.CompressiblePacket;
 import com.volumetricpixels.rockyapi.packet.Packet;
 import com.volumetricpixels.rockyapi.packet.PacketVanilla;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketAccessory;
@@ -70,7 +69,6 @@ import com.volumetricpixels.rockyapi.player.RenderDistance;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 import com.volumetricpixels.rockyapi.player.Waypoint;
 import com.volumetricpixels.rockyplugin.Rocky;
-import com.volumetricpixels.rockyplugin.packet.PacketCompression;
 import com.volumetricpixels.rockyplugin.packet.RockyPacket;
 import com.volumetricpixels.rockyplugin.packet.RockyPacketHandler;
 
@@ -80,7 +78,6 @@ import com.volumetricpixels.rockyplugin.packet.RockyPacketHandler;
 public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 
 	private int build = -1;
-	private List<Packet> delayedPackets = new LinkedList<Packet>();
 	private List<Packet> queuePackets = new LinkedList<Packet>();
 	private boolean isAllowedToFly = false;
 	private Map<AccessoryType, String> accessories = new HashMap<AccessoryType, String>();
@@ -611,12 +608,6 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 		if (!isModded()) {
 			queuePackets.add(packet);
 			return;
-		} else if (packet instanceof CompressiblePacket) {
-			CompressiblePacket compressible = ((CompressiblePacket) packet);
-			if (!compressible.isCompressed()) {
-				PacketCompression.add(compressible, this);
-				return;
-			}
 		}
 		getNetServerHandler().sendPacket(new RockyPacket(packet));
 	}
@@ -661,14 +652,6 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 		for (Player player : observers)
 			if (player instanceof RockyPlayer)
 				((RockyPlayer) player).sendPacket(packet);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void sendDelayedPacket(Packet packet) {
-		delayedPackets.add(packet);
 	}
 
 	/**
@@ -988,12 +971,6 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 			needDistanceUpdate = false;
 			sendPacket(new PacketRenderDistanceAddon(this));
 		}
-
-		// Send our delayed packets
-		for (Packet packet : delayedPackets) {
-			sendPacket(packet);
-		}
-		delayedPackets.clear();
 
 		// Flush the entire queue packet
 		getNetServerHandler().syncFlushPacketQueue();

@@ -563,13 +563,6 @@ public interface RockyPlayer extends Player {
 	public void sendPacket(Packet packet);
 
 	/**
-	 * Internal use only
-	 * 
-	 * @param packet
-	 */
-	public void sendDelayedPacket(Packet packet);
-
-	/**
 	 * Adds a waypoint to the minimap of the client, with the given loation and
 	 * given name. <br/>
 	 * <br/>

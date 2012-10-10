@@ -26,7 +26,6 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.volumetricpixels.rockyapi.RockyManager;
-import com.volumetricpixels.rockyapi.event.BuildSetEvent;
 import com.volumetricpixels.rockyapi.player.PlayerManager;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 
@@ -91,15 +90,13 @@ public class RockyPlayerManager implements PlayerManager {
 	@Override
 	public void setPlayerVersion(RockyPlayer player, String version) {
 		RockyManager.printConsole("Authenticated " + player.getName()
-				+ " using SpoutLegacyClient " + version);
+				+ " using Rocky " + version);
 		int build = 1700;
 		try {
 			build = Integer.parseInt(version);
 		} catch (Throwable ex) {
 		}
 		player.setBuildVersion(build);
-		Bukkit.getPluginManager().callEvent(
-				new BuildSetEvent(player, build));
 	}
 
 }

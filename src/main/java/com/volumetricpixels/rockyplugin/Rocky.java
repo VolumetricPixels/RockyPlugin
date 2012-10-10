@@ -41,7 +41,6 @@ import com.volumetricpixels.rockyapi.packet.protocol.PacketCustomItem;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCacheBegin;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 import com.volumetricpixels.rockyapi.resource.Resource;
-import com.volumetricpixels.rockyplugin.packet.PacketCompression;
 import com.volumetricpixels.rockyplugin.packet.RockyPacket;
 import com.volumetricpixels.rockyplugin.packet.RockyPacketManager;
 import com.volumetricpixels.rockyplugin.player.RockyPlayerHandler;
@@ -84,9 +83,6 @@ public class Rocky extends JavaPlugin implements Runnable {
 			RockyPlayerHandler.sendAuthentication(sp);
 		}
 
-		// Initialize the packet compression thread
-		PacketCompression.startThread();
-
 		// Start counting ticks
 		Bukkit.getServer().getScheduler()
 				.scheduleSyncRepeatingTask(this, this, 0, 1);
@@ -104,8 +100,6 @@ public class Rocky extends JavaPlugin implements Runnable {
 				.invoke(195, true, true, RockyPacket.class);
 
 		// Register our listeners and commands
-		Bukkit.getPluginManager().registerEvents(new RockyEntityListener(),
-				this);
 		Bukkit.getPluginManager().registerEvents(new RockyPlayerListener(),
 				this);
 		Bukkit.getPluginManager().registerEvents(
@@ -140,11 +134,9 @@ public class Rocky extends JavaPlugin implements Runnable {
 	 */
 	@Override
 	public void onDisable() {
-		// Disable every player in game
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			handlePlayerReset(player);
-		}
-
+		// TODO: Disable eveything custom, and we should store a diferent chunk map for custom item and then load it at startup.
+		// to be able to reload the plugin everytime we want :).
+		
 		// Save the current material registered
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		try {
@@ -167,9 +159,6 @@ public class Rocky extends JavaPlugin implements Runnable {
 
 		// Cancel all task registered by the plugin
 		getServer().getScheduler().cancelTasks(this);
-
-		// End the compression thread
-		PacketCompression.endThread();
 	}
 
 	/**
@@ -264,14 +253,6 @@ public class Rocky extends JavaPlugin implements Runnable {
 	 * @param player
 	 */
 	public void handlePlayerQuit(Player player) {
-	}
-
-	/**
-	 * 
-	 * @param player
-	 */
-	public void handlePlayerReset(Player player) {
-
 	}
 
 }
