@@ -19,9 +19,9 @@
  */
 package com.volumetricpixels.rockyplugin.item;
 
-import com.volumetricpixels.rockyapi.material.Food;
-
 import net.minecraft.server.ItemFood;
+
+import com.volumetricpixels.rockyapi.material.Food;
 
 /**
  * 

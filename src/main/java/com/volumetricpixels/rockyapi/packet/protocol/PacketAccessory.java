@@ -22,7 +22,6 @@ package com.volumetricpixels.rockyapi.packet.protocol;
 
 import java.io.IOException;
 
-
 import com.volumetricpixels.rockyapi.packet.Packet;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;

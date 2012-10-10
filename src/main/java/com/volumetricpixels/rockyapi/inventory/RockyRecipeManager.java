@@ -21,12 +21,12 @@ package com.volumetricpixels.rockyapi.inventory;
 
 import java.util.Map;
 
-import org.bukkit.Material;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
-
 import net.minecraft.server.CraftingManager;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.RecipesFurnace;
+
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 
 /**
  * 

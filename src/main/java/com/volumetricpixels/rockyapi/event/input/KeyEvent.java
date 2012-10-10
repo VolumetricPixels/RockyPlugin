@@ -22,7 +22,6 @@ package com.volumetricpixels.rockyapi.event.input;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-
 import com.volumetricpixels.rockyapi.gui.ScreenType;
 import com.volumetricpixels.rockyapi.keyboard.Keyboard;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;

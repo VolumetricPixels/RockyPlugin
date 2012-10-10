@@ -19,9 +19,9 @@
  */
 package com.volumetricpixels.rockyplugin.item;
 
-import org.fest.reflect.core.Reflection;
-
 import net.minecraft.server.Item;
+
+import org.fest.reflect.core.Reflection;
 
 /**
  * 

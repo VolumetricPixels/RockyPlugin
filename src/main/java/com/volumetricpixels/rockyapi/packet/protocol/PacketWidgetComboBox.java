@@ -22,7 +22,6 @@ package com.volumetricpixels.rockyapi.packet.protocol;
 import java.io.IOException;
 import java.util.UUID;
 
-
 import com.volumetricpixels.rockyapi.gui.GenericComboBox;
 import com.volumetricpixels.rockyapi.gui.Widget;
 import com.volumetricpixels.rockyapi.packet.Packet;

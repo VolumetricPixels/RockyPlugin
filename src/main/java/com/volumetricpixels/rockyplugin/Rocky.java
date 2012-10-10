@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.server.Packet;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -104,7 +105,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 				this);
 		Bukkit.getPluginManager().registerEvents(
 				RockyManager.getMaterialManager(), this);
-		getCommand("spout").setExecutor(new RockyCommand());
+		getCommand("rocky").setExecutor(new RockyCommand());
 
 		// Load the current material registered
 		YamlConfiguration itemConfig = new YamlConfiguration();

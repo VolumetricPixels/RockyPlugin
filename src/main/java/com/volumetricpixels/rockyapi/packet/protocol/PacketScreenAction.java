@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import org.bukkit.Bukkit;
 
-
 import com.volumetricpixels.rockyapi.event.screen.ScreenCloseEvent;
 import com.volumetricpixels.rockyapi.event.screen.ScreenEvent;
 import com.volumetricpixels.rockyapi.event.screen.ScreenOpenEvent;

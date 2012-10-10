@@ -26,7 +26,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-
 import com.volumetricpixels.rockyapi.event.input.KeyBindingEvent;
 import com.volumetricpixels.rockyapi.keyboard.BindingExecutionDelegate;
 import com.volumetricpixels.rockyapi.keyboard.KeyBinding;

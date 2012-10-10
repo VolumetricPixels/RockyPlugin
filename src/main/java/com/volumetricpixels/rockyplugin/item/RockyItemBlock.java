@@ -19,11 +19,11 @@
  */
 package com.volumetricpixels.rockyplugin.item;
 
+import net.minecraft.server.ItemBlock;
+
 import org.fest.reflect.core.Reflection;
 
 import com.volumetricpixels.rockyapi.material.Block;
-
-import net.minecraft.server.ItemBlock;
 
 /**
  * 

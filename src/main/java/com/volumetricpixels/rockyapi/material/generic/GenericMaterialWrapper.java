@@ -19,11 +19,11 @@
  */
 package com.volumetricpixels.rockyapi.material.generic;
 
-import com.volumetricpixels.rockyapi.material.Block;
-import com.volumetricpixels.rockyapi.material.BlockType;
-
 import net.minecraft.server.Material;
 import net.minecraft.server.MaterialMapColor;
+
+import com.volumetricpixels.rockyapi.material.Block;
+import com.volumetricpixels.rockyapi.material.BlockType;
 
 /**
  * 
