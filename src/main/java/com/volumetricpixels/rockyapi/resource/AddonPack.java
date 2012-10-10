@@ -17,49 +17,67 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.volumetricpixels.rockyapi.material;
+package com.volumetricpixels.rockyapi.resource;
 
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.Plugin;
-
-import com.volumetricpixels.rockyapi.resource.AddonPack;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * 
  */
-public interface Material {
-	/**
-	 * 
-	 * @return
-	 */
-	public int getId();
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public String getName();
+public class AddonPack {
+
+	protected ZipFile file;
 
 	/**
-	 *
-	 */
-	public Plugin getPlugin();
-	
-	/**
 	 * 
-	 * @param plugin
-	 * @param section
 	 * @param file
-	 * @return
 	 */
-	public Material loadPreInitialization(Plugin plugin, ConfigurationSection section, AddonPack pack);
-	
+	public AddonPack(ZipFile file) {
+		this.file = file;
+	}
+
 	/**
 	 * 
-	 * @param plugin
-	 * @param section
-	 * @param pack
+	 */
+	public void close() {
+		try {
+			file.close();
+		} catch (IOException e) {
+		}
+	}
+
+	/**
+	 * 
+	 * @param entry
 	 * @return
 	 */
-	public Material loadPostInitialization(Plugin plugin, ConfigurationSection section, AddonPack pack);
+	public boolean hasEntry(String entry) {
+		return file.getEntry(entry) != null;
+	}
+
+	/**
+	 * 
+	 * @param entry
+	 * @return
+	 */
+	public ZipEntry getEntry(String entry) {
+		return file.getEntry(entry);
+	}
+
+	/**
+	 * 
+	 * @param entry
+	 * @return
+	 */
+	public InputStream getInputStream(String entry) {
+		try {
+			return file.getInputStream(getEntry(entry));
+		} catch (IOException e) {
+		}
+		return null;
+	}
+
 }

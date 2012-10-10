@@ -31,6 +31,7 @@ import org.bukkit.plugin.Plugin;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.Tool;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
+import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyapi.resource.Texture;
 
 /**
@@ -132,12 +133,23 @@ public class GenericTool extends GenericItem implements Tool {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Material load(Plugin plugin, ConfigurationSection section) {
-		super.load(plugin, section);
+	public Material loadPreInitialization(Plugin plugin,
+			ConfigurationSection section, AddonPack pack) {
+		super.loadPreInitialization(plugin, section, pack);
 
 		this.durability = section.getInt("Durability", 100);
 		this.damage = section.getInt("Damage", 1);
+		setStackable(false);
 
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Material loadPostInitialization(Plugin plugin,
+			ConfigurationSection section, AddonPack pack) {
 		List<String> blockModifier = section.getStringList("BlockModifier");
 		if (blockModifier != null) {
 			for (String modifier : blockModifier) {
@@ -147,8 +159,6 @@ public class GenericTool extends GenericItem implements Tool {
 						Float.valueOf(split[1]));
 			}
 		}
-
-		setStackable(false);
 		return this;
 	}
 

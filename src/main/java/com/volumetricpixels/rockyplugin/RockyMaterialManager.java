@@ -20,16 +20,17 @@
 package com.volumetricpixels.rockyplugin;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.BitSet;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import net.minecraft.server.Block;
 import net.minecraft.server.Item;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -55,6 +56,7 @@ import com.volumetricpixels.rockyapi.material.generic.GenericFood;
 import com.volumetricpixels.rockyapi.material.generic.GenericRangeWeapon;
 import com.volumetricpixels.rockyapi.material.generic.GenericTool;
 import com.volumetricpixels.rockyapi.material.generic.GenericWeapon;
+import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyplugin.block.RockyBlock;
 import com.volumetricpixels.rockyplugin.item.RockyItem;
 import com.volumetricpixels.rockyplugin.item.RockyItemArmor;
@@ -67,7 +69,7 @@ import com.volumetricpixels.rockyplugin.item.RockyItemTool;
  * 
  */
 public class RockyMaterialManager implements MaterialManager {
-	public final static int DEFAULT_ITEM_PLACEHOLDER_ID = 3000;
+	public final static int DEFAULT_ITEM_PLACEHOLDER_ID = 4097;
 	public final static int DEFAULT_ITEM_FOR_VANILLA = 318;
 
 	public final static int DEFAULT_BLOCK_PLACEHOLDER_ID = 196;
@@ -76,8 +78,7 @@ public class RockyMaterialManager implements MaterialManager {
 	private final static int MAX_FREE_ITEM_INDEX = 32000 - DEFAULT_ITEM_PLACEHOLDER_ID;
 	private final static int MAX_FREE_BLOCK_INDEX = 4096 - DEFAULT_BLOCK_PLACEHOLDER_ID;
 
-	private final static String RECIPE_FILE = "recipe.yml";
-	private final static String MATERIAL_FILE = "material.yml";
+	private final static String MATERIAL_FOLDER = "Package";
 
 	private Map<String, Integer> itemNameList = new HashMap<String, Integer>();
 	private Map<String, Integer> blockNameList = new HashMap<String, Integer>();
@@ -286,7 +287,7 @@ public class RockyMaterialManager implements MaterialManager {
 		} else if (material instanceof Item) {
 			return new RockyItem(id,
 					(com.volumetricpixels.rockyapi.material.Item) material);
-		} 
+		}
 		throw new IllegalArgumentException(
 				"Trying to lookup for an invalid Material class");
 	}
@@ -299,8 +300,10 @@ public class RockyMaterialManager implements MaterialManager {
 	private int getItemID(String data) {
 		if (Character.isDigit(data.charAt(0))) {
 			return Integer.valueOf(data);
+		} else if (itemNameList.containsKey(data)) {
+			return itemNameList.get(data);
 		}
-		return itemNameList.get(data);
+		return blockNameList.get(data);
 	}
 
 	/**
@@ -309,44 +312,76 @@ public class RockyMaterialManager implements MaterialManager {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onSpoutLoadingEvent(RockyLoadingEvent event) {
-		File file = new File(Rocky.getInstance().getDataFolder(), MATERIAL_FILE);
-		YamlConfiguration configuration = new YamlConfiguration();
-		try {
-			configuration.load(file);
-		} catch (FileNotFoundException e) {
+		int itemLoaded = 0, packageLoaded = 0;
+
+		// Find each package within the directory
+		File directory = new File(Rocky.getInstance().getDataFolder(),
+				MATERIAL_FOLDER);
+		if (!directory.exists()) {
+			directory.mkdir();
+		}
+
+		for (File file : directory.listFiles()) {
+
+			// Check if the package is valid
+			if (!file.getName().endsWith(".smp"))
+				continue;
+
+			// Load the package
+			ZipFile zipFile = null;
 			try {
-				file.createNewFile();
+				zipFile = new ZipFile(file);
 			} catch (Throwable ex) {
-			}
-			return;
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		Map<String, Object> values = configuration.getValues(false);
-		for (String key : values.keySet()) {
-			ConfigurationSection section = configuration
-					.getConfigurationSection(key);
-			Class<? extends Material> clazz = registeredTypes.get(section
-					.get("Class"));
-			if (clazz == null) {
-				RockyManager
-						.printConsole(
-								"[Warning] trying to load an invalid type of Item {%s}",
-								section.get("Class"));
 				continue;
 			}
-			Material material = null;
-			try {
-				material = clazz.newInstance().load(Rocky.getInstance(),
-						section);
-			} catch (Throwable e) {
-				e.printStackTrace();
-				continue;
+			// Get each file within this file
+			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
+
+			// This is our current addon pack
+			AddonPack pack = new AddonPack(zipFile);
+
+			// For each element of creature load it
+			while (enumeration.hasMoreElements()) {
+
+				// Get the current entry
+				ZipEntry zipEntry = enumeration.nextElement();
+				if (!zipEntry.getName().endsWith(".yml"))
+					continue;
+
+				// Load the configuration of the type
+				YamlConfiguration configuration = new YamlConfiguration();
+				try {
+					configuration.load(zipFile.getInputStream(zipEntry));
+				} catch (Throwable ex) {
+					ex.printStackTrace();
+					continue;
+				}
+
+				Class<? extends Material> clazz = registeredTypes
+						.get(configuration.getString("Class"));
+				if (clazz == null) {
+					RockyManager
+							.printConsole(
+									"[Warning] trying to load an invalid type of Item {%s}",
+									configuration.getString("Class"));
+					continue;
+				}
+				Material material = null;
+				try {
+					material = clazz.newInstance().loadPreInitialization(
+							Rocky.getInstance(), configuration, pack);
+				} catch (Throwable e) {
+					e.printStackTrace();
+					continue;
+				}
+				addMaterial(material);
+				itemLoaded++;
 			}
-			addMaterial(material);
+			packageLoaded++;
 		}
-		RockyManager.printConsole("%d item has been loaded from '%s'",
-				values.size(), MATERIAL_FILE);
+
+		RockyManager.printConsole("%d item has been loaded in %d packages.",
+				itemLoaded, packageLoaded);
 	}
 
 	/**
@@ -356,71 +391,115 @@ public class RockyMaterialManager implements MaterialManager {
 	@SuppressWarnings("unchecked")
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onSpoutFinishedLoadingEvent(RockyFinishedLoadingEvent event) {
-		File file = new File(Rocky.getInstance().getDataFolder(), RECIPE_FILE);
-		YamlConfiguration configuration = new YamlConfiguration();
-		try {
-			configuration.load(file);
-		} catch (FileNotFoundException e) {
+		int recipeLoaded = 0, packageLoaded = 0;
+
+		// Find each package within the directory
+		File directory = new File(Rocky.getInstance().getDataFolder(),
+				MATERIAL_FOLDER);
+		for (File file : directory.listFiles()) {
+
+			// Check if the package is valid
+			if (!file.getName().endsWith(".smp"))
+				continue;
+
+			// Load the package
+			ZipFile zipFile = null;
 			try {
-				file.createNewFile();
+				zipFile = new ZipFile(file);
 			} catch (Throwable ex) {
+				continue;
 			}
-			return;
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		List<? extends Map<String, ?>> recipeList = (List<? extends Map<String, ?>>) configuration
-				.getList("Recipes");
-		if (recipeList == null) {
-			return;
-		}
-		for(int i = 0; i < recipeList.size(); i++) {
-			Map<String, ?> recipe = recipeList.get(i);
-			String type = (String) recipe.get("Type");
-			int amount = recipe.containsKey("Amount") ? (Integer) recipe
-					.get("Amount") : 1;
-			int result = getItemID((String) recipe.get("Result"));
-			if (type.equals("Furnace")) {
-				RockyFurnaceRecipe fRecipe = new RockyFurnaceRecipe(
-						getItemID((String) recipe.get("Ingredient")),
-						new ItemStack(result, amount),
-						Float.valueOf((String)recipe.get("BurnSpeed")));
-				RockyRecipeManager.addToFurnaceManager(fRecipe);
-			} else if (type.equals("Shaped")) {
+			// Get each file within this file
+			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
 
-				Map<String, String> lineMap = (Map<String, String>) recipe
-						.get("Line");
-				String lA = (lineMap.containsKey("A") ? (String) lineMap
-						.get("A") : "   ");
-				String lB = (lineMap.containsKey("B") ? (String) lineMap
-						.get("B") : "   ");
-				String lC = (lineMap.containsKey("C") ? (String) lineMap
-						.get("C") : "   ");
-				RockyShapedRecipe wRecipe = new RockyShapedRecipe(
-						new ItemStack(result, amount));
+			// This is our current addon pack
+			AddonPack pack = new AddonPack(zipFile);
 
-				Map<String, String> ingredientMap = (Map<String, String>) recipe
-						.get("Ingredient");
-				for (String key : ingredientMap.keySet()) {
-					wRecipe.setIngredient(key.charAt(0),
-							getItemID(ingredientMap.get(key)));
+			// For each element of creature load it
+			while (enumeration.hasMoreElements()) {
+
+				// Get the current entry
+				ZipEntry zipEntry = enumeration.nextElement();
+				if (!zipEntry.getName().endsWith(".yml"))
+					continue;
+
+				// Load the configuration of the type
+				YamlConfiguration configuration = new YamlConfiguration();
+				try {
+					configuration.load(zipFile.getInputStream(zipEntry));
+				} catch (Throwable ex) {
+					ex.printStackTrace();
+					continue;
 				}
-				wRecipe.shape(lA, lB, lC);
-				RockyRecipeManager.addToCraftingManager(wRecipe);
 
-			} else if (type.equals("Shapeless")) {
-				RockyShapelessRecipe wRecipe = new RockyShapelessRecipe(
-						new ItemStack(result, amount));
-				List<String> ingredientList = (List<String>) recipe
-						.get("Ingredient");
-				for (String key : ingredientList) {
-					wRecipe.addIngredient(getItemID(key));
+				// Load the recipes
+				if (configuration.contains("Recipes")) {
+					List<Map<?, ?>> recipeSection = (List<Map<?, ?>>) configuration
+							.getMapList("Recipes");
+					for (Map<?, ?> key : recipeSection) {
+
+						String type = (String) key.get("Type");
+						int amount = (key.containsKey("Amount") ? (Integer) key
+								.get("Amount") : 1);
+						int result = getItemID(configuration.getString("Name"));
+						if (type.equals("Furnace")) {
+							RockyFurnaceRecipe fRecipe = new RockyFurnaceRecipe(
+									getItemID((String) key.get("Ingredient")),
+									new ItemStack(result, amount),
+									(key.containsKey("Speed") ? (Double) key
+											.get("Speed") : 1.0f));
+							RockyRecipeManager.addToFurnaceManager(fRecipe);
+						} else if (type.equals("Shaped")) {
+
+							Map<String, String> lineMap = (Map<String, String>) key
+									.get("Line");
+							String lA = (lineMap.containsKey("A") ? (String) lineMap
+									.get("A") : "   ");
+							String lB = (lineMap.containsKey("B") ? (String) lineMap
+									.get("B") : "   ");
+							String lC = (lineMap.containsKey("C") ? (String) lineMap
+									.get("C") : "   ");
+							
+							RockyShapedRecipe wRecipe = new RockyShapedRecipe(
+									new ItemStack(result, amount));
+							wRecipe.shape(lA, lB, lC);
+							
+							Map<String, String> ingredientMap = (Map<String, String>) key
+									.get("Ingredient");
+							for (String ingredientKey : ingredientMap.keySet()) {
+								wRecipe.setIngredient(ingredientKey.charAt(0),
+										getItemID((String) ingredientMap
+												.get(ingredientKey)));
+							}
+							wRecipe.shape(lA, lB, lC);
+							RockyRecipeManager.addToCraftingManager(wRecipe);
+
+						} else if (type.equals("Shapeless")) {
+							RockyShapelessRecipe wRecipe = new RockyShapelessRecipe(
+									new ItemStack(result, amount));
+							List<String> ingredientList = (List<String>) key
+									.get("Ingredient");
+							for (String ingredientKey : ingredientList) {
+								wRecipe.addIngredient(getItemID(ingredientKey));
+							}
+							RockyRecipeManager.addToCraftingManager(wRecipe);
+						}
+						recipeLoaded++;
+					}
 				}
-				RockyRecipeManager.addToCraftingManager(wRecipe);
+				int id = getItemID(configuration.getString("Name"));
+				if (id >= DEFAULT_ITEM_PLACEHOLDER_ID) {
+					itemList.get(id).loadPostInitialization(
+							Rocky.getInstance(), configuration, pack);
+				} else {
+					blockList.get(id).loadPostInitialization(
+							Rocky.getInstance(), configuration, pack);
+				}
 			}
+			packageLoaded++;
 		}
-		RockyManager.printConsole("%d recipes has been loaded from '%s'",
-				recipeList.size(), RECIPE_FILE);
+		RockyManager.printConsole("%d recipes has been loaded in %d packages.",
+				recipeLoaded, packageLoaded);
 	}
 
 	/**

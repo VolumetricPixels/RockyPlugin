@@ -64,6 +64,19 @@ public interface Item extends Material {
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public boolean isThrowable();
+	
+	/**
+	 * 
+	 * @param isThrowable
+	 * @return
+	 */
+	public Item setThrowable(boolean isThrowable);
+	
+	/**
+	 * 
 	 * @param out
 	 * @throws IOException
 	 */

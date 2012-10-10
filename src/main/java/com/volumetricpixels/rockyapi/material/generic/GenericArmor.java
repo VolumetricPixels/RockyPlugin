@@ -29,6 +29,7 @@ import com.volumetricpixels.rockyapi.material.ArmorModel;
 import com.volumetricpixels.rockyapi.material.ArmorType;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
+import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyapi.resource.Texture;
 
 /**
@@ -40,13 +41,13 @@ public class GenericArmor extends GenericItem implements Armor {
 	private int defense;
 	private ArmorType type;
 	private Texture[] modelTexture;
-	
+
 	/**
 	 * 
 	 */
-	public GenericArmor() {	
+	public GenericArmor() {
 	}
-	
+
 	/**
 	 * 
 	 * @param plugin
@@ -57,7 +58,7 @@ public class GenericArmor extends GenericItem implements Armor {
 			Texture[] modelTexture) {
 		super(plugin, name, texture);
 
-		if( modelTexture.length != 2 ) {
+		if (modelTexture.length != 2) {
 			throw new IllegalArgumentException("Invalid Model Texture Lenght");
 		}
 		this.modelTexture = modelTexture;
@@ -67,10 +68,10 @@ public class GenericArmor extends GenericItem implements Armor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getTypeId() {	
+	public int getTypeId() {
 		return 4;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -135,29 +136,37 @@ public class GenericArmor extends GenericItem implements Armor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Material load(Plugin plugin, ConfigurationSection section) {
-		super.load(plugin, section);
-		
+	public Material loadPreInitialization(Plugin plugin, ConfigurationSection section,
+			AddonPack pack) {
+		super.loadPreInitialization(plugin, section, pack);
+
 		this.durability = section.getInt("Durability", 100);
 		this.defense = section.getInt("Defense", 1);
 		this.type = ArmorType.valueOf(section.getString("Type"));
 
-		String modelTextureFile = section.getString("Model", "Default");
+		String textureFile = section.getString("Model");
+		if (!pack.hasEntry(textureFile + "_1.png")
+				|| !pack.hasEntry(textureFile + "_2.png")) {
+			throw new RuntimeException("The armor model is missing");
+		}
+
 		this.modelTexture = new Texture[2];
-		this.modelTexture[0] = new Texture(plugin, modelTextureFile + "_1.png");
-		this.modelTexture[1] = new Texture(plugin, modelTextureFile + "_2.png");
+		this.modelTexture[0] = new Texture(plugin, textureFile + "_1.png",
+				pack.getInputStream(textureFile + "_1.png"));
+		this.modelTexture[1] = new Texture(plugin, textureFile + "_2.png",
+				pack.getInputStream(textureFile + "_2.png"));
 		this.setStackable(false);
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void writeToPacket(PacketOutputStream out) throws IOException {
 		super.writeToPacket(out);
-		
+
 		out.writeShort(durability);
 		out.writeByte(type.ordinal());
 		out.writeUTFArray(modelTexture[0].getName(), modelTexture[1].getName());

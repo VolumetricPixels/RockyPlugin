@@ -28,6 +28,7 @@ import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.Weapon;
 import com.volumetricpixels.rockyapi.material.WeaponType;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
+import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyapi.resource.Texture;
 
 /**
@@ -44,9 +45,9 @@ public class GenericWeapon extends GenericItem implements Weapon {
 	/**
 	 * 
 	 */
-	public GenericWeapon() {	
+	public GenericWeapon() {
 	}
-	
+
 	/**
 	 * 
 	 * @param plugin
@@ -61,10 +62,10 @@ public class GenericWeapon extends GenericItem implements Weapon {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getTypeId() {	
+	public int getTypeId() {
 		return 3;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -141,25 +142,25 @@ public class GenericWeapon extends GenericItem implements Weapon {
 		return type;
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Material load(Plugin plugin, ConfigurationSection section) {
-		super.load(plugin, section);
+	public Material loadPreInitialization(Plugin plugin, ConfigurationSection section,
+			AddonPack pack) {
+		super.loadPreInitialization(plugin, section, pack);
 
 		this.durability = section.getInt("Durability", 100);
 		this.damage = section.getInt("Damage", 1);
 		this.attackSpeed = section.getInt("AttackSpeed", 215);
 		this.type = WeaponType.valueOf(section.getString("Type", "MELEE"));
-		this.isBlockAllowed = (type == WeaponType.RANGE ? false :
-			section.getBoolean("IsBlocking", true));
+		this.isBlockAllowed = (type == WeaponType.RANGE ? false : section
+				.getBoolean("IsBlocking", true));
 		this.setStackable(false);
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */

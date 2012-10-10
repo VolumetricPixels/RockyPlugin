@@ -22,6 +22,7 @@ package com.volumetricpixels.rockyapi.resource;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,11 +51,12 @@ public class Texture implements Resource {
 	 * 
 	 * @param plugin
 	 * @param name
+	 * @param in
 	 */
-	public Texture(Plugin plugin, String name) {
+	public Texture(Plugin plugin, String name, InputStream in) {
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File(name));
+			image = ImageIO.read(in);
 		} catch (IOException e) {
 			return;
 		}
@@ -63,6 +65,8 @@ public class Texture implements Resource {
 		this.xTopLoc = image.getWidth();
 		this.yTopLoc = image.getHeight();
 		this.textureList = new ArrayList<Texture>();
+		this.data = image.getRaster().getPixels(0, 0, xTopLoc, yTopLoc,
+				(float[]) null);
 
 		RockyManager.getResourceManager().addResource(plugin, this);
 	}
@@ -80,7 +84,8 @@ public class Texture implements Resource {
 		this.xTopLoc = width;
 		this.yTopLoc = height;
 		this.textureList = new ArrayList<Texture>();
-
+		this.data = name;
+		
 		RockyManager.getResourceManager().addResource(plugin, this);
 	}
 

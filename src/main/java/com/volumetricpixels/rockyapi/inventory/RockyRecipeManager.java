@@ -76,10 +76,9 @@ public class RockyRecipeManager {
 	 * @param recipe
 	 */
 	public static void addToFurnaceManager(RockyFurnaceRecipe recipe) {
-		RecipesFurnace.getInstance().registerRecipe(
-				recipe.getIngredient(),
+		RecipesFurnace.getInstance().registerRecipe(recipe.getIngredient(),
 				new CraftItemStack(recipe.getResult()).getHandle(),
-				recipe.getSpeed());
+				(float) recipe.getSpeed());
 	}
 
 }

@@ -19,7 +19,10 @@
  */
 package com.volumetricpixels.rockyplugin.item;
 
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.Item;
+import net.minecraft.server.ItemStack;
+import net.minecraft.server.World;
 
 import org.fest.reflect.core.Reflection;
 
@@ -27,7 +30,8 @@ import org.fest.reflect.core.Reflection;
  * 
  */
 public class RockyItem extends Item implements RockyItemType {
-	
+
+	protected boolean isThrowable;
 
 	/**
 	 * 
@@ -41,6 +45,28 @@ public class RockyItem extends Item implements RockyItemType {
 				.set(item.isStackable() ? 64 : 1);
 		Reflection.field("name").ofType(String.class).in(this)
 				.set("name." + item.getName());
+		isThrowable = item.isThrowable();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemStack a(ItemStack itemstack, World world, EntityHuman entityhuman) {
+		if (!isThrowable) {
+			return itemstack;
+		}
+
+		if (!entityhuman.abilities.canInstantlyBuild) {
+			--itemstack.count;
+		}
+
+		world.makeSound(entityhuman, "random.bow", 0.5F,
+				0.4F / (d.nextFloat() * 0.4F + 0.8F));
+
+		// TODO: Add the entity when we use the throwable
+
+		return itemstack;
 	}
 
 }

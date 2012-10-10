@@ -24,6 +24,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.volumetricpixels.rockyapi.material.Food;
 import com.volumetricpixels.rockyapi.material.Material;
+import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyapi.resource.Texture;
 
 /**
@@ -33,13 +34,13 @@ public class GenericFood extends GenericItem implements Food {
 
 	protected float saturation;
 	protected int restoration;
-	
+
 	/**
 	 * 
 	 */
-	public GenericFood() {	
+	public GenericFood() {
 	}
-	
+
 	/**
 	 * 
 	 * @param plugin
@@ -54,10 +55,10 @@ public class GenericFood extends GenericItem implements Food {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getTypeId() {	
+	public int getTypeId() {
 		return 1;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -96,8 +97,9 @@ public class GenericFood extends GenericItem implements Food {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Material load(Plugin plugin, ConfigurationSection section) {
-		super.load(plugin, section);
+	public Material loadPreInitialization(Plugin plugin, ConfigurationSection section,
+			AddonPack pack) {
+		super.loadPreInitialization(plugin, section, pack);
 
 		this.saturation = (float) section.getDouble("Saturation", 1.0f);
 		this.restoration = section.getInt("Restoration", 1);

@@ -135,9 +135,6 @@ public class Rocky extends JavaPlugin implements Runnable {
 	 */
 	@Override
 	public void onDisable() {
-		// TODO: Disable eveything custom, and we should store a diferent chunk map for custom item and then load it at startup.
-		// to be able to reload the plugin everytime we want :).
-		
 		// Save the current material registered
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		try {
@@ -237,14 +234,14 @@ public class Rocky extends JavaPlugin implements Runnable {
 		player.sendPacket(new PacketCustomItem(RockyManager
 				.getMaterialManager().getItemList()));
 		// TODO: Send Blocks and Design.
-		
+
 		// Our key bindings
 		RockyManager.getKeyBindingManager().sendKeyBinding(player);
 
 		// Call custom event that tell us that a player has been enabled
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new RockyEnableEvent(player));
-		
+
 		// Update map waypoints
 		player.updateWaypoints();
 	}

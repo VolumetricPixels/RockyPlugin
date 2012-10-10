@@ -33,6 +33,7 @@ import com.volumetricpixels.rockyapi.material.BlockType;
 import com.volumetricpixels.rockyapi.material.Item;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialType;
+import com.volumetricpixels.rockyapi.resource.AddonPack;
 
 /**
  * 
@@ -108,7 +109,7 @@ public class GenericBlock implements Block {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Material load(Plugin plugin, ConfigurationSection section) {
+	public Material loadPreInitialization(Plugin plugin, ConfigurationSection section, AddonPack pack) {
 		this.plugin = plugin;
 		this.name = section.getName();
 		this.id = RockyManager.getMaterialManager().getRegisteredName(name, MaterialType.BLOCK);
@@ -132,6 +133,17 @@ public class GenericBlock implements Block {
 
 		return this;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Material loadPostInitialization(Plugin plugin,
+			ConfigurationSection section, AddonPack pack) {
+		//TODO: ¿?
+		return this;
+	}
+
 
 	/**
 	 * {@inheritDoc}

@@ -27,14 +27,14 @@ import org.bukkit.inventory.ItemStack;
 public class RockyFurnaceRecipe {
 	private int ingredient;
 	private ItemStack result;
-	private float speed;
+	private double speed;
 
 	/**
 	 * 
 	 * @param ingredient
 	 * @param result
 	 */
-	public RockyFurnaceRecipe(int ingredient, ItemStack result, float speed) {
+	public RockyFurnaceRecipe(int ingredient, ItemStack result, double speed) {
 		this.ingredient = ingredient;
 		this.result = result;
 		this.speed = speed;
@@ -60,7 +60,7 @@ public class RockyFurnaceRecipe {
 	 * 
 	 * @return
 	 */
-	public float getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 

@@ -13,8 +13,9 @@ commands:
         aliases: [rockycommand, rockycmd, rkcmd]
         description: Various Rocky commands.
         usage: |
-            Usage: /<command> version [player]
-            Usage: /<command> verify [motd]
+            Usage: /<command> waypoint [Name]
+            Usage: /<command> reload
+            Usage: /<command> item [ID] (Amount) (Player)
 
 permissions:
     rocky.plugin.force:

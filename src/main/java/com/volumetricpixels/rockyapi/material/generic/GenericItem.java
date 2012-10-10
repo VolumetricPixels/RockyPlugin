@@ -30,6 +30,7 @@ import com.volumetricpixels.rockyapi.material.Item;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialType;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
+import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyapi.resource.Texture;
 
 /**
@@ -43,6 +44,7 @@ public class GenericItem implements Item {
 	private Texture texture;
 	private boolean isFuel;
 	private boolean isStackable;
+	private boolean isThrowable;
 
 	/**
 	 * 
@@ -154,19 +156,29 @@ public class GenericItem implements Item {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Material load(Plugin plugin, ConfigurationSection section) {
+	public Material loadPreInitialization(Plugin plugin,
+			ConfigurationSection section, AddonPack pack) {
 		this.plugin = plugin;
 		this.name = section.getString("Name", "Undefined");
 		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
 				MaterialType.ITEM);
 		this.isFuel = section.getBoolean("IsFuel", false);
 		this.isStackable = section.getBoolean("IsStackable", true);
-
+		this.isThrowable = section.getBoolean("isThrowable", false);
 		List<String> data = section.getStringList("Texture");
 		if (data != null) {
 			if (data.size() == 1) {
-				this.texture = new Texture(plugin, data.get(0));
+				if (!pack.hasEntry(data.get(0))) {
+					throw new RuntimeException(
+							"Cannot find texture within package");
+				}
+				this.texture = new Texture(plugin, data.get(0),
+						pack.getInputStream(data.get(0)));
 			} else if (data.size() == 3) {
+				if (!pack.hasEntry(data.get(0))) {
+					throw new RuntimeException(
+							"Cannot find texture within package");
+				}
 				this.texture = new Texture(plugin, data.get(0),
 						Integer.valueOf(data.get(1)), Integer.valueOf(data
 								.get(2)));
@@ -184,12 +196,38 @@ public class GenericItem implements Item {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Material loadPostInitialization(Plugin plugin,
+			ConfigurationSection section, AddonPack pack) {
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void writeToPacket(PacketOutputStream out) throws IOException {
 		out.writeByte(getTypeId());
 		out.writeUTF(name);
 		out.writeShort(itemID);
 		out.writeBoolean(isStackable);
 		texture.writeToPacket(out);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isThrowable() {
+		return isThrowable;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Item setThrowable(boolean isThrowable) {
+		this.isThrowable = isThrowable;
+		return this;
 	}
 
 }
