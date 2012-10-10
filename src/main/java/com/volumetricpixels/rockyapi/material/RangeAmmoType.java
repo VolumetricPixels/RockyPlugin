@@ -22,7 +22,7 @@ package com.volumetricpixels.rockyapi.material;
 /**
  * 
  */
-public enum MaterialType {
+public enum RangeAmmoType {
 	/**
 	 * 
 	 */
@@ -30,5 +30,5 @@ public enum MaterialType {
 	/**
 	 * 
 	 */
-	BLOCK
+	ENTITY;
 }

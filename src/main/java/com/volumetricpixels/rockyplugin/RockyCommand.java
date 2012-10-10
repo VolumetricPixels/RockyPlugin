@@ -19,10 +19,14 @@
  */
 package com.volumetricpixels.rockyplugin;
 
+import net.minecraft.server.Item;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * 
@@ -65,7 +69,27 @@ public class RockyCommand implements CommandExecutor {
 			Rocky.getInstance().onDisable();
 			Rocky.getInstance().onLoad();
 			return true;
+		} else if (c.equals("item") && args.length > 1) {
+			Integer item = Integer.valueOf(args[1]);
+			int amount = (args.length > 2 ? Integer.valueOf(args[2]) : 1);
+			String name = (args.length > 3 ? args[3] : sender.getName());
+
+			Player player = Bukkit.getPlayerExact(name);
+			if (player == null) {
+				sender.sendMessage("The user must be online.");
+				return true;
+			} else if (amount > 64 || amount < 1) {
+				sender.sendMessage("The minimum is 1 and the maximum is 64");
+				return true;
+			} else if (item < 0 || item > Item.byId.length
+					|| Item.byId[item] == null) {
+				sender.sendMessage("The item doesn't exist");
+				return true;
+			}
+			player.getInventory().addItem(new ItemStack(item, amount));
+			return true;
 		}
+
 		return false;
 	}
 }

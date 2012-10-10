@@ -35,11 +35,11 @@ import com.volumetricpixels.rockyapi.resource.Texture;
  */
 public class GenericWeapon extends GenericItem implements Weapon {
 
-	private int durability;
-	private int damage;
-	private int attackSpeed;
-	private boolean isBlockAllowed;
-	private WeaponType type;
+	protected int durability;
+	protected int damage;
+	protected int attackSpeed;
+	protected boolean isBlockAllowed;
+	protected WeaponType type;
 
 	/**
 	 * 
@@ -152,9 +152,11 @@ public class GenericWeapon extends GenericItem implements Weapon {
 		this.durability = section.getInt("Durability", 100);
 		this.damage = section.getInt("Damage", 1);
 		this.attackSpeed = section.getInt("AttackSpeed", 215);
-		this.type = WeaponType.valueOf(section.getString("Type"));
+		this.type = WeaponType.valueOf(section.getString("Type", "MELEE"));
 		this.isBlockAllowed = (type == WeaponType.RANGE ? false :
 			section.getBoolean("IsBlocking", true));
+		this.setStackable(false);
+		
 		return this;
 	}
 	

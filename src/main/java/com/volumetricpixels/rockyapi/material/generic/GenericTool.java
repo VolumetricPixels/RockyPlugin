@@ -64,10 +64,10 @@ public class GenericTool extends GenericItem implements Tool {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getTypeId() {	
+	public int getTypeId() {
 		return 2;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -139,10 +139,13 @@ public class GenericTool extends GenericItem implements Tool {
 		this.damage = section.getInt("Damage", 1);
 
 		List<String> blockModifier = section.getStringList("BlockModifier");
-		for (String modifier : blockModifier) {
-			String[] split = modifier.split(":");
+		if (blockModifier != null) {
+			for (String modifier : blockModifier) {
+				String[] split = modifier.split(":");
 
-			setDestroySpeed(Integer.valueOf(split[0]), Float.valueOf(split[1]));
+				setDestroySpeed(Integer.valueOf(split[0]),
+						Float.valueOf(split[1]));
+			}
 		}
 
 		setStackable(false);

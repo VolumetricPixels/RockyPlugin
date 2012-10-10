@@ -163,15 +163,19 @@ public class GenericItem implements Item {
 		this.isStackable = section.getBoolean("IsStackable", true);
 
 		List<String> data = section.getStringList("Texture");
-		if (data.size() == 1) {
-			this.texture = new Texture(plugin, data.get(0));
-		} else if (data.size() == 3) {
-			this.texture = new Texture(plugin, data.get(0),
-					Integer.valueOf(data.get(1)), Integer.valueOf(data.get(2)));
-		} else if (data.size() == 5) {
-			this.texture = new Texture(data.get(0),
-					Integer.valueOf(data.get(1)), Integer.valueOf(data.get(2)),
-					Integer.valueOf(data.get(3)), Integer.valueOf(data.get(4)));
+		if (data != null) {
+			if (data.size() == 1) {
+				this.texture = new Texture(plugin, data.get(0));
+			} else if (data.size() == 3) {
+				this.texture = new Texture(plugin, data.get(0),
+						Integer.valueOf(data.get(1)), Integer.valueOf(data
+								.get(2)));
+			} else if (data.size() == 5) {
+				this.texture = new Texture(data.get(0), Integer.valueOf(data
+						.get(1)), Integer.valueOf(data.get(2)),
+						Integer.valueOf(data.get(3)), Integer.valueOf(data
+								.get(4)));
+			}
 		}
 		return this;
 	}

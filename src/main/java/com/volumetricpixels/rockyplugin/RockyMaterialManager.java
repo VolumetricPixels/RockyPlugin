@@ -47,15 +47,18 @@ import com.volumetricpixels.rockyapi.material.Food;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialManager;
 import com.volumetricpixels.rockyapi.material.MaterialType;
+import com.volumetricpixels.rockyapi.material.RangeWeapon;
 import com.volumetricpixels.rockyapi.material.Tool;
 import com.volumetricpixels.rockyapi.material.Weapon;
 import com.volumetricpixels.rockyapi.material.generic.GenericArmor;
 import com.volumetricpixels.rockyapi.material.generic.GenericFood;
+import com.volumetricpixels.rockyapi.material.generic.GenericRangeWeapon;
 import com.volumetricpixels.rockyapi.material.generic.GenericTool;
 import com.volumetricpixels.rockyapi.material.generic.GenericWeapon;
 import com.volumetricpixels.rockyplugin.block.RockyBlock;
 import com.volumetricpixels.rockyplugin.item.RockyItem;
 import com.volumetricpixels.rockyplugin.item.RockyItemArmor;
+import com.volumetricpixels.rockyplugin.item.RockyItemBow;
 import com.volumetricpixels.rockyplugin.item.RockyItemFood;
 import com.volumetricpixels.rockyplugin.item.RockyItemSword;
 import com.volumetricpixels.rockyplugin.item.RockyItemTool;
@@ -95,6 +98,7 @@ public class RockyMaterialManager implements MaterialManager {
 		registerType("Food", GenericFood.class);
 		registerType("Weapon", GenericWeapon.class);
 		registerType("Tool", GenericTool.class);
+		registerType("RangeWeapon", GenericRangeWeapon.class);
 		registerType(
 				"Item",
 				com.volumetricpixels.rockyapi.material.generic.GenericItem.class);
@@ -275,12 +279,14 @@ public class RockyMaterialManager implements MaterialManager {
 			return new RockyItemFood(id, (Food) material);
 		} else if (material instanceof Tool) {
 			return new RockyItemTool(id, (Tool) material);
+		} else if (material instanceof RangeWeapon) {
+			return new RockyItemBow(id, (RangeWeapon) material);
 		} else if (material instanceof Weapon) {
 			return new RockyItemSword(id, (Weapon) material);
 		} else if (material instanceof Item) {
 			return new RockyItem(id,
 					(com.volumetricpixels.rockyapi.material.Item) material);
-		}
+		} 
 		throw new IllegalArgumentException(
 				"Trying to lookup for an invalid Material class");
 	}
@@ -334,6 +340,7 @@ public class RockyMaterialManager implements MaterialManager {
 				material = clazz.newInstance().load(Rocky.getInstance(),
 						section);
 			} catch (Throwable e) {
+				e.printStackTrace();
 				continue;
 			}
 			addMaterial(material);

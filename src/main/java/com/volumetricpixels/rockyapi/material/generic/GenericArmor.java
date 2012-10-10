@@ -142,10 +142,11 @@ public class GenericArmor extends GenericItem implements Armor {
 		this.defense = section.getInt("Defense", 1);
 		this.type = ArmorType.valueOf(section.getString("Type"));
 
-		String modelTextureFile = section.getString("Model");
+		String modelTextureFile = section.getString("Model", "Default");
 		this.modelTexture = new Texture[2];
 		this.modelTexture[0] = new Texture(plugin, modelTextureFile + "_1.png");
 		this.modelTexture[1] = new Texture(plugin, modelTextureFile + "_2.png");
+		this.setStackable(false);
 		
 		return this;
 	}

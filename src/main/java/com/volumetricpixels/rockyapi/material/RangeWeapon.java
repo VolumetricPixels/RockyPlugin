@@ -22,13 +22,37 @@ package com.volumetricpixels.rockyapi.material;
 /**
  * 
  */
-public enum MaterialType {
+public interface RangeWeapon extends Weapon {
+
 	/**
 	 * 
+	 * @return
 	 */
-	ITEM,
+	public String getShootSound();
+
 	/**
 	 * 
+	 * @param sound
+	 * @return
 	 */
-	BLOCK
+	public RangeWeapon setShootSound(String sound);
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getAmmoId();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public RangeAmmoType getAmmoType();
+
+	/**
+	 * 
+	 * @param type
+	 * @param id
+	 */
+	public RangeWeapon setAmmo(RangeAmmoType type, int id);
 }
