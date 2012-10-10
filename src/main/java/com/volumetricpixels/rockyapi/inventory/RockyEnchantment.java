@@ -84,6 +84,7 @@ public class RockyEnchantment extends Enchantment {
 		return 0;
 	}
 
+	
 	/**
 	 * 
 	 * @param enchantment
@@ -95,4 +96,5 @@ public class RockyEnchantment extends Enchantment {
 		Reflection.staticField("acceptingNew").ofType(Boolean.class)
 				.in(Enchantment.class).set(false);
 	}
+	
 }

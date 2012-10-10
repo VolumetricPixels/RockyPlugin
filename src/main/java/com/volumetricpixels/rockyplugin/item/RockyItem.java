@@ -63,7 +63,6 @@ public class RockyItem extends Item implements RockyItemType {
 
 		world.makeSound(entityhuman, "random.bow", 0.5F,
 				0.4F / (d.nextFloat() * 0.4F + 0.8F));
-
 		// TODO: Add the entity when we use the throwable
 
 		return itemstack;

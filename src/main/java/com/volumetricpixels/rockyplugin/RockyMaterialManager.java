@@ -47,7 +47,7 @@ import com.volumetricpixels.rockyapi.material.Armor;
 import com.volumetricpixels.rockyapi.material.Food;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialManager;
-import com.volumetricpixels.rockyapi.material.MaterialType;
+import com.volumetricpixels.rockyapi.material.MaterialEnumType;
 import com.volumetricpixels.rockyapi.material.RangeWeapon;
 import com.volumetricpixels.rockyapi.material.Tool;
 import com.volumetricpixels.rockyapi.material.Weapon;
@@ -131,10 +131,10 @@ public class RockyMaterialManager implements MaterialManager {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getRegisteredName(String name, MaterialType type) {
-		if (type == MaterialType.ITEM && itemNameList.containsKey(name)) {
+	public int getRegisteredName(String name, MaterialEnumType type) {
+		if (type == MaterialEnumType.ITEM && itemNameList.containsKey(name)) {
 			return itemNameList.get(name);
-		} else if (type == MaterialType.BLOCK
+		} else if (type == MaterialEnumType.BLOCK
 				&& blockNameList.containsKey(name)) {
 			return blockNameList.get(name);
 		}
@@ -145,7 +145,7 @@ public class RockyMaterialManager implements MaterialManager {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int registerName(String name, MaterialType type) {
+	public int registerName(String name, MaterialEnumType type) {
 		int id = getNextFreeIndex(type);
 		registerName(name, id, type);
 		return id;
@@ -155,8 +155,8 @@ public class RockyMaterialManager implements MaterialManager {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void registerName(String name, int id, MaterialType type) {
-		if (type == MaterialType.ITEM) {
+	public void registerName(String name, int id, MaterialEnumType type) {
+		if (type == MaterialEnumType.ITEM) {
 			itemNameList.put(name, id);
 			itemIndexList.set(id);
 			return;
@@ -169,8 +169,8 @@ public class RockyMaterialManager implements MaterialManager {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Map<String, Integer> getRegisteredNames(MaterialType type) {
-		return (type == MaterialType.ITEM ? itemNameList : blockNameList);
+	public Map<String, Integer> getRegisteredNames(MaterialEnumType type) {
+		return (type == MaterialEnumType.ITEM ? itemNameList : blockNameList);
 	}
 
 	/**
@@ -261,8 +261,8 @@ public class RockyMaterialManager implements MaterialManager {
 	 * 
 	 * @return
 	 */
-	private int getNextFreeIndex(MaterialType type) {
-		if (type == MaterialType.ITEM) {
+	private int getNextFreeIndex(MaterialEnumType type) {
+		if (type == MaterialEnumType.ITEM) {
 			return itemIndexList.nextClearBit(DEFAULT_ITEM_PLACEHOLDER_ID);
 		}
 		return blockIndexList.nextClearBit(DEFAULT_BLOCK_PLACEHOLDER_ID);

@@ -28,7 +28,7 @@ import org.bukkit.plugin.Plugin;
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.material.Item;
 import com.volumetricpixels.rockyapi.material.Material;
-import com.volumetricpixels.rockyapi.material.MaterialType;
+import com.volumetricpixels.rockyapi.material.MaterialEnumType;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
 import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyapi.resource.Texture;
@@ -58,6 +58,10 @@ public class GenericItem implements Item {
 	 * @param name
 	 */
 	public GenericItem(Plugin plugin, String name) {
+		this.plugin = plugin;
+		this.name = name;
+		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
+				MaterialEnumType.ITEM);
 	}
 
 	/**
@@ -75,7 +79,7 @@ public class GenericItem implements Item {
 		this.name = name;
 		this.texture = texture;
 		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
-				MaterialType.ITEM);
+				MaterialEnumType.ITEM);
 	}
 
 	/**
@@ -161,7 +165,7 @@ public class GenericItem implements Item {
 		this.plugin = plugin;
 		this.name = section.getString("Name", "Undefined");
 		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
-				MaterialType.ITEM);
+				MaterialEnumType.ITEM);
 		this.isFuel = section.getBoolean("IsFuel", false);
 		this.isStackable = section.getBoolean("IsStackable", true);
 		this.isThrowable = section.getBoolean("isThrowable", false);

@@ -59,14 +59,14 @@ public interface MaterialManager extends Listener {
 	 * @param type
 	 * @return
 	 */
-	public int getRegisteredName(String name, MaterialType type);
+	public int getRegisteredName(String name, MaterialEnumType type);
 
 	/**
 	 * 
 	 * @param name
 	 * @param type
 	 */
-	public int registerName(String name, MaterialType type);
+	public int registerName(String name, MaterialEnumType type);
 
 	/**
 	 * 
@@ -74,13 +74,13 @@ public interface MaterialManager extends Listener {
 	 * @param id
 	 * @param type
 	 */
-	public void registerName(String name, int id, MaterialType type);
+	public void registerName(String name, int id, MaterialEnumType type);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public Map<String, Integer> getRegisteredNames(MaterialType type);
+	public Map<String, Integer> getRegisteredNames(MaterialEnumType type);
 
 	/**
 	 * 

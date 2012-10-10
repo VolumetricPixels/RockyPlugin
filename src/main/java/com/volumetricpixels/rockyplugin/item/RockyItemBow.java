@@ -43,7 +43,7 @@ public class RockyItemBow extends ItemBow implements RockyItemType {
 	 * @param material
 	 */
 	public RockyItemBow(int i, RangeWeapon material) {
-		super(i);
+		super(i - 256);
 
 		setMaxDurability(material.getDurability());
 		Reflection.field("name").ofType(String.class).in(this)
@@ -66,9 +66,9 @@ public class RockyItemBow extends ItemBow implements RockyItemType {
 			float f = (float) j / 20.0F;
 
 			f = (f * f + f * 2.0F) / 3.0F;
-			//if ((double) f < 0.1D) {
-			//	return;
-			//}
+			if ((double) f < 0.1D) {
+				return;
+			}
 
 			if (f > 1.0F) {
 				f = 1.0F;

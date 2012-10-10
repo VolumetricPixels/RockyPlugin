@@ -32,7 +32,7 @@ import com.volumetricpixels.rockyapi.material.Block;
 import com.volumetricpixels.rockyapi.material.BlockType;
 import com.volumetricpixels.rockyapi.material.Item;
 import com.volumetricpixels.rockyapi.material.Material;
-import com.volumetricpixels.rockyapi.material.MaterialType;
+import com.volumetricpixels.rockyapi.material.MaterialEnumType;
 import com.volumetricpixels.rockyapi.resource.AddonPack;
 
 /**
@@ -54,7 +54,7 @@ public class GenericBlock implements Block {
 	protected List<BlockDesign> design = new LinkedList<BlockDesign>();
 	protected boolean allowRotation;
 	protected net.minecraft.server.Material material;
-	
+
 	/**
 	 * 
 	 */
@@ -81,8 +81,8 @@ public class GenericBlock implements Block {
 			BlockDesign design) {
 		this.plugin = plugin;
 		this.name = name;
-		this.id = RockyManager.getMaterialManager().getRegisteredName(
-				plugin.getName() + "_" + name, MaterialType.BLOCK);
+		this.id = RockyManager.getMaterialManager().getRegisteredName(name,
+				MaterialEnumType.BLOCK);
 		this.allowRotation = true;
 		this.setBlockDesign(design);
 		this.blockItem = new GenericItem(plugin, name);
@@ -109,10 +109,12 @@ public class GenericBlock implements Block {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Material loadPreInitialization(Plugin plugin, ConfigurationSection section, AddonPack pack) {
+	public Material loadPreInitialization(Plugin plugin,
+			ConfigurationSection section, AddonPack pack) {
 		this.plugin = plugin;
 		this.name = section.getName();
-		this.id = RockyManager.getMaterialManager().getRegisteredName(name, MaterialType.BLOCK);
+		this.id = RockyManager.getMaterialManager().getRegisteredName(name,
+				MaterialEnumType.BLOCK);
 		this.allowRotation = section.getBoolean("IsRotated", false);
 		this.blockItem = new GenericItem(plugin, name);
 		this.stepSound = section.getString("StepSound", "Default");
@@ -125,7 +127,7 @@ public class GenericBlock implements Block {
 		String[] dropType = section.getString("Drop", "-1:-1").split(":");
 		if (!dropType[0].equals("-1")) {
 			this.dropStack = new ItemStack(RockyManager.getMaterialManager()
-					.getRegisteredName(dropType[0], MaterialType.ITEM),
+					.getRegisteredName(dropType[0], MaterialEnumType.ITEM),
 					Integer.valueOf(dropType[1]));
 		}
 		// TODO: Get the material
@@ -140,10 +142,9 @@ public class GenericBlock implements Block {
 	@Override
 	public Material loadPostInitialization(Plugin plugin,
 			ConfigurationSection section, AddonPack pack) {
-		//TODO: ¿?
+		// TODO: ¿?
 		return this;
 	}
-
 
 	/**
 	 * {@inheritDoc}

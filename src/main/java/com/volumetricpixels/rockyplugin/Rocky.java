@@ -37,7 +37,7 @@ import com.volumetricpixels.rockyapi.event.RockyEnableEvent;
 import com.volumetricpixels.rockyapi.event.RockyFailedEvent;
 import com.volumetricpixels.rockyapi.event.RockyFinishedLoadingEvent;
 import com.volumetricpixels.rockyapi.event.RockyLoadingEvent;
-import com.volumetricpixels.rockyapi.material.MaterialType;
+import com.volumetricpixels.rockyapi.material.MaterialEnumType;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketCustomItem;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCacheBegin;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
@@ -117,7 +117,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 						.getConfigurationSection(data);
 				RockyManager.getMaterialManager().registerName(data,
 						section.getInt("ID"),
-						MaterialType.valueOf(section.getString("Type")));
+						MaterialEnumType.valueOf(section.getString("Type")));
 			}
 
 		} catch (Throwable e) {
@@ -139,16 +139,16 @@ public class Rocky extends JavaPlugin implements Runnable {
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		try {
 			Map<String, Integer> itemArray = RockyManager.getMaterialManager()
-					.getRegisteredNames(MaterialType.ITEM);
+					.getRegisteredNames(MaterialEnumType.ITEM);
 			for (String item : itemArray.keySet()) {
 				itemConfig.set(item + ".ID", itemArray.get(item));
-				itemConfig.set(item + ".Type", MaterialType.ITEM.name());
+				itemConfig.set(item + ".Type", MaterialEnumType.ITEM.name());
 			}
 			itemArray = RockyManager.getMaterialManager().getRegisteredNames(
-					MaterialType.BLOCK);
+					MaterialEnumType.BLOCK);
 			for (String item : itemArray.keySet()) {
 				itemConfig.set(item + ".ID", itemArray.get(item));
-				itemConfig.set(item + ".Type", MaterialType.BLOCK.name());
+				itemConfig.set(item + ".Type", MaterialEnumType.BLOCK.name());
 			}
 			itemConfig.save(new File(getDataFolder(), "map.yml"));
 		} catch (Throwable e) {
