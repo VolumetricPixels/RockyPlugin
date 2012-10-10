@@ -4,7 +4,7 @@ SpoutLegacy
 Visit our [website][Website] or get support on our [forums][Forums].  
 
 ## The License
-SpoutLegacy is licensed under the [GNU Lesser General Public License Version 3][License].
+Rocky is licensed under the [GNU Lesser General Public License Version 3][License].
 
 Copyright (c) 2011-2012, SpoutDev <<http://www.spout.org/>>  
 Copyright (c) 2012, VolumetricPixels <<http://www.volumetricpixels.com/>>  
@@ -46,6 +46,6 @@ For those using [Maven](http://maven.apache.org/download.html) to manage project
 [Author Logo]: http://volumetricpixels.com/wp-content/uploads/2012/04/vp_concept2_6.png
 [License]: http://www.gnu.org/licenses/lgpl.html
 [Website]: http://www.volumetricpixels.com
-[Forums]: http://volumetricpixels.com/forums/
-[GitHub]: https://github.com/Wolftein/SpoutLegacy
-[Jenkins]: http://ci.massiveminecraft.com/job/SpoutLegacy/
+[Forums]: http://volumetricpixels.com/forums/categories/rocky.60/
+[GitHub]: https://github.com/Wolftein/RockyPlugin
+[Jenkins]: http://ci.massiveminecraft.com/job/RockyPlugin/
