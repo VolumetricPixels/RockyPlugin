@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import org.bukkit.ChatColor;
 
-
 import com.volumetricpixels.rockyapi.math.Color;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;

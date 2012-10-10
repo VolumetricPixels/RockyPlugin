@@ -27,7 +27,6 @@ import java.util.Map;
 
 import net.minecraft.server.Packet;
 
-
 import com.volumetricpixels.rockyapi.packet.PacketListener;
 import com.volumetricpixels.rockyapi.packet.PacketManager;
 import com.volumetricpixels.rockyapi.packet.PacketVanilla;

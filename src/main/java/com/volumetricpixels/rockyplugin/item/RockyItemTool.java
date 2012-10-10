@@ -19,14 +19,14 @@
  */
 package com.volumetricpixels.rockyplugin.item;
 
-import org.fest.reflect.core.Reflection;
-
-import com.volumetricpixels.rockyapi.material.Tool;
-
 import net.minecraft.server.Block;
 import net.minecraft.server.EnumToolMaterial;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.ItemTool;
+
+import org.fest.reflect.core.Reflection;
+
+import com.volumetricpixels.rockyapi.material.Tool;
 
 /**
  * 

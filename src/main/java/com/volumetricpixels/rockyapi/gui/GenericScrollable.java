@@ -22,7 +22,6 @@ package com.volumetricpixels.rockyapi.gui;
 
 import java.io.IOException;
 
-
 import com.volumetricpixels.rockyapi.math.Color;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
