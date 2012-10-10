@@ -110,7 +110,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 				this);
 		Bukkit.getPluginManager().registerEvents(
 				RockyManager.getMaterialManager(), this);
-		getCommand("spout").setExecutor(new RockyCommand());
+		getCommand("rocky").setExecutor(new RockyCommand());
 
 		// Load the current material registered
 		YamlConfiguration itemConfig = new YamlConfiguration();
