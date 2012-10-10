@@ -7,7 +7,7 @@ Visit our [website][Website] or get support on our [forums][Forums].
 RockyPlugin is licensed under the [GNU Lesser General Public License Version 3][License].
 
 Copyright (c) 2012 VolumetricPixels <<http://www.volumetricpixels.com/>>  
-[Author Logo]][Website]
+[![VolumetricPixels][Author Logo]][Website]
 
 ## Getting the Source
 The latest and greatest source can be found on [GitHub].  
