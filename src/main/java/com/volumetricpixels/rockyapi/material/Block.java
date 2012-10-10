@@ -94,14 +94,14 @@ public interface Block extends Material {
 	 * 
 	 * @return
 	 */
-	public int getLightLevel();
+	public float getLightLevel();
 
 	/**
 	 * 
 	 * @param level
 	 * @return
 	 */
-	public Block setLightLevel(int level);
+	public Block setLightLevel(float level);
 
 	/**
 	 * 

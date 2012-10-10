@@ -99,6 +99,12 @@ public interface BlockDesign {
 			float highX, float highY, float highZ);
 
 	/**
+	 * 
+	 * @return
+	 */
+	public BoundingBox getBoundingBox();
+	
+	/**
 	 * Sets the number of quads or faces for this block
 	 * 
 	 * @param quads

@@ -17,11 +17,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.volumetricpixels.rockyplugin.item;
+package com.volumetricpixels.rockyplugin.block;
 
 import net.minecraft.server.Block;
 
 import org.fest.reflect.core.Reflection;
+
+import com.volumetricpixels.rockyapi.block.design.BoundingBox;
 
 /**
  * 
@@ -33,13 +35,25 @@ public class RockyBlock extends Block {
 	 * @param id
 	 * @param material
 	 */
-	public RockyBlock(int id, com.volumetricpixels.rockyapi.material.Block material) {
+	public RockyBlock(int id,
+			com.volumetricpixels.rockyapi.material.Block material) {
 		super(id, material.getMaterial());
 
 		Reflection.field("frictionFactor").ofType(float.class).in(this)
 				.set(material.getFriction());
 		Reflection.field("co").ofType(float.class).in(this)
 				.set(material.getHardness());
+
+		BoundingBox bb = material.getBlockDesign().getBoundingBox();
+		Reflection
+				.method("a")
+				.withParameterTypes(float.class, float.class, float.class,
+						float.class, float.class, float.class)
+				.in(this)
+				.invoke(bb.lowXBound, bb.lowYBound, bb.lowZBound,
+						bb.highXBound, bb.highYBound, bb.highZBound);
+		Reflection.method("a").withParameterTypes(float.class).in(this)
+				.invoke(material.getLightLevel());
 	}
 
 }

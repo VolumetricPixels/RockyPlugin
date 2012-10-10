@@ -24,11 +24,11 @@ package com.volumetricpixels.rockyapi.block.design;
  */
 public class Vertex {
 
-	private int index;
-	private float x, y, z;
-	private float tX, tY;
-	private float color;
-	
+	protected int index;
+	protected float x, y, z;
+	protected float tX, tY;
+	protected float color;
+
 	/**
 	 * 
 	 * @param index
@@ -37,9 +37,11 @@ public class Vertex {
 	 * @param z
 	 * @param tX
 	 * @param tY
-	 * @param color;
+	 * @param color
+	 *            ;
 	 */
-	public Vertex(int index, float x, float y, float z, float tX, float tY, float color) {
+	public Vertex(int index, float x, float y, float z, float tX, float tY,
+			float color) {
 		this.index = index;
 		this.x = x;
 		this.y = y;
@@ -47,6 +49,18 @@ public class Vertex {
 		this.tX = tX;
 		this.tY = tY;
 		this.color = color;
+	}
+
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void set(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	/**
@@ -96,7 +110,7 @@ public class Vertex {
 	public float getTextureY() {
 		return tY;
 	}
-	
+
 	/**
 	 * 
 	 * @return

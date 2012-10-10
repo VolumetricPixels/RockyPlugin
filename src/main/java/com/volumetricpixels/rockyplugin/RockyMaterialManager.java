@@ -53,7 +53,7 @@ import com.volumetricpixels.rockyapi.material.generic.GenericArmor;
 import com.volumetricpixels.rockyapi.material.generic.GenericFood;
 import com.volumetricpixels.rockyapi.material.generic.GenericTool;
 import com.volumetricpixels.rockyapi.material.generic.GenericWeapon;
-import com.volumetricpixels.rockyplugin.item.RockyBlock;
+import com.volumetricpixels.rockyplugin.block.RockyBlock;
 import com.volumetricpixels.rockyplugin.item.RockyItem;
 import com.volumetricpixels.rockyplugin.item.RockyItemArmor;
 import com.volumetricpixels.rockyplugin.item.RockyItemFood;

@@ -46,7 +46,7 @@ public class GenericBlock implements Block {
 	protected float friction;
 	protected float hardness;
 	protected boolean isOpaque;
-	protected int light;
+	protected float light;
 	protected BlockType type;
 	protected Item blockItem;
 	protected ItemStack dropStack;
@@ -214,7 +214,7 @@ public class GenericBlock implements Block {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getLightLevel() {
+	public float getLightLevel() {
 		return light;
 	}
 
@@ -222,7 +222,7 @@ public class GenericBlock implements Block {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Block setLightLevel(int level) {
+	public Block setLightLevel(float level) {
 		this.light = level;
 		return this;
 	}

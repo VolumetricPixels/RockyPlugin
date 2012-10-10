@@ -19,7 +19,6 @@
  */
 package com.volumetricpixels.rockyapi.block.design;
 
-
 import com.volumetricpixels.rockyapi.math.Color;
 import com.volumetricpixels.rockyapi.math.Vector3f;
 import com.volumetricpixels.rockyapi.resource.Texture;
@@ -34,6 +33,12 @@ public class Quad {
 	private Vertex[] vertices = new Vertex[4];
 	private Vector3f lightSource;
 	private Color color = Color.White;
+
+	/**
+	 * 
+	 */
+	public Quad() {
+	}
 
 	/**
 	 * Creates a new quad with the following vertexes at the specified index
@@ -93,6 +98,14 @@ public class Quad {
 	public Quad setLightSource(float x, float y, float z) {
 		this.lightSource.set(x, y, z);
 		return this;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Color getColor() {
+		return color;
 	}
 
 	/**
