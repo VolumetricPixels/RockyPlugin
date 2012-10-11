@@ -19,6 +19,8 @@
  */
 package com.volumetricpixels.rockyplugin.item;
 
+import java.util.Map;
+
 import net.minecraft.server.Block;
 import net.minecraft.server.EnumToolMaterial;
 import net.minecraft.server.ItemStack;
@@ -33,7 +35,7 @@ import com.volumetricpixels.rockyapi.material.Tool;
  */
 public class RockyItemTool extends ItemTool implements RockyItemType {
 
-	private Tool item;
+	private Map<Integer, Float> destroySpeed;
 
 	/**
 	 * 
@@ -43,8 +45,9 @@ public class RockyItemTool extends ItemTool implements RockyItemType {
 	public RockyItemTool(int arg0, Tool item) {
 		super(arg0 - 256, 0,
 				EnumToolMaterial.DIAMOND, null);
-		this.item = item;
-
+		
+		destroySpeed = item.getDestroyMap();
+		
 		Reflection.field("bY").ofType(int.class).in(this)
 				.set(item.getDamage());
 		Reflection.field("maxStackSize").ofType(int.class).in(this)
@@ -59,6 +62,7 @@ public class RockyItemTool extends ItemTool implements RockyItemType {
 	 */
 	@Override
 	public float getDestroySpeed(ItemStack itemstack, Block block) {
-		return item.getDestroySpeed(block.id);
+		return (destroySpeed.containsKey(block.id) ? destroySpeed.get(block.id)
+				: 1.0f);
 	}
 }
