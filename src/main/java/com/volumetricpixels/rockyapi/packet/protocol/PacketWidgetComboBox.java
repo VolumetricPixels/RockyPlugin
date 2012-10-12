@@ -85,14 +85,6 @@ public class PacketWidgetComboBox implements Packet {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getVersion() {
-		return 0;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public PacketType getType() {
 		return PacketType.PacketWidgetComboBox;
 	}

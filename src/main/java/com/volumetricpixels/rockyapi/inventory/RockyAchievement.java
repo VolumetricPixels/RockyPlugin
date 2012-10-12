@@ -17,32 +17,72 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.volumetricpixels.rockyplugin;
+package com.volumetricpixels.rockyapi.inventory;
 
 /**
  * 
  */
-public enum RockyPermission {
-	/**
-	 * 
-	 */
-	FORCE_CLIENT("rocky.plugin.force");
+public class RockyAchievement {
 
-	private String node;
+	protected int id;
+	protected int itemId;
+	protected String name;
+	protected String description;
+	protected RockyAchievement[] depends;
+
 	/**
 	 * 
-	 * @param node
+	 * @param name
+	 * @param description
+	 * @param depends
 	 */
-	private RockyPermission(String node) {
-		this.node = node;
+	public RockyAchievement(int id, String name, String description,
+			int itemId, RockyAchievement... depends) {
+		this.id = id;
+		this.itemId = id;
+		this.name = name;
+		this.description = description;
+		this.depends = depends;
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public String getNode() {
-		return node;
+	public int getId() {
+		return id;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getItemId() {
+		return itemId;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public RockyAchievement[] getDependency() {
+		return depends;
 	}
 
 }

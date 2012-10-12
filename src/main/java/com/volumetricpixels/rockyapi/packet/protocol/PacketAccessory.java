@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.volumetricpixels.rockyapi.packet.protocol;
 
 import java.io.IOException;
@@ -82,14 +81,6 @@ public class PacketAccessory implements Packet {
 	@Override
 	public void failure(RockyPlayer player) {
 		// Handle in client-side
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getVersion() {
-		return 0;
 	}
 
 	/**

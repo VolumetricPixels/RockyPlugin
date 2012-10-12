@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.volumetricpixels.rockyapi.packet.protocol.PacketAccessory;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketAchievement;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketAchievementList;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketAlert;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketAllowAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketCustomItem;
@@ -116,6 +118,14 @@ public enum PacketType {
 	 * {@see PacketStopMusic}
 	 */
 	PacketStopMusic(17, PacketStopMusic.class),
+	/**
+	 * {@see PacketAchievementList}
+	 */	
+	PacketAchievementList(18, PacketAchievementList.class),
+	/**
+	 * {@see PacketAchievement}
+	 */
+	PacketAchievement(19, PacketAchievement.class),
 	
 	/**
 	 * {@see PacketWidget}

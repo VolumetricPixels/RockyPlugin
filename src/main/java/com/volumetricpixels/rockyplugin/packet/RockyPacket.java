@@ -54,7 +54,7 @@ public class RockyPacket extends Packet {
 	 */
 	@Override
 	public int a() {
-		return 8;
+		return 2;
 	}
 
 	/**
@@ -63,31 +63,23 @@ public class RockyPacket extends Packet {
 	@Override
 	public void a(DataInputStream arg0) throws IOException {
 		int packetID = arg0.readShort();
-		int version = arg0.readShort();
-		int length = arg0.readInt();
+		int length = arg0.readShort();
 
-		if (version > -1) {
-			try {
-				packet = PacketType.getPacketFromId(packetID).getClazz()
-						.newInstance();
-			} catch (Throwable e) {
-				RockyManager.printConsole("Failed to identify packet id: ",
-						packetID);
-			}
+		try {
+			packet = PacketType.getPacketFromId(packetID).getClazz()
+					.newInstance();
+		} catch (Throwable e) {
+			RockyManager.printConsole("Failed to identify packet id: ",
+					packetID);
 		}
 		try {
-			if (packet == null || packet.getVersion() != version) {
-				arg0.skipBytes(length);
-			} else {
-				byte[] data = new byte[length];
-				arg0.readFully(data);
+			byte[] data = new byte[length];
+			arg0.readFully(data);
 
-				PacketInputStream in = new PacketInputStream(
-						ByteBuffer.wrap(data));
-				packet.readData(in);
+			PacketInputStream in = new PacketInputStream(ByteBuffer.wrap(data));
+			packet.readData(in);
 
-				isSuccess = true;
-			}
+			isSuccess = true;
 		} catch (Throwable ex) {
 			RockyManager.printConsole("------------------------");
 			RockyManager.printConsole("Unexpected Exception: "
@@ -103,14 +95,13 @@ public class RockyPacket extends Packet {
 	@Override
 	public void a(DataOutputStream arg0) throws IOException {
 		arg0.writeShort(packet.getType().getId());
-		arg0.writeShort(packet.getVersion());
 
 		PacketOutputStream out = new PacketOutputStream();
 		packet.writeData(out);
 
 		ByteBuffer buffer = out.getRawBuffer();
 		buffer.flip();
-		arg0.writeInt(buffer.limit());
+		arg0.writeShort(buffer.limit());
 		arg0.write(buffer.array());
 		buffer.clear();
 	}

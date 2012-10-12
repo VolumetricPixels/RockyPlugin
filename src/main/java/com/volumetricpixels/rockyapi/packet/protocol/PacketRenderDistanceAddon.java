@@ -77,14 +77,6 @@ public class PacketRenderDistanceAddon implements Packet {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getVersion() {
-		return 0;
-	}
-
-	/**
 	 * {@inhericDoc}
 	 */
 	@Override

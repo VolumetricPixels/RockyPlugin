@@ -105,14 +105,6 @@ public class PacketWaypoint implements Packet {
 	 * {@inhericDoc}
 	 */
 	@Override
-	public int getVersion() {
-		return 0;
-	}
-
-	/**
-	 * {@inhericDoc}
-	 */
-	@Override
 	public PacketType getType() {
 		return PacketType.PacketWaypoint;
 	}

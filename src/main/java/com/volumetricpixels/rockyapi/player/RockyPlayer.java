@@ -45,7 +45,7 @@ public interface RockyPlayer extends Player {
 	 * @return
 	 */
 	public EntityPlayer getHandle();
-	
+
 	/**
 	 * Gets a copy of the in game HUD to attach widget and launch popups from
 	 * 
@@ -69,6 +69,26 @@ public interface RockyPlayer extends Player {
 	 * @return if the mod enabled
 	 */
 	public boolean isModded();
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean hasAchievement(int id);
+
+	/**
+	 * 
+	 * @param name
+	 * @param flag
+	 */
+	public void setAchievement(int id, boolean flag);
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Integer[] getAchievement();
 
 	/**
 	 * Gets the render distance that the player views, or null if unknown
@@ -530,31 +550,31 @@ public interface RockyPlayer extends Player {
 	 * @return
 	 */
 	public boolean hasObserver(Player player);
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	public List<Player> getObservers();
-	
+
 	/**
 	 * 
 	 * @param player
 	 */
 	public void addObserver(Player player);
-	
+
 	/**
 	 * 
 	 * @param player
 	 */
 	public void removeObserver(Player player);
-	
+
 	/**
 	 * 
 	 * @param packet
 	 */
 	public void sendPacketToObservers(Packet packet);
-	
+
 	/**
 	 * Internal use only
 	 * 
@@ -570,7 +590,7 @@ public interface RockyPlayer extends Player {
 	 * worlds.
 	 * 
 	 * @param waypoint
-	 *           waypoint
+	 *            waypoint
 	 */
 	public void addWaypoint(Waypoint waypoint);
 
@@ -805,8 +825,7 @@ public interface RockyPlayer extends Player {
 	 *            to play at (100 = normal, 200 = double volume, 50 = half
 	 *            volume)
 	 */
-	public void playSoundEffect(String effect, int distance,
-			int volumePercent);
+	public void playSoundEffect(String effect, int distance, int volumePercent);
 
 	/**
 	 * Plays the music for the target player
@@ -857,12 +876,12 @@ public interface RockyPlayer extends Player {
 	 * @param build
 	 */
 	public void setBuildVersion(int build);
-	
+
 	/**
 	 * 
 	 */
 	public void onTick();
-	
+
 	/**
 	 * 
 	 */

@@ -19,6 +19,7 @@
  */
 package com.volumetricpixels.rockyplugin.player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,6 +88,7 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	private List<Player> observers = new LinkedList<Player>();
 	private String skin, cape, title;
 	private Map<String, String> titleFor;
+	private List<Integer> achievementList = new ArrayList<Integer>();
 
 	/**
 	 * Movement Addon variables
@@ -146,6 +148,33 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	@Override
 	public boolean isModded() {
 		return (build != -1);
+	}
+
+	/**
+	 * {@inhericDoc}
+	 */
+	@Override
+	public boolean hasAchievement(int id) {
+		return achievementList.contains(id);
+	}
+
+	/**
+	 * {@inhericDoc}
+	 */
+	@Override
+	public void setAchievement(int id, boolean flag) {
+		if (flag)
+			achievementList.add(id);
+		else
+			achievementList.remove(id);
+	}
+
+	/**
+	 * {@inhericDoc}
+	 */
+	@Override
+	public Integer[] getAchievement() {
+		return achievementList.toArray(new Integer[0]);
 	}
 
 	/**
@@ -886,8 +915,7 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void playSoundEffect(String effect, int distance,
-			int volumePercent) {
+	public void playSoundEffect(String effect, int distance, int volumePercent) {
 		sendPacket(new PacketPlaySound(false, effect, volumePercent, distance));
 	}
 

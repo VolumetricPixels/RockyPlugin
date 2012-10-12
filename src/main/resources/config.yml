@@ -1,4 +1,4 @@
 ForceClient: false
-ForceClientKickMessage: This server requires Spoutcraft! http://www.spout.org
+ForceClientKickMessage: This server requires Rocky!
 Authenticate: true
 AuthenticateTicks: 200

@@ -20,7 +20,10 @@
 package com.volumetricpixels.rockyapi.packet.protocol;
 
 import java.io.IOException;
+import java.util.Collection;
 
+import com.volumetricpixels.rockyapi.RockyManager;
+import com.volumetricpixels.rockyapi.inventory.RockyAchievement;
 import com.volumetricpixels.rockyapi.packet.Packet;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
@@ -30,16 +33,16 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
 /**
  * 
  */
-public class PacketAllowAddon implements Packet {
+public class PacketAchievementList implements Packet {
 
-	private boolean[] allowList;
+	protected RockyPlayer player;
 
 	/**
 	 * 
-	 * @param allowList
+	 * @param player
 	 */
-	public PacketAllowAddon(boolean[] allowList) {
-		this.allowList = allowList;
+	public PacketAchievementList(RockyPlayer player) {
+		this.player = player;
 	}
 
 	/**
@@ -47,7 +50,6 @@ public class PacketAllowAddon implements Packet {
 	 */
 	@Override
 	public void readData(PacketInputStream input) throws IOException {
-		// Handle in client-side
 	}
 
 	/**
@@ -55,8 +57,23 @@ public class PacketAllowAddon implements Packet {
 	 */
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
-		for (boolean isAllow : allowList)
-			output.writeBoolean(isAllow);
+		Collection<RockyAchievement> list = RockyManager.getPlayerManager()
+				.getAchievements();
+
+		output.writeShort(list.size());
+		for (RockyAchievement achievement : list) {
+			output.writeShort(achievement.getId());
+			output.writeShort(achievement.getItemId());
+			output.writeUTF(achievement.getName());
+			output.writeUTF(achievement.getDescription());
+			for (RockyAchievement dependency : achievement.getDependency())
+				output.writeShort(dependency.getId());
+		}
+
+		Integer[] playerAchievementList = player.getAchievement();
+		output.writeShort(playerAchievementList.length);
+		for (Integer id : playerAchievementList)
+			output.writeShort(id);
 	}
 
 	/**
@@ -64,7 +81,6 @@ public class PacketAllowAddon implements Packet {
 	 */
 	@Override
 	public void handle(RockyPlayer player) {
-		// Handle in client-side
 	}
 
 	/**
@@ -72,14 +88,14 @@ public class PacketAllowAddon implements Packet {
 	 */
 	@Override
 	public void failure(RockyPlayer player) {
-		// Handle in client-side
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public PacketType getType() {
-		return PacketType.PacketAllowAddon;
+		return PacketType.PacketAchievementList;
 	}
+
 }

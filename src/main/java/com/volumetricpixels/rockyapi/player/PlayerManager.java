@@ -19,15 +19,37 @@
  */
 package com.volumetricpixels.rockyapi.player;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
+
+import com.volumetricpixels.rockyapi.inventory.RockyAchievement;
 
 /**
  * 
  */
 public interface PlayerManager {
 
+	/**
+	 * 
+	 * @param achievement
+	 */
+	public void registerAchievement(RockyAchievement achievement);
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public RockyAchievement getAchievement(int id);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Collection<RockyAchievement> getAchievements();
+	
 	/**
 	 * 
 	 * @param player

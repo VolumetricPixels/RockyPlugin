@@ -133,14 +133,6 @@ public class PacketScreenAction implements Packet {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getVersion() {
-		return 2;
-	}
-
-	/**
 	 * 
 	 * @param player
 	 * @param e

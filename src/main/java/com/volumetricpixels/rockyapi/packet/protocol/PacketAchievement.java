@@ -30,24 +30,23 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
 /**
  * 
  */
-public class PacketAllowAddon implements Packet {
+public class PacketAchievement implements Packet {
 
-	private boolean[] allowList;
-
+	protected int achievementId;
+	
 	/**
 	 * 
-	 * @param allowList
+	 * @param achievementId
 	 */
-	public PacketAllowAddon(boolean[] allowList) {
-		this.allowList = allowList;
+	public PacketAchievement(int achievementId) {
+		this.achievementId = achievementId;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void readData(PacketInputStream input) throws IOException {
-		// Handle in client-side
 	}
 
 	/**
@@ -55,8 +54,7 @@ public class PacketAllowAddon implements Packet {
 	 */
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
-		for (boolean isAllow : allowList)
-			output.writeBoolean(isAllow);
+		output.writeShort(achievementId);
 	}
 
 	/**
@@ -64,7 +62,6 @@ public class PacketAllowAddon implements Packet {
 	 */
 	@Override
 	public void handle(RockyPlayer player) {
-		// Handle in client-side
 	}
 
 	/**
@@ -72,14 +69,14 @@ public class PacketAllowAddon implements Packet {
 	 */
 	@Override
 	public void failure(RockyPlayer player) {
-		// Handle in client-side
 	}
 
 	/**
-	 * {@inhericDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public PacketType getType() {
-		return PacketType.PacketAllowAddon;
+		return PacketType.PacketAchievement;
 	}
+
 }

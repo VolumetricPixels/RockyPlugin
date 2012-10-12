@@ -81,12 +81,4 @@ public class PacketWidgetRemove implements Packet {
 		return PacketType.PacketWidgetRemove;
 	}
 
-	/**
-	 * {@inhericDoc}
-	 */
-	@Override
-	public int getVersion() {
-		return 1;
-	}
-
 }

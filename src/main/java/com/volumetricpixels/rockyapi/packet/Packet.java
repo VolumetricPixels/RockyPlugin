@@ -69,16 +69,6 @@ public interface Packet {
 	public void failure(RockyPlayer player);
 
 	/**
-	 * Version of the packet this represents. Version numbers should start with
-	 * 0. Versions should be incremented any time the member variables or
-	 * serialization of the packet changes, to prevent crashing. Mismatched
-	 * packet versions are discarded, and {@link #failure(int)} is called.
-	 * 
-	 * @return version
-	 */
-	public int getVersion();
-	
-	/**
 	 * 
 	 * @return
 	 */

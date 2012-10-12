@@ -83,14 +83,6 @@ public class PacketSkyAddon implements Packet {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getVersion() {
-		return 0;
-	}
-
-	/**
 	 * {@inhericDoc}
 	 */
 	@Override

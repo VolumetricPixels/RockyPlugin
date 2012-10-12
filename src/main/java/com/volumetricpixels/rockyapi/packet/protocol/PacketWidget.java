@@ -96,12 +96,4 @@ public class PacketWidget implements Packet {
 		return PacketType.PacketWidget;
 	}
 
-	/**
-	 * {@inhericDoc}
-	 */
-	@Override
-	public int getVersion() {
-		return 2;
-	}
-
 }

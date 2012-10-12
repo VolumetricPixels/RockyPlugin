@@ -20,7 +20,6 @@
 package com.volumetricpixels.rockyplugin.packet;
 
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.INetworkManager;
@@ -57,7 +56,6 @@ public class RockyPacketHandler extends NetServerHandler {
 	private final static int QUEUE_PACKET_SIZE = 9437184;
 
 	private LinkedBlockingDeque<Packet> resyncQueue = new LinkedBlockingDeque<Packet>();
-	private AtomicBoolean processingKick = new AtomicBoolean(false);
 
 	/**
 	 * 
@@ -138,8 +136,6 @@ public class RockyPacketHandler extends NetServerHandler {
 			return;
 		}
 		resyncQueue.addLast(packet);
-		if (processingKick.get())
-			syncFlushPacketQueue();
 	}
 
 	/**
@@ -149,19 +145,6 @@ public class RockyPacketHandler extends NetServerHandler {
 	public void d() {
 		syncFlushPacketQueue();
 		super.d();
-	}
-
-	/**
-	 * {@inhericDoc}
-	 */
-	@Override
-	public void disconnect(String kick) {
-		processingKick.set(true);
-		super.disconnect(kick);
-		if (this.disconnected) {
-			syncFlushPacketQueue();
-		}
-		processingKick.set(false);
 	}
 
 	/**
@@ -245,9 +228,8 @@ public class RockyPacketHandler extends NetServerHandler {
 
 		// The stack contain a custom id and we don't have a custom client
 		if (stack != null
-				&& stack.id >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID) {
+				&& stack.id >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
 			stack.id = RockyMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
-		}
 	}
 
 	/**

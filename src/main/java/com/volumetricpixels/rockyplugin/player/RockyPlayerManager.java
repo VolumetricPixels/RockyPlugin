@@ -19,6 +19,9 @@
  */
 package com.volumetricpixels.rockyplugin.player;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -26,6 +29,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.volumetricpixels.rockyapi.RockyManager;
+import com.volumetricpixels.rockyapi.inventory.RockyAchievement;
 import com.volumetricpixels.rockyapi.player.PlayerManager;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 
@@ -33,6 +37,8 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  * 
  */
 public class RockyPlayerManager implements PlayerManager {
+	protected Map<Integer, RockyAchievement> achievementList = new HashMap<Integer, RockyAchievement>();
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -97,6 +103,30 @@ public class RockyPlayerManager implements PlayerManager {
 		} catch (Throwable ex) {
 		}
 		player.setBuildVersion(build);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void registerAchievement(RockyAchievement achievement) {
+		achievementList.put(achievement.getId(), achievement);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public RockyAchievement getAchievement(int id) {
+		return achievementList.get(id);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Collection<RockyAchievement> getAchievements() {
+		return achievementList.values();
 	}
 
 }

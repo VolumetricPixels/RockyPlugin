@@ -40,7 +40,6 @@ public class PacketKeyBinding implements Packet {
 	private KeyBinding binding;
 	private Keyboard key;
 	private String id;
-	private String plugin;
 	private boolean pressed;
 	private int screen;
 	private UUID uniqueId;
@@ -107,27 +106,11 @@ public class PacketKeyBinding implements Packet {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getVersion() {
-		return 0;
-	}
-
-	/**
 	 * 
 	 * @return
 	 */
 	public String getBindingId() {
 		return id;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getPlugin() {
-		return plugin;
 	}
 
 	/**
