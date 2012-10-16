@@ -95,7 +95,7 @@ public class RockyPacketHandler extends NetServerHandler {
 	 */
 	@Override
 	public void a(Packet250CustomPayload packet250custompayload) {
-		if (packet250custompayload.tag.equals("TM|Spout")) {
+		if (packet250custompayload.tag.equals("TM|Rocky")) {
 			RockyPlayer player = (RockyPlayer) RockyManager
 					.getPlayer(getPlayer());
 			Rocky.getInstance().handlePlayerAuthentication(player);

@@ -59,13 +59,13 @@ public interface BlockDesign {
 	 *            to set
 	 * @return this
 	 */
-	public BlockDesign setRenderPass(BlockRenderPass renderPass);
+	public BlockDesign setRenderOrder(BlockRenderOrder renderPass);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public BlockRenderPass getRenderPass();
+	public BlockRenderOrder getRenderOrder();
 
 	/**
 	 * Sets the specified Texture for this BlockDesign

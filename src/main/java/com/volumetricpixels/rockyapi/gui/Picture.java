@@ -1,6 +1,7 @@
 /*
  * This file is part of RockyPlugin.
  *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
  * Copyright (c) 2011-2012, VolumetricPixels <http://www.volumetricpixels.com/>
  * RockyPlugin is licensed under the GNU Lesser General Public License.
  *
@@ -25,7 +26,7 @@ package com.volumetricpixels.rockyapi.gui;
  * Images must be in either png or jpg format. You may pre-cache images using
  * the FileManager, so only the filename is required afterwards.
  */
-public interface Texture extends Widget {
+public interface Picture extends Widget {
 	/**
 	 * Gets the url of this texture to render
 	 * 
@@ -42,7 +43,7 @@ public interface Texture extends Widget {
 	 *            to set this texture to
 	 * @return texture
 	 */
-	public Texture setUrl(String url);
+	public Picture setUrl(String url);
 
 	/**
 	 * Gets if the texture draws the full alpha channel instead of just using a
@@ -60,7 +61,7 @@ public interface Texture extends Widget {
 	 *            to set the drawing state
 	 * @return texture
 	 */
-	public Texture setDrawAlphaChannel(boolean draw);
+	public Picture setDrawAlphaChannel(boolean draw);
 
 	/**
 	 * Set the offset to the top of the image. Setting this to a anything other
@@ -71,7 +72,7 @@ public interface Texture extends Widget {
 	 *            the top offset
 	 * @return texture
 	 */
-	public Texture setTop(int top);
+	public Picture setTop(int top);
 
 	/**
 	 * Get the offset to the top of the image.
@@ -89,7 +90,7 @@ public interface Texture extends Widget {
 	 *            the left offset
 	 * @return texture
 	 */
-	public Texture setLeft(int left);
+	public Picture setLeft(int left);
 
 	/**
 	 * Get the offset to the left of the image.

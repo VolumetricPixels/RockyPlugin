@@ -1,6 +1,7 @@
 /*
  * This file is part of RockyPlugin.
  *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
  * Copyright (c) 2011-2012, VolumetricPixels <http://www.volumetricpixels.com/>
  * RockyPlugin is licensed under the GNU Lesser General Public License.
  *
@@ -44,11 +45,17 @@ public class GenericTextField extends GenericControl implements TextField {
 	public GenericTextField() {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getVersion() {
 		return super.getVersion() + 3;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void readData(PacketInputStream input) throws IOException {
 		super.readData(input);
@@ -64,6 +71,9 @@ public class GenericTextField extends GenericControl implements TextField {
 		setPlaceholder(input.readUTF());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
 		super.writeData(output);
@@ -78,11 +88,17 @@ public class GenericTextField extends GenericControl implements TextField {
 		output.writeUTF(getPlaceholder());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getCursorPosition() {
 		return cursor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setCursorPosition(int position) {
 		if (getCursorPosition() != position) {
@@ -92,11 +108,17 @@ public class GenericTextField extends GenericControl implements TextField {
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getText() {
 		return text;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setText(String text) {
 		if (text != null && !getText().equals(text)) {
@@ -106,11 +128,17 @@ public class GenericTextField extends GenericControl implements TextField {
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getMaximumCharacters() {
 		return maxChars;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setMaximumCharacters(int max) {
 		if (getMaximumCharacters() != max) {
@@ -120,11 +148,17 @@ public class GenericTextField extends GenericControl implements TextField {
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getMaximumLines() {
 		return maxLines;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setMaximumLines(int max) {
 		if (getMaximumLines() != max) {
@@ -134,11 +168,17 @@ public class GenericTextField extends GenericControl implements TextField {
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Color getFieldColor() {
 		return fieldColor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setFieldColor(Color color) {
 		if (color != null && !getFieldColor().equals(color)) {
@@ -148,11 +188,17 @@ public class GenericTextField extends GenericControl implements TextField {
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Color getBorderColor() {
 		return borderColor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setBorderColor(Color color) {
 		if (color != null && !getBorderColor().equals(color)) {
@@ -162,11 +208,17 @@ public class GenericTextField extends GenericControl implements TextField {
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getTabIndex() {
 		return tabIndex;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setTabIndex(int index) {
 		if (getTabIndex() != index) {
@@ -176,11 +228,17 @@ public class GenericTextField extends GenericControl implements TextField {
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isPasswordField() {
 		return password;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setPasswordField(boolean password) {
 		if (isPasswordField() != password) {
@@ -190,25 +248,36 @@ public class GenericTextField extends GenericControl implements TextField {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isFocused() {
 		return focus;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setFocus(boolean focus) {
 		super.setFocus(focus);
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public WidgetType getType() {
 		return WidgetType.TextField;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField copy() {
-		// ignore focus parameter which would lead to strange behaviour!
 		return ((TextField) super.copy()).setText(getText())
 				.setCursorPosition(getCursorPosition())
 				.setMaximumCharacters(getMaximumCharacters())
@@ -219,15 +288,24 @@ public class GenericTextField extends GenericControl implements TextField {
 				.setPlaceholder(getPlaceholder());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onTextFieldChange(TextFieldChangeEvent event) {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onTypingFinished() {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public TextField setPlaceholder(String text) {
 		if (text != null && !getPlaceholder().equals(text)) {
@@ -237,6 +315,9 @@ public class GenericTextField extends GenericControl implements TextField {
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getPlaceholder() {
 		return placeholder;

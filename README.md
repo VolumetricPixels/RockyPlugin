@@ -1,5 +1,8 @@
 RockyPlugin
 ===========
+RockyPlugin is a core plugin inspired by SpoutPlugin <www.spout.org> for Craftbukkit. Most of the code was removed
+and rewroted. Its faster, smaller and has more features than his predecessor. Instead of modifying craftbukkit, 
+it is a modified version of native minecraft.
 
 Visit our [website][Website] or get support on our [forums][Forums].  
 

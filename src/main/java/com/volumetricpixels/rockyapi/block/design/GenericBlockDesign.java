@@ -39,7 +39,7 @@ public class GenericBlockDesign implements BlockDesign {
 	protected float maxBrightness = 1.0f;
 	protected float minBrightness = 0.0f;
 	protected float brightness = 0.5f;
-	protected BlockRenderPass renderPass = BlockRenderPass.OPAQUE;
+	protected BlockRenderOrder renderPass = BlockRenderOrder.OPAQUE;
 
 	/**
 	 * 
@@ -167,7 +167,7 @@ public class GenericBlockDesign implements BlockDesign {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BlockDesign setRenderPass(BlockRenderPass renderPass) {
+	public BlockDesign setRenderOrder(BlockRenderOrder renderPass) {
 		this.renderPass = renderPass;
 		return this;
 	}
@@ -176,7 +176,7 @@ public class GenericBlockDesign implements BlockDesign {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BlockRenderPass getRenderPass() {
+	public BlockRenderOrder getRenderOrder() {
 		return renderPass;
 	}
 

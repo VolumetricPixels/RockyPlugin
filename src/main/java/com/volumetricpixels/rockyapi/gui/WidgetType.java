@@ -1,6 +1,7 @@
 /*
  * This file is part of RockyPlugin.
  *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
  * Copyright (c) 2011-2012, VolumetricPixels <http://www.volumetricpixels.com/>
  * RockyPlugin is licensed under the GNU Lesser General Public License.
  *
@@ -26,7 +27,7 @@ import java.util.HashMap;
  */
 public class WidgetType {
 	public static WidgetType Label = new WidgetType(GenericLabel.class, 0);
-	public static WidgetType Texture = new WidgetType(GenericTexture.class, 1);
+	public static WidgetType Texture = new WidgetType(GenericPicture.class, 1);
 	public static WidgetType PopupScreen = new WidgetType(GenericPopup.class, 2);
 	public static WidgetType InGameScreen = new WidgetType(null, 3);
 	public static WidgetType ItemWidget = new WidgetType(

@@ -29,7 +29,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.block.design.BlockDesign;
-import com.volumetricpixels.rockyapi.block.design.BlockRenderPass;
+import com.volumetricpixels.rockyapi.block.design.BlockRenderOrder;
 import com.volumetricpixels.rockyapi.block.design.GenericBlockDesign;
 import com.volumetricpixels.rockyapi.material.Block;
 import com.volumetricpixels.rockyapi.material.BlockType;
@@ -166,8 +166,8 @@ public class GenericBlock implements Block {
 		}
 		BlockDesign design = new GenericBlockDesign(configuration, texture,
 				coordsElement);
-		design.setRenderPass(section.getBoolean("Transparency", false) ? BlockRenderPass.OPAQUE
-				: BlockRenderPass.TRANSPARENT);
+		design.setRenderOrder(section.getBoolean("Transparency", false) ? BlockRenderOrder.OPAQUE
+				: BlockRenderOrder.TRANSPARENT);
 		setBlockDesign(design);
 
 		return this;

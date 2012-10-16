@@ -1079,9 +1079,9 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 			return;
 		}
 		Packet250CustomPayload loginPacket = new Packet250CustomPayload();
-		loginPacket.tag = "TM|Spout";
+		loginPacket.tag = "TM|Rocky";
 		loginPacket.length = 4;
-		loginPacket.data = new byte[] { 0x00, (byte) 0xF0, (byte) 0xFF, 0x0F };
+		loginPacket.data = new byte[] { 0x00, (byte) 0xF0, (byte) 0x0F, 0x0F };
 		((RockyPlayerHandler) player).getNetServerHandler()
 				.sendImmediatePacket(loginPacket);
 	}

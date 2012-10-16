@@ -1,6 +1,7 @@
 /*
  * This file is part of RockyPlugin.
  *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
  * Copyright (c) 2011-2012, VolumetricPixels <http://www.volumetricpixels.com/>
  * RockyPlugin is licensed under the GNU Lesser General Public License.
  *
@@ -27,7 +28,7 @@ import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
 /**
  * 
  */
-public class GenericTexture extends GenericWidget implements Texture {
+public class GenericPicture extends GenericWidget implements Picture {
 	
 	protected String url = null;
 	protected boolean drawAlpha = false;
@@ -37,14 +38,14 @@ public class GenericTexture extends GenericWidget implements Texture {
 	/**
 	 * 
 	 */
-	public GenericTexture() {
+	public GenericPicture() {
 	}
 
 	/**
 	 * 
 	 * @param url
 	 */
-	public GenericTexture(String url) {
+	public GenericPicture(String url) {
 		this.url = url;
 	}
 
@@ -100,7 +101,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Texture setUrl(String Url) {
+	public Picture setUrl(String Url) {
 		if ((getUrl() != null && !getUrl().equals(Url))
 				|| (getUrl() == null && Url != null)) {
 			this.url = Url;
@@ -113,8 +114,8 @@ public class GenericTexture extends GenericWidget implements Texture {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Texture copy() {
-		return ((Texture) super.copy()).setUrl(getUrl()).setDrawAlphaChannel(
+	public Picture copy() {
+		return ((Picture) super.copy()).setUrl(getUrl()).setDrawAlphaChannel(
 				isDrawingAlphaChannel());
 	}
 
@@ -130,7 +131,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Texture setDrawAlphaChannel(boolean draw) {
+	public Picture setDrawAlphaChannel(boolean draw) {
 		if (isDrawingAlphaChannel() != draw) {
 			drawAlpha = draw;
 			autoDirty();
@@ -142,7 +143,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Texture setTop(int top) {
+	public Picture setTop(int top) {
 		if (getTop() != top) {
 			this.top = top;
 			autoDirty();
@@ -162,7 +163,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Texture setLeft(int left) {
+	public Picture setLeft(int left) {
 		if (getLeft() != left) {
 			this.left = left;
 			autoDirty();

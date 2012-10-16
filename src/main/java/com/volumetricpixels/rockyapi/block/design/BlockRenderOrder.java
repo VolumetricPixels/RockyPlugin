@@ -22,7 +22,7 @@ package com.volumetricpixels.rockyapi.block.design;
 /**
  * 
  */
-public enum BlockRenderPass {
+public enum BlockRenderOrder {
 	/**
 	 * 
 	 */
