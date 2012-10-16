@@ -66,7 +66,7 @@ public enum ItemCreativeTab {
 	/**
 	 * 
 	 */
-	CUSTOM_ITEM(11);
+	CUSTOM_ITEM(12);
 	
 	private int id;
 	

@@ -126,7 +126,7 @@ public class GenericBlock implements Block {
 		this.allowRotation = section.getBoolean("IsRotated", false);
 		this.blockItem = new GenericItem(plugin, name);
 		this.blockItem.setCreativeTab(ItemCreativeTab.valueOf(section
-				.getString("CreativeTab", "BLOCk")));
+				.getString("CreativeTab", "BLOCK")));
 		setStepSound(section.getString("StepSound", "stone"));
 		this.friction = (float) section.getDouble("Friction", 0.6f);
 		this.hardness = (float) section.getDouble("Hardness", 1.5f);
