@@ -22,6 +22,7 @@ package com.volumetricpixels.rockyapi.material.generic;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
+import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.RangeAmmoType;
 import com.volumetricpixels.rockyapi.material.RangeWeapon;
@@ -52,6 +53,9 @@ public class GenericRangeWeapon extends GenericWeapon implements RangeWeapon {
 	 */
 	public GenericRangeWeapon(Plugin plugin, String name, Texture texture) {
 		super(plugin, name, texture);
+		
+		setStackable(false);
+		setCreativeTab(ItemCreativeTab.COMBAT);
 	}
 
 	/**
@@ -101,7 +105,9 @@ public class GenericRangeWeapon extends GenericWeapon implements RangeWeapon {
 				"ITEM"));
 		this.type = WeaponType.RANGE;
 		this.isBlockAllowed = false;
-
+		setCreativeTab(ItemCreativeTab.valueOf(section.getString("CreativeTab",
+				"COMBAT")));
+		
 		return this;
 	}
 

@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
+import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.Weapon;
 import com.volumetricpixels.rockyapi.material.WeaponType;
@@ -56,6 +57,9 @@ public class GenericWeapon extends GenericItem implements Weapon {
 	 */
 	public GenericWeapon(Plugin plugin, String name, Texture texture) {
 		super(plugin, name, texture);
+
+		setStackable(false);
+		setCreativeTab(ItemCreativeTab.COMBAT);
 	}
 
 	/**
@@ -146,8 +150,8 @@ public class GenericWeapon extends GenericItem implements Weapon {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Material loadPreInitialization(Plugin plugin, ConfigurationSection section,
-			AddonPack pack) {
+	public Material loadPreInitialization(Plugin plugin,
+			ConfigurationSection section, AddonPack pack) {
 		super.loadPreInitialization(plugin, section, pack);
 
 		this.durability = section.getInt("Durability", 100);
@@ -157,6 +161,8 @@ public class GenericWeapon extends GenericItem implements Weapon {
 		this.isBlockAllowed = (type == WeaponType.RANGE ? false : section
 				.getBoolean("IsBlocking", true));
 		this.setStackable(false);
+		setCreativeTab(ItemCreativeTab.valueOf(section.getString("CreativeTab",
+				"COMBAT")));
 
 		return this;
 	}

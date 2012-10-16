@@ -27,6 +27,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.material.Item;
+import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialEnumType;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
@@ -45,7 +46,8 @@ public class GenericItem implements Item {
 	private boolean isFuel;
 	private boolean isStackable;
 	private boolean isThrowable;
-
+	private ItemCreativeTab creativeTab = ItemCreativeTab.CUSTOM_ITEM;
+	
 	/**
 	 * 
 	 */
@@ -216,6 +218,7 @@ public class GenericItem implements Item {
 		out.writeUTF(name);
 		out.writeShort(itemID);
 		out.writeBoolean(isStackable);
+		out.writeByte(creativeTab.getId());
 		texture.writeToPacket(out);
 	}
 
@@ -233,6 +236,23 @@ public class GenericItem implements Item {
 	@Override
 	public Item setThrowable(boolean isThrowable) {
 		this.isThrowable = isThrowable;
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemCreativeTab getCreativeTab() {
+		return creativeTab;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Item setCreativeTab(ItemCreativeTab tab) {
+		this.creativeTab = tab;
 		return this;
 	}
 

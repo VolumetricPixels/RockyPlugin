@@ -23,6 +23,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
 import com.volumetricpixels.rockyapi.material.Food;
+import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyapi.resource.Texture;
@@ -49,6 +50,8 @@ public class GenericFood extends GenericItem implements Food {
 	 */
 	public GenericFood(Plugin plugin, String name, Texture texture) {
 		super(plugin, name, texture);
+		
+		setCreativeTab(ItemCreativeTab.FOOD);
 	}
 
 	/**
@@ -103,6 +106,9 @@ public class GenericFood extends GenericItem implements Food {
 
 		this.saturation = (float) section.getDouble("Saturation", 1.0f);
 		this.restoration = section.getInt("Restoration", 1);
+
+		setCreativeTab(ItemCreativeTab.valueOf(section.getString("CreativeTab", "FOOD")));
+
 		return this;
 	}
 

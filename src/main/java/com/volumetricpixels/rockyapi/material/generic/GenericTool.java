@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
+import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.Tool;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
@@ -59,6 +60,7 @@ public class GenericTool extends GenericItem implements Tool {
 		super(plugin, name, texture);
 
 		setStackable(false);
+		setCreativeTab(ItemCreativeTab.TOOL);
 	}
 
 	/**
@@ -140,7 +142,8 @@ public class GenericTool extends GenericItem implements Tool {
 		this.durability = section.getInt("Durability", 100);
 		this.damage = section.getInt("Damage", 1);
 		setStackable(false);
-
+		setCreativeTab(ItemCreativeTab.TOOL);
+		
 		return this;
 	}
 

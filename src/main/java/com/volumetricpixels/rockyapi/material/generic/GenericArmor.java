@@ -27,6 +27,7 @@ import org.bukkit.plugin.Plugin;
 import com.volumetricpixels.rockyapi.material.Armor;
 import com.volumetricpixels.rockyapi.material.ArmorModel;
 import com.volumetricpixels.rockyapi.material.ArmorType;
+import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
 import com.volumetricpixels.rockyapi.resource.AddonPack;
@@ -62,6 +63,9 @@ public class GenericArmor extends GenericItem implements Armor {
 			throw new IllegalArgumentException("Invalid Model Texture Lenght");
 		}
 		this.modelTexture = modelTexture;
+		
+		setStackable(false);
+		setCreativeTab(ItemCreativeTab.COMBAT);
 	}
 
 	/**
@@ -156,7 +160,9 @@ public class GenericArmor extends GenericItem implements Armor {
 		this.modelTexture[1] = new Texture(plugin, textureFile + "_2.png",
 				pack.getInputStream(textureFile + "_2.png"));
 		this.setStackable(false);
-
+		setCreativeTab(ItemCreativeTab.valueOf(section.getString("CreativeTab",
+				"COMBAT")));
+		
 		return this;
 	}
 

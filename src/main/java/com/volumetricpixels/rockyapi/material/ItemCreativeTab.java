@@ -19,79 +19,70 @@
  */
 package com.volumetricpixels.rockyapi.material;
 
-import java.io.IOException;
-
-import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
-import com.volumetricpixels.rockyapi.resource.Texture;
-
 /**
  * 
  */
-public interface Item extends Material {
+public enum ItemCreativeTab {
+	/**
+	 * 
+	 */
+	BLOCK(0),
+	/**
+	 * 
+	 */
+	DECORATION(1),
+	/**
+	 * 
+	 */
+	REDSTONE(2),
+	/**
+	 * 
+	 */
+	TRANSPORT(3),
+	/**
+	 * 
+	 */
+	MISC(4),
+	/**
+	 * 
+	 */
+	FOOD(6),
+	/**
+	 * 
+	 */
+	TOOL(7),
+	/**
+	 * 
+	 */
+	COMBAT(8),
+	/**
+	 * 
+	 */
+	BREWING(9),
+	/**
+	 * 
+	 */
+	MATERIAL(10),
+	/**
+	 * 
+	 */
+	CUSTOM_ITEM(11);
+	
+	private int id;
+	
+	/**
+	 * 
+	 * @param id
+	 */
+	private ItemCreativeTab(int id) {
+		this.id = id;
+	}
+	
 	/**
 	 * 
 	 * @return
 	 */
-	public ItemCreativeTab getCreativeTab();
-	
-	/**
-	 * 
-	 * @param tab
-	 * @return
-	 */
-	public Item setCreativeTab(ItemCreativeTab tab);
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getTypeId();
-	
-	/**
-	 * 
-	 * @param isFuel
-	 * @return
-	 */
-	public Item setAllowToBurn(boolean isFuel);
-
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isAllowToBurn();
-
-	/**
-	 * 
-	 */
-	public Item setStackable(boolean stackable);
-
-	/**
-	 * 
-	 */
-	public boolean isStackable();
-	
-	/**
-	 * 
-	 */
-	public Texture getTexture();
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isThrowable();
-	
-	/**
-	 * 
-	 * @param isThrowable
-	 * @return
-	 */
-	public Item setThrowable(boolean isThrowable);
-	
-	/**
-	 * 
-	 * @param out
-	 * @throws IOException
-	 */
-	public void writeToPacket(PacketOutputStream out) throws IOException;
+	public int getId() {
+		return id;
+	}
 }
