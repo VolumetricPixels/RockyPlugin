@@ -99,6 +99,7 @@
 				<directory>${basedir}/src/main/resources</directory>
 				<includes>
 					<include>*.yml</include>
+					<include>*.shape</include>
 				</includes>
 			</resource>
 		</resources>

@@ -31,7 +31,7 @@ public class Quad {
 	private int index;
 	private Texture texture;
 	private Vertex[] vertices = new Vertex[4];
-	private Vector3f lightSource;
+	private Vector3f lightSource = new Vector3f();
 	private Color color = Color.White;
 
 	/**

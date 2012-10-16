@@ -19,6 +19,12 @@
  */
 package com.volumetricpixels.rockyapi.block.design;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import com.volumetricpixels.rockyapi.math.Vector3f;
 import com.volumetricpixels.rockyapi.resource.Texture;
 
@@ -39,6 +45,80 @@ public class GenericBlockDesign implements BlockDesign {
 	 * 
 	 */
 	public GenericBlockDesign() {
+	}
+
+	/**
+	 * 
+	 * @param section
+	 */
+	@SuppressWarnings("unchecked")
+	public GenericBlockDesign(YamlConfiguration section, Texture texture,
+			List<String> textureIds) {
+		setMinBrightness(0.0f).setBrightness(0.5f).setMaxBrightness(1.0f);
+
+		// Get the bounding box
+		String[] boundingBox = section.getString("BoundingBox").split(" ");
+		Float xMin = Float.valueOf(Float.parseFloat("0" + boundingBox[0]));
+		Float yMin = Float.valueOf(Float.parseFloat("0" + boundingBox[1]));
+		Float zMin = Float.valueOf(Float.parseFloat("0" + boundingBox[2]));
+		Float xMax = Float.valueOf(Float.parseFloat("0" + boundingBox[3]));
+		Float yMax = Float.valueOf(Float.parseFloat("0" + boundingBox[4]));
+		Float zMax = Float.valueOf(Float.parseFloat("0" + boundingBox[5]));
+		setBoundingBox(xMin.floatValue(), yMin.floatValue(), zMin.floatValue(),
+				xMax.floatValue(), yMax.floatValue(), zMax.floatValue());
+
+		// Get the texture coordinates
+		List<Texture> subTextures = new ArrayList<Texture>();
+		for (String textureId : textureIds) {
+			String[] coords = textureId.split("[\\s]+");
+			Texture subTexture = new Texture(texture.getName(),
+					Integer.parseInt(coords[0]),
+					texture.getHeight()
+							- (Integer.parseInt(coords[1]) + Integer
+									.parseInt(coords[3])),
+					Integer.parseInt(coords[2]), Integer.parseInt(coords[3]));
+			subTextures.add(subTexture);
+		}
+
+		// If no coords are set, whole texture is used.
+		if (textureIds.size() == 0) {
+			subTextures.add(new Texture(texture.getName(), 0, 0, texture
+					.getWidth(), texture.getHeight()));
+		}
+
+		// Set the coordinates of the shape
+		List<? extends Map<String, Object>> shapes = (List<? extends Map<String, Object>>) section
+				.getList("Shapes");
+		setQuadNumber(shapes.size());
+		int id = 0;
+		// Copy the vertices of the shape
+		for (Map<?, ?> shape : shapes) {
+			// Set the quad of the shape
+			int subId = (Integer) shape.get("Texture");
+			Quad quad = new Quad(id,
+					subTextures.get(subTextures.size() > subId ? subId : 0));
+
+			// The coordinate of the quad
+			int j = 0;
+			String[] coordLine = null;
+			for (String line : ((String) shape.get("Coords")).split("\\r?\\n")) {
+				coordLine = line.split(" ");
+				quad.addVertex(j, Float.parseFloat(coordLine[0]),
+						Float.parseFloat(coordLine[1]),
+						Float.parseFloat(coordLine[2]));
+				j++;
+
+			}
+			// Check for quad ending (Join vertices)
+			if (j == 3)
+				quad.addVertex(j, Float.parseFloat(coordLine[0]),
+						Float.parseFloat(coordLine[1]),
+						Float.parseFloat(coordLine[2]));
+
+			setQuad(quad);
+			id++;
+		}
+		calculateLightSources();
 	}
 
 	/**

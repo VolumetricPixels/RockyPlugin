@@ -62,6 +62,7 @@ public class GenericItem implements Item {
 		this.name = name;
 		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
 				MaterialEnumType.ITEM);
+		RockyManager.getMaterialManager().addMaterial(this);
 	}
 
 	/**
@@ -79,7 +80,8 @@ public class GenericItem implements Item {
 		this.name = name;
 		this.texture = texture;
 		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
-				MaterialEnumType.ITEM);
+				MaterialEnumType.ITEM);	
+		RockyManager.getMaterialManager().addMaterial(this);	
 	}
 
 	/**

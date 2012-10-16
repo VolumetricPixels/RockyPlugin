@@ -23,17 +23,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.block.design.BlockDesign;
+import com.volumetricpixels.rockyapi.block.design.BlockRenderPass;
+import com.volumetricpixels.rockyapi.block.design.GenericBlockDesign;
 import com.volumetricpixels.rockyapi.material.Block;
 import com.volumetricpixels.rockyapi.material.BlockType;
 import com.volumetricpixels.rockyapi.material.Item;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialEnumType;
+import com.volumetricpixels.rockyapi.material.MaterialManager;
 import com.volumetricpixels.rockyapi.resource.AddonPack;
+import com.volumetricpixels.rockyapi.resource.Sound;
+import com.volumetricpixels.rockyapi.resource.Texture;
 
 /**
  * 
@@ -43,7 +49,7 @@ public class GenericBlock implements Block {
 	protected int id;
 	protected Plugin plugin;
 	protected String name;
-	protected String stepSound;
+	protected Sound stepSound;
 	protected float friction;
 	protected float hardness;
 	protected boolean isOpaque;
@@ -108,30 +114,58 @@ public class GenericBlock implements Block {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Material loadPreInitialization(Plugin plugin,
 			ConfigurationSection section, AddonPack pack) {
 		this.plugin = plugin;
-		this.name = section.getName();
+		this.name = section.getString("Name", "Undefined");
 		this.id = RockyManager.getMaterialManager().getRegisteredName(name,
 				MaterialEnumType.BLOCK);
 		this.allowRotation = section.getBoolean("IsRotated", false);
 		this.blockItem = new GenericItem(plugin, name);
-		this.stepSound = section.getString("StepSound", "Default");
+		setStepSound(section.getString("StepSound", "stone"));
 		this.friction = (float) section.getDouble("Friction", 0.6f);
 		this.hardness = (float) section.getDouble("Hardness", 1.5f);
 		this.isOpaque = section.getBoolean("IsOpaque", false);
 		this.light = section.getInt("Light", 0);
 		this.type = BlockType.valueOf(section.getString("Type"));
+		this.material = new GenericMaterialWrapper(this);
 
-		String[] dropType = section.getString("Drop", "-1:-1").split(":");
-		if (!dropType[0].equals("-1")) {
-			this.dropStack = new ItemStack(RockyManager.getMaterialManager()
-					.getRegisteredName(dropType[0], MaterialEnumType.ITEM),
-					Integer.valueOf(dropType[1]));
+		// Load the shape of the block
+		String textureFile = section.getString("Texture", section.getName()
+				+ ".png");
+		String shapeFile = section.getString("Shape", section.getName()
+				+ ".shape");
+		if (!pack.hasEntry(shapeFile)) {
+			shapeFile = MaterialManager.DEFAULT_SHAPE;
 		}
-		// TODO: Get the material
-		// TODO: Get the design of the block;
+		if (!pack.hasEntry(textureFile)) {
+			throw new RuntimeException(textureFile + " cannot be found.");
+		}
+		Texture texture = null;
+		if (RockyManager.getResourceManager().hasResource(textureFile)) {
+			texture = (Texture) RockyManager.getResourceManager().getResource(
+					textureFile);
+		} else {
+			texture = new Texture(plugin, textureFile,
+					pack.getInputStream(textureFile));
+		}
+		List<String> coordsElement = (List<String>) section.getList("Coords");
+
+		// Load the block shape
+		YamlConfiguration configuration = null;
+		if (shapeFile.equals(MaterialManager.DEFAULT_SHAPE))
+			configuration = RockyManager.getMaterialManager().getDefaultShape();
+		else {
+			configuration = YamlConfiguration.loadConfiguration(pack
+					.getInputStream(shapeFile));
+		}
+		BlockDesign design = new GenericBlockDesign(configuration, texture,
+				coordsElement);
+		design.setRenderPass(section.getBoolean("Transparency", false) ? BlockRenderPass.OPAQUE
+				: BlockRenderPass.TRANSPARENT);
+		setBlockDesign(design);
 
 		return this;
 	}
@@ -142,7 +176,12 @@ public class GenericBlock implements Block {
 	@Override
 	public Material loadPostInitialization(Plugin plugin,
 			ConfigurationSection section, AddonPack pack) {
-		// TODO: ¿?
+		String[] dropType = section.getString("Drop", "-1:-1").split(":");
+		if (!dropType[0].equals("-1")) {
+			this.dropStack = new ItemStack(RockyManager.getMaterialManager()
+					.getRegisteredName(dropType[0], MaterialEnumType.ITEM),
+					Integer.valueOf(dropType[1]));
+		}
 		return this;
 	}
 
@@ -159,7 +198,7 @@ public class GenericBlock implements Block {
 	 */
 	@Override
 	public String getStepSound() {
-		return stepSound;
+		return stepSound.getName();
 	}
 
 	/**
@@ -167,7 +206,12 @@ public class GenericBlock implements Block {
 	 */
 	@Override
 	public Block setStepSound(String effect) {
-		this.stepSound = effect;
+		if (RockyManager.getResourceManager().hasResource(effect)) {
+			stepSound = (Sound) RockyManager.getResourceManager().getResource(
+					effect);
+		} else {
+			stepSound = new Sound(plugin, effect);
+		}
 		return this;
 	}
 

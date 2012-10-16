@@ -21,6 +21,7 @@ package com.volumetricpixels.rockyapi.packet.protocol;
 
 import java.io.IOException;
 
+import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.packet.Packet;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
@@ -35,7 +36,7 @@ public class PacketFileCacheBegin implements Packet {
 
 	protected Resource[] resourceList;
 	protected String[] difResources;
-	
+
 	/**
 	 * 
 	 * @param isPreLoading
@@ -60,10 +61,8 @@ public class PacketFileCacheBegin implements Packet {
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
 		output.writeShort(resourceList.length);
-		for (Resource resource : resourceList) {
-			output.writeUTF(resource.getName());
-			output.writeLong(resource.getRevision());
-		}
+		for (Resource resource : resourceList)
+			output.writeUTF(resource.getName() + ":" + resource.getRevision());
 	}
 
 	/**
@@ -71,7 +70,13 @@ public class PacketFileCacheBegin implements Packet {
 	 */
 	@Override
 	public void handle(RockyPlayer player) {
-		//TODO: Send every file cache and finally file cache finish
+		for (String name : difResources) {
+			// Prevent a NPE hack by a hacked client.
+			if (RockyManager.getResourceManager().hasResource(name))
+				player.sendPacket(new PacketFileCache(RockyManager
+						.getResourceManager().getResource(name)));
+		}
+		player.sendPacket(new PacketFileCacheFinish());
 	}
 
 	/**

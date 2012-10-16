@@ -21,33 +21,27 @@ package com.volumetricpixels.rockyapi.packet.protocol;
 
 import java.io.IOException;
 
-import org.bukkit.plugin.Plugin;
-
 import com.volumetricpixels.rockyapi.packet.Packet;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
 import com.volumetricpixels.rockyapi.packet.PacketType;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
+import com.volumetricpixels.rockyapi.resource.Resource;
 
 /**
  * 
  */
-public class PacketFileCache<T> implements Packet {
+public class PacketFileCache implements Packet {
 
-	private String pluginName;
-	private boolean isLocal;
-	private T file;
+	private Resource resource;
 
 	/**
 	 * 
 	 * @param plugin
 	 * @param file
 	 */
-	public PacketFileCache(Plugin plugin, T file) {
-		pluginName = plugin.getName();
-
-		isLocal = !(file instanceof String);
-		this.file = file;
+	public PacketFileCache(Resource resource) {
+		this.resource = resource;
 	}
 
 	/**
@@ -63,12 +57,8 @@ public class PacketFileCache<T> implements Packet {
 	 */
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
-		output.writeUTF(pluginName);
-		output.writeBoolean(isLocal);
-		if (!isLocal)
-			output.writeUTF((String) file);
-		else
-			output.write((byte[]) file);
+		output.writeUTF(resource.getName());
+		output.write((byte[])resource.getData());
 	}
 
 	/**

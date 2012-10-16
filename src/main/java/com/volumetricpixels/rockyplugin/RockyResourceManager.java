@@ -45,7 +45,7 @@ import com.volumetricpixels.rockyapi.resource.ResourceManager;
  * 
  */
 public class RockyResourceManager implements ResourceManager {
-	private static final String[] VALID_EXTENSION = { "yml", "png", "ogg",
+	private static final String[] VALID_EXTENSION = { "yml", "png", "jpg", "ogg",
 			"midi", "wav" };
 	protected Map<Plugin, Map<String, Resource>> cacheList = new HashMap<Plugin, Map<String, Resource>>();
 	protected Map<String, Resource> resourceList = new HashMap<String, Resource>();

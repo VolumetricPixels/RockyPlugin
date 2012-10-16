@@ -22,6 +22,7 @@ package com.volumetricpixels.rockyplugin;
 import net.minecraft.server.Item;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,6 +34,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class RockyCommand implements CommandExecutor {
 
+	private final static String MESSAGE_PREFIX = "[" + ChatColor.DARK_PURPLE
+			+ "Rocky" + ChatColor.WHITE + "]: ";
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -40,34 +44,42 @@ public class RockyCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (args.length == 0) {
-			sender.sendMessage("[Rocky] Server version: "
-					+ Rocky.getInstance().getDescription().getVersion());
+			sender.sendMessage(MESSAGE_PREFIX + "Server version {"
+					+ Rocky.getInstance().getDescription().getVersion() + "}");
 			return true;
 		}
 
 		String c = args[0];
 		if (!sender.isOp()) {
-			sender.sendMessage("[Rocky] This command is Op only");
+			sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+					+ "This command is Op only");
 			return true;
 		} else if (c.equals("waypoint")) {
 			if (!(sender instanceof Player)) {
-				sender.sendMessage("Only players can add waypoints.");
+				sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+						+ "Only players can add waypoints.");
 				return true;
 			}
 			if (args.length > 1) {
 				String name = args[1];
 				Rocky.getInstance().getConfiguration()
 						.addWaypoint(name, ((Player) sender).getLocation());
-				sender.sendMessage("Waypoint [" + name
+				sender.sendMessage(MESSAGE_PREFIX + "Waypoint [" + name
 						+ "] created successfully");
 				return true;
 			} else {
-				sender.sendMessage("You must give a name to the waypoint.");
+				sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+						+ "You must give a name to the waypoint.");
 				return true;
 			}
 		} else if (c.equals("reload")) {
+			sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+					+ "Reloading, please wait a moment.");
 			Rocky.getInstance().onDisable();
+			// Send new packet for prevent moving and action
 			Rocky.getInstance().onLoad();
+			sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+					+ "The plugin has been reloaded.");
 			return true;
 		} else if (c.equals("item") && args.length > 1) {
 			Integer item = Integer.valueOf(args[1]);
@@ -76,14 +88,17 @@ public class RockyCommand implements CommandExecutor {
 
 			Player player = Bukkit.getPlayerExact(name);
 			if (player == null) {
-				sender.sendMessage("The user must be online.");
+				sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+						+ "The user must be online.");
 				return true;
 			} else if (amount > 64 || amount < 1) {
-				sender.sendMessage("The minimum is 1 and the maximum is 64");
+				sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+						+ "The minimum is 1 and the maximum is 64");
 				return true;
 			} else if (item < 0 || item > Item.byId.length
 					|| Item.byId[item] == null) {
-				sender.sendMessage("The item doesn't exist");
+				sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+						+ "The item doesn't exist");
 				return true;
 			}
 			player.getInventory().addItem(new ItemStack(item, amount));

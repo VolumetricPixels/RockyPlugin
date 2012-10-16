@@ -60,12 +60,6 @@ public class Rocky extends JavaPlugin implements Runnable {
 	 * 
 	 */
 	public Rocky() {
-		// Create the Manager
-		RockyManager.setInstance(new RockyManager(new RockyPlayerManager(),
-				new RockyResourceManager(), new RockyKeyBindingManager(),
-				new RockyPacketManager(), new RockyMaterialManager()));
-
-		// Set the instance of this class
 		instance = this;
 	}
 
@@ -74,6 +68,12 @@ public class Rocky extends JavaPlugin implements Runnable {
 	 */
 	@Override
 	public void onEnable() {
+		// Create the Manager
+		RockyManager.setInstance(new RockyManager(new RockyPlayerManager(),
+				new RockyResourceManager(), new RockyKeyBindingManager(),
+				new RockyPacketManager(), new RockyMaterialManager()));
+		
+		// Load the configuration
 		configuration = new RockyConfig();
 
 		// For each user online we need to override their values
@@ -115,7 +115,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 			for (String data : listData.keySet()) {
 				ConfigurationSection section = itemConfig
 						.getConfigurationSection(data);
-				RockyManager.getMaterialManager().registerName(data,
+				RockyManager.getMaterialManager().registerName(data.replaceAll("_BLOCK", ""),
 						section.getInt("ID"),
 						MaterialEnumType.valueOf(section.getString("Type")));
 			}
@@ -147,8 +147,8 @@ public class Rocky extends JavaPlugin implements Runnable {
 			itemArray = RockyManager.getMaterialManager().getRegisteredNames(
 					MaterialEnumType.BLOCK);
 			for (String item : itemArray.keySet()) {
-				itemConfig.set(item + ".ID", itemArray.get(item));
-				itemConfig.set(item + ".Type", MaterialEnumType.BLOCK.name());
+				itemConfig.set(item + "_BLOCK" + ".ID", itemArray.get(item));
+				itemConfig.set(item + "_BLOCK" + ".Type", MaterialEnumType.BLOCK.name());
 			}
 			itemConfig.save(new File(getDataFolder(), "map.yml"));
 		} catch (Throwable e) {

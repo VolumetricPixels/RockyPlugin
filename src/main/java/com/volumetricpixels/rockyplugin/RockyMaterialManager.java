@@ -91,6 +91,8 @@ public class RockyMaterialManager implements MaterialManager {
 
 	private Map<String, Class<? extends Material>> registeredTypes = new HashMap<String, Class<? extends Material>>();
 
+	private YamlConfiguration defaultShape;
+
 	/**
 	 * 
 	 */
@@ -103,6 +105,12 @@ public class RockyMaterialManager implements MaterialManager {
 		registerType(
 				"Item",
 				com.volumetricpixels.rockyapi.material.generic.GenericItem.class);
+		registerType(
+				"Block",
+				com.volumetricpixels.rockyapi.material.generic.GenericBlock.class);
+
+		defaultShape = YamlConfiguration.loadConfiguration(Rocky.getInstance()
+				.getResource(MaterialManager.DEFAULT_SHAPE));
 	}
 
 	/**
@@ -284,7 +292,7 @@ public class RockyMaterialManager implements MaterialManager {
 			return new RockyItemBow(id, (RangeWeapon) material);
 		} else if (material instanceof Weapon) {
 			return new RockyItemSword(id, (Weapon) material);
-		} else if (material instanceof Item) {
+		} else if (material instanceof com.volumetricpixels.rockyapi.material.Item) {
 			return new RockyItem(id,
 					(com.volumetricpixels.rockyapi.material.Item) material);
 		}
@@ -459,11 +467,11 @@ public class RockyMaterialManager implements MaterialManager {
 									.get("B") : "   ");
 							String lC = (lineMap.containsKey("C") ? (String) lineMap
 									.get("C") : "   ");
-							
+
 							RockyShapedRecipe wRecipe = new RockyShapedRecipe(
 									new ItemStack(result, amount));
 							wRecipe.shape(lA, lB, lC);
-							
+
 							Map<String, String> ingredientMap = (Map<String, String>) key
 									.get("Ingredient");
 							for (String ingredientKey : ingredientMap.keySet()) {
@@ -509,5 +517,13 @@ public class RockyMaterialManager implements MaterialManager {
 	public com.volumetricpixels.rockyapi.material.Item[] getItemList() {
 		return itemList.values().toArray(
 				new com.volumetricpixels.rockyapi.material.Item[0]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public YamlConfiguration getDefaultShape() {
+		return defaultShape;
 	}
 }

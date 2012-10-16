@@ -65,9 +65,12 @@ public class Texture implements Resource {
 		this.xTopLoc = image.getWidth();
 		this.yTopLoc = image.getHeight();
 		this.textureList = new ArrayList<Texture>();
-		this.data = image.getRaster().getPixels(0, 0, xTopLoc, yTopLoc,
-				(float[]) null);
-
+		try {
+			this.data = new byte[in.available()];
+			in.read((byte[]) data);
+		} catch (IOException e) {
+			return;
+		}
 		RockyManager.getResourceManager().addResource(plugin, this);
 	}
 
@@ -85,7 +88,7 @@ public class Texture implements Resource {
 		this.yTopLoc = height;
 		this.textureList = new ArrayList<Texture>();
 		this.data = name;
-		
+
 		RockyManager.getResourceManager().addResource(plugin, this);
 	}
 
@@ -263,7 +266,6 @@ public class Texture implements Resource {
 	 */
 	@Override
 	public void writeToPacket(PacketOutputStream out) throws IOException {
-		out.writeUTF(name);
 		out.writeShort(xLoc);
 		out.writeShort(yLoc);
 		out.writeShort(xTopLoc);

@@ -20,6 +20,7 @@
 package com.volumetricpixels.rockyplugin.block;
 
 import net.minecraft.server.Block;
+import net.minecraft.server.StepSound;
 
 import org.fest.reflect.core.Reflection;
 
@@ -54,6 +55,8 @@ public class RockyBlock extends Block {
 						bb.highXBound, bb.highYBound, bb.highZBound);
 		Reflection.method("a").withParameterTypes(float.class).in(this)
 				.invoke(material.getLightLevel());
+		Reflection.field("stepSound").ofType(StepSound.class).in(this)
+				.set(new StepSound(material.getStepSound(), 1.0f, 1.0f));
 	}
 
 }
