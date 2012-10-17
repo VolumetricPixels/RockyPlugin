@@ -319,7 +319,7 @@ public class RockyMaterialManager implements MaterialManager {
 	 * @param event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onSpoutLoadingEvent(RockyLoadingEvent event) {
+	public void onLoadingEvent(RockyLoadingEvent event) {
 		int itemLoaded = 0, packageLoaded = 0;
 
 		// Find each package within the directory
@@ -398,7 +398,7 @@ public class RockyMaterialManager implements MaterialManager {
 	 */
 	@SuppressWarnings("unchecked")
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onSpoutFinishedLoadingEvent(RockyFinishedLoadingEvent event) {
+	public void onFinishedLoadingEvent(RockyFinishedLoadingEvent event) {
 		int recipeLoaded = 0, packageLoaded = 0;
 
 		// Find each package within the directory
