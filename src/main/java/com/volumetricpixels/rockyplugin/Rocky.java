@@ -38,6 +38,7 @@ import com.volumetricpixels.rockyapi.event.RockyFailedEvent;
 import com.volumetricpixels.rockyapi.event.RockyFinishedLoadingEvent;
 import com.volumetricpixels.rockyapi.event.RockyLoadingEvent;
 import com.volumetricpixels.rockyapi.material.MaterialEnumType;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketAchievementList;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketCustomItem;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCacheBegin;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
@@ -72,7 +73,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 		RockyManager.setInstance(new RockyManager(new RockyPlayerManager(),
 				new RockyResourceManager(), new RockyKeyBindingManager(),
 				new RockyPacketManager(), new RockyMaterialManager()));
-		
+
 		// Load the configuration
 		configuration = new RockyConfig();
 
@@ -115,8 +116,8 @@ public class Rocky extends JavaPlugin implements Runnable {
 			for (String data : listData.keySet()) {
 				ConfigurationSection section = itemConfig
 						.getConfigurationSection(data);
-				RockyManager.getMaterialManager().registerName(data.replaceAll("_BLOCK", ""),
-						section.getInt("ID"),
+				RockyManager.getMaterialManager().registerName(
+						data.replaceAll("_BLOCK", ""), section.getInt("ID"),
 						MaterialEnumType.valueOf(section.getString("Type")));
 			}
 
@@ -148,7 +149,8 @@ public class Rocky extends JavaPlugin implements Runnable {
 					MaterialEnumType.BLOCK);
 			for (String item : itemArray.keySet()) {
 				itemConfig.set(item + "_BLOCK" + ".ID", itemArray.get(item));
-				itemConfig.set(item + "_BLOCK" + ".Type", MaterialEnumType.BLOCK.name());
+				itemConfig.set(item + "_BLOCK" + ".Type",
+						MaterialEnumType.BLOCK.name());
 			}
 			itemConfig.save(new File(getDataFolder(), "map.yml"));
 		} catch (Throwable e) {
@@ -233,6 +235,8 @@ public class Rocky extends JavaPlugin implements Runnable {
 
 		player.sendPacket(new PacketCustomItem(RockyManager
 				.getMaterialManager().getItemList()));
+		player.sendPacket(new PacketAchievementList(player));
+
 		// TODO: Send Blocks and Design.
 
 		// Our key bindings
@@ -244,13 +248,6 @@ public class Rocky extends JavaPlugin implements Runnable {
 
 		// Update map waypoints
 		player.updateWaypoints();
-	}
-
-	/**
-	 * 
-	 * @param player
-	 */
-	public void handlePlayerQuit(Player player) {
 	}
 
 }

@@ -41,7 +41,9 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import org.fest.reflect.core.Reflection;
 
 import com.volumetricpixels.rockyapi.gui.GenericOverlayScreen;
@@ -61,6 +63,7 @@ import com.volumetricpixels.rockyapi.packet.protocol.PacketPlaySound;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketRenderDistanceAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketScreenAction;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketSetVelocity;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSkyAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketStopMusic;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketWaypoint;
@@ -89,6 +92,7 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	private String skin, cape, title;
 	private Map<String, String> titleFor;
 	private List<Integer> achievementList = new ArrayList<Integer>();
+	private long velocityAdjustment = System.currentTimeMillis();
 
 	/**
 	 * Movement Addon variables
@@ -382,7 +386,7 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 */
 	@Override
 	public boolean canFly() {
-		return isAllowedToFly;
+		return isAllowedToFly && (System.currentTimeMillis() < velocityAdjustment);
 	}
 
 	/**
@@ -391,6 +395,33 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	@Override
 	public void setCanFly(boolean fly) {
 		this.isAllowedToFly = fly;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setVelocity(Vector velocity) {
+		if (!isModded()) {
+			return;
+		}
+		PlayerVelocityEvent event = new PlayerVelocityEvent(this, velocity);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		if (!event.isCancelled()) {
+			sendPacket(new PacketSetVelocity(getEntityId(), event.getVelocity()
+					.getX(), event.getVelocity().getY(), event.getVelocity()
+					.getZ()));
+		}
+		double speedX = Math.abs(event.getVelocity().getX()
+				* event.getVelocity().getX());
+		double speedY = Math.abs(event.getVelocity().getY()
+				* event.getVelocity().getY());
+		double speedZ = Math.abs(event.getVelocity().getZ()
+				* event.getVelocity().getZ());
+		double speed = speedX + speedY + speedZ;
+
+		velocityAdjustment = System.currentTimeMillis() + (long) (speed * 5);
+		getHandle().velocityChanged = false;
 	}
 
 	/**

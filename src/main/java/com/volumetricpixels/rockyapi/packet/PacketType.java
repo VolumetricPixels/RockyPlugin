@@ -38,6 +38,7 @@ import com.volumetricpixels.rockyapi.packet.protocol.PacketPlaySound;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketRenderDistanceAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketScreenAction;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketSetVelocity;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSkyAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketStopMusic;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketVersion;
@@ -120,13 +121,17 @@ public enum PacketType {
 	PacketStopMusic(17, PacketStopMusic.class),
 	/**
 	 * {@see PacketAchievementList}
-	 */	
+	 */
 	PacketAchievementList(18, PacketAchievementList.class),
 	/**
 	 * {@see PacketAchievement}
 	 */
 	PacketAchievement(19, PacketAchievement.class),
-	
+	/**
+	 * {@see PacketSetVelocity}
+	 */
+	PacketSetVelocity(20, PacketSetVelocity.class),
+
 	/**
 	 * {@see PacketWidget}
 	 */

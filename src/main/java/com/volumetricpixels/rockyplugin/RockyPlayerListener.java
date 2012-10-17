@@ -26,7 +26,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
@@ -35,7 +34,6 @@ import com.volumetricpixels.rockyapi.event.player.PlayerEnterPlayerArea;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 import com.volumetricpixels.rockyplugin.player.RockyPlayerHandler;
-
 
 /**
  * 
@@ -61,15 +59,6 @@ public class RockyPlayerListener implements Listener {
 	 * 
 	 * @param event
 	 */
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		Rocky.getInstance().handlePlayerQuit(event.getPlayer());
-	}
-
-	/**
-	 * 
-	 * @param event
-	 */
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerKick(PlayerKickEvent event) {
 		Player player = event.getPlayer();
@@ -78,15 +67,9 @@ public class RockyPlayerListener implements Listener {
 		}
 		if (player.isOp()) {
 			event.setCancelled(true);
-		} else if (player instanceof RockyPlayer) {
-			RockyPlayer spoutPlayer = (RockyPlayer) player;
-			if (spoutPlayer.canFly()) {
-				event.setCancelled(true);
-			} else if (System.currentTimeMillis() < spoutPlayer
-					.getAirSpeedMultiplier()) {
-				event.setCancelled(true);
-			}
-		}
+		} else if (player instanceof RockyPlayer
+				&& ((RockyPlayer) player).canFly())
+			event.setCancelled(true);
 	}
 
 	/**
