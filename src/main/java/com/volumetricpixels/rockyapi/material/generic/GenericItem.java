@@ -177,12 +177,12 @@ public class GenericItem implements Item {
 	public Material loadPreInitialization(Plugin plugin,
 			ConfigurationSection section, AddonPack pack) {
 		this.plugin = plugin;
-		this.name = section.getString("Name", "Undefined");
+		this.name = section.getString("Title", "Undefined");
 		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
 				MaterialEnumType.ITEM);
-		this.isFuel = section.getBoolean("IsFuel", false);
-		this.isStackable = section.getBoolean("IsStackable", true);
-		this.isThrowable = section.getBoolean("isThrowable", false);
+		this.isFuel = section.getBoolean("BurnTime", false);
+		this.isStackable = section.getBoolean("Stackable", true);
+		this.isThrowable = section.getBoolean("Throwable", false);
 		List<String> data = section.getStringList("Texture");
 		if (data != null) {
 			if (data.size() == 1) {

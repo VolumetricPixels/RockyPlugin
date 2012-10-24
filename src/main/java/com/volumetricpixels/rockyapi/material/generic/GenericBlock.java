@@ -128,18 +128,18 @@ public class GenericBlock implements Block {
 	public Material loadPreInitialization(Plugin plugin,
 			ConfigurationSection section, AddonPack pack) {
 		this.plugin = plugin;
-		this.name = section.getString("Name", "Undefined");
+		this.name = section.getString("Title", "Undefined");
 		this.id = RockyManager.getMaterialManager().getRegisteredName(name,
 				MaterialEnumType.BLOCK);
-		this.allowRotation = section.getBoolean("IsRotated", false);
+		this.allowRotation = section.getBoolean("Rotation", false);
 		this.blockItem = new GenericItem(plugin, name);
 		this.blockItem.setCreativeTab(MaterialTab.valueOf(section
 				.getString("CreativeTab", "BLOCK")));
 		setStepSound(section.getString("StepSound", "stone"));
 		this.friction = (float) section.getDouble("Friction", 0.6f);
 		this.hardness = (float) section.getDouble("Hardness", 1.5f);
-		this.isOpaque = section.getBoolean("IsOpaque", false);
-		this.light = section.getInt("Light", 0);
+		this.isOpaque = section.getBoolean("Opaque", false);
+		this.light = section.getInt("LightLevel", 0);
 		this.type = BlockType.valueOf(section.getString("Type"));
 		this.material = new GenericMaterialWrapper(this);
 
@@ -187,7 +187,7 @@ public class GenericBlock implements Block {
 	@Override
 	public Material loadPostInitialization(Plugin plugin,
 			ConfigurationSection section, AddonPack pack) {
-		String[] dropType = section.getString("Drop", "-1:-1").split(":");
+		String[] dropType = section.getString("ItemDrop", "-1:-1").split(":");
 		if (!dropType[0].equals("-1")) {
 			this.dropStack = new ItemStack(RockyManager.getMaterialManager()
 					.getRegisteredName(dropType[0], MaterialEnumType.ITEM),

@@ -67,7 +67,6 @@ public class Rocky extends JavaPlugin implements Runnable {
 	/**
 	 * {@inhericDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onEnable() {
 		// Create the Manager

@@ -161,7 +161,7 @@ public class GenericTool extends GenericItem implements Tool {
 	@Override
 	public Material loadPostInitialization(Plugin plugin,
 			ConfigurationSection section, AddonPack pack) {
-		List<String> blockModifier = section.getStringList("BlockModifier");
+		List<String> blockModifier = section.getStringList("ToolLevels");
 		if (blockModifier != null) {
 			for (String modifier : blockModifier) {
 				String[] split = modifier.split(":");
