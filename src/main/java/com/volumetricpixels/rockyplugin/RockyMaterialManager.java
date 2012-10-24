@@ -346,12 +346,12 @@ public class RockyMaterialManager implements MaterialManager {
 				}
 
 				Class<? extends Material> clazz = referenceMaterial
-						.get(configuration.getString("Class"));
+						.get(configuration.getString("Type"));
 				if (clazz == null) {
 					RockyManager
 							.printConsole(
 									"[Warning] trying to load an invalid type of Item {%s}",
-									configuration.getString("Class"));
+									configuration.getString("Type"));
 					continue;
 				}
 				Material material = null;

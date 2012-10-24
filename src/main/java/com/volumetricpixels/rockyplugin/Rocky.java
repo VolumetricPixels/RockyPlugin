@@ -20,6 +20,7 @@
 package com.volumetricpixels.rockyplugin;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +124,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 				RockyManager.getMaterialManager().registerName(key,
 						itemConfig.getInt("| BlockArray |." + key), MaterialEnumType.BLOCK);
 			}
+		} catch (FileNotFoundException e) {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
