@@ -164,7 +164,7 @@ public class GenericArmor extends GenericItem implements Armor {
 
 		this.durability = section.getInt("Durability", 100);
 		this.defense = section.getInt("Defense", 1);
-		this.type = ArmorType.valueOf(section.getString("Type"));
+		this.type = ArmorType.valueOf(section.getString("SubType"));
 
 		String textureFile = section.getString("Model");
 		if (!pack.hasEntry(textureFile + "_1.png")
