@@ -429,7 +429,7 @@ public class RockyMaterialManager implements MaterialManager {
 						String type = (String) key.get("Type");
 						int amount = (key.containsKey("Amount") ? (Integer) key
 								.get("Amount") : 1);
-						int result = getItemID(configuration.getString("Name"));
+						int result = getItemID(configuration.getString("Title"));
 						if (type.equals("Furnace")) {
 							RockyFurnaceRecipe fRecipe = new RockyFurnaceRecipe(
 									getItemID((String) key.get("Ingredient")),
@@ -455,9 +455,16 @@ public class RockyMaterialManager implements MaterialManager {
 							Map<String, String> ingredientMap = (Map<String, String>) key
 									.get("Ingredient");
 							for (String ingredientKey : ingredientMap.keySet()) {
-								wRecipe.setIngredient(ingredientKey.charAt(0),
-										getItemID((String) ingredientMap
-												.get(ingredientKey)));
+								Object value = ingredientMap.get(ingredientKey);
+								if (value instanceof Integer) {
+									wRecipe.setIngredient(
+											ingredientKey.charAt(0),
+											(Integer) value);
+								} else if (value instanceof String)
+									wRecipe.setIngredient(ingredientKey
+											.charAt(0),
+											getItemID((String) ingredientMap
+													.get(ingredientKey)));
 							}
 							wRecipe.shape(lA, lB, lC);
 							RockyRecipeManager.addToCraftingManager(wRecipe);
@@ -475,12 +482,13 @@ public class RockyMaterialManager implements MaterialManager {
 						recipeLoaded++;
 					}
 				}
-				int id = getItemID(configuration.getString("Name"));
-				if (id >= DEFAULT_ITEM_PLACEHOLDER_ID) {
-					itemList.get(id).loadPostInitialization(
+				String title = configuration.getString("Title");
+
+				if (configuration.getString("Type").contains("Block")) {
+					blockList.get(getBlockID(title)).loadPostInitialization(
 							Rocky.getInstance(), configuration, pack);
 				} else {
-					blockList.get(id).loadPostInitialization(
+					itemList.get(getItemID(title)).loadPostInitialization(
 							Rocky.getInstance(), configuration, pack);
 				}
 			}
@@ -500,6 +508,18 @@ public class RockyMaterialManager implements MaterialManager {
 			return Integer.valueOf(data);
 		}
 		return itemNameList.get(data);
+	}
+
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 */
+	private int getBlockID(String data) {
+		if (Character.isDigit(data.charAt(0))) {
+			return Integer.valueOf(data);
+		}
+		return blockNameList.get(data);
 	}
 
 }
