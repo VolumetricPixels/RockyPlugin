@@ -28,6 +28,7 @@ import net.minecraft.server.ItemTool;
 
 import org.fest.reflect.core.Reflection;
 
+import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.Tool;
 
 /**
@@ -39,11 +40,18 @@ public class RockyItemTool extends ItemTool implements RockyItemType {
 
 	/**
 	 * 
-	 * @param arg0
+	 * @param material
+	 */
+	public RockyItemTool(Material material) {
+		this((Tool)material);
+	}
+	
+	/**
+	 * 
 	 * @param item
 	 */
-	public RockyItemTool(int arg0, Tool item) {
-		super(arg0 - 256, 0,
+	public RockyItemTool(Tool item) {
+		super(item.getId() - 256, 0,
 				EnumToolMaterial.DIAMOND, null);
 		
 		destroySpeed = item.getDestroyMap();

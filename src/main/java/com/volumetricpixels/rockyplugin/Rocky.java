@@ -21,12 +21,12 @@ package com.volumetricpixels.rockyplugin;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.server.Packet;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -67,6 +67,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 	/**
 	 * {@inhericDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onEnable() {
 		// Create the Manager
@@ -112,17 +113,19 @@ public class Rocky extends JavaPlugin implements Runnable {
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		try {
 			itemConfig.load(new File(getDataFolder(), "map.yml"));
-			Map<String, Object> listData = itemConfig.getValues(false);
-			for (String data : listData.keySet()) {
-				ConfigurationSection section = itemConfig
-						.getConfigurationSection(data);
-				RockyManager.getMaterialManager().registerName(
-						data.replaceAll("_BLOCK", ""), section.getInt("ID"),
-						MaterialEnumType.valueOf(section.getString("Type")));
-			}
 
+			List<String> list = itemConfig.getStringList("| ItemArray |");
+			for (String key : list) {
+				RockyManager.getMaterialManager().registerName(key,
+						itemConfig.getInt("| ItemArray |." + key), MaterialEnumType.ITEM);
+			}
+			list = itemConfig.getStringList("| BlockArray |");
+			for (String key : list) {
+				RockyManager.getMaterialManager().registerName(key,
+						itemConfig.getInt("| BlockArray |." + key), MaterialEnumType.BLOCK);
+			}
 		} catch (Throwable e) {
-			RockyManager.printConsole("Unable to load global item map");
+			e.printStackTrace();
 		}
 
 		Bukkit.getServer().getPluginManager()
@@ -139,22 +142,17 @@ public class Rocky extends JavaPlugin implements Runnable {
 		// Save the current material registered
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		try {
-			Map<String, Integer> itemArray = RockyManager.getMaterialManager()
-					.getRegisteredNames(MaterialEnumType.ITEM);
-			for (String item : itemArray.keySet()) {
-				itemConfig.set(item + ".ID", itemArray.get(item));
-				itemConfig.set(item + ".Type", MaterialEnumType.ITEM.name());
-			}
-			itemArray = RockyManager.getMaterialManager().getRegisteredNames(
-					MaterialEnumType.BLOCK);
-			for (String item : itemArray.keySet()) {
-				itemConfig.set(item + "_BLOCK" + ".ID", itemArray.get(item));
-				itemConfig.set(item + "_BLOCK" + ".Type",
-						MaterialEnumType.BLOCK.name());
-			}
+			itemConfig.createSection(
+					"| ItemArray |",
+					RockyManager.getMaterialManager().getRegisteredNames(
+							MaterialEnumType.ITEM));
+			itemConfig.createSection(
+					"| BlockArray |",
+					RockyManager.getMaterialManager().getRegisteredNames(
+							MaterialEnumType.BLOCK));
 			itemConfig.save(new File(getDataFolder(), "map.yml"));
 		} catch (Throwable e) {
-			RockyManager.printConsole("Unable to load global item map");
+			RockyManager.printConsole("Unable to save global item map");
 		}
 
 		// Cancel all task registered by the plugin

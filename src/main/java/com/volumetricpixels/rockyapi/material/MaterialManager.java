@@ -44,10 +44,24 @@ public interface MaterialManager extends Listener {
 	
 	/**
 	 * 
+	 * @param id
+	 * @return
+	 */
+	public Item getItem(int id);
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Block getBlock(int id);
+	
+	/**
+	 * 
 	 * @param name
 	 * @param clazz
 	 */
-	public void registerType(String name, Class<? extends Material> clazz);
+	public void registerType(String name, Class<? extends Material> clazz, Class<?> reference);
 
 	/**
 	 * 
@@ -102,11 +116,4 @@ public interface MaterialManager extends Listener {
 	 * @param material
 	 */
 	public void deleteMaterial(Material material);
-
-	/**
-	 * 
-	 * @param source
-	 * @param destination
-	 */
-	public void replaceMaterial(Material source, Material destination);
 }

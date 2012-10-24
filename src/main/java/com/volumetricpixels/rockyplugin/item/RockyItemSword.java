@@ -24,6 +24,9 @@ import net.minecraft.server.ItemSword;
 
 import org.fest.reflect.core.Reflection;
 
+import com.volumetricpixels.rockyapi.material.Material;
+import com.volumetricpixels.rockyapi.material.Weapon;
+
 /**
  * 
  */
@@ -31,11 +34,18 @@ public class RockyItemSword extends ItemSword implements RockyItemType {
 
 	/**
 	 * 
-	 * @param arg0
 	 * @param item
 	 */
-	public RockyItemSword(int arg0, com.volumetricpixels.rockyapi.material.Weapon item) {
-		super(arg0 - 256, EnumToolMaterial.DIAMOND);
+	public RockyItemSword(Material item) {
+		this((Weapon)item);
+	}
+	
+	/**
+	 * 
+	 * @param item
+	 */
+	public RockyItemSword(Weapon item) {
+		super(item.getId() - 256, EnumToolMaterial.DIAMOND);
 
 		
 		Reflection.field("maxStackSize").ofType(int.class).in(this)

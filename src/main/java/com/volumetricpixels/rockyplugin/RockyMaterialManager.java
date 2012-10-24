@@ -28,9 +28,6 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import net.minecraft.server.Block;
-import net.minecraft.server.Item;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -43,24 +40,21 @@ import com.volumetricpixels.rockyapi.inventory.RockyFurnaceRecipe;
 import com.volumetricpixels.rockyapi.inventory.RockyRecipeManager;
 import com.volumetricpixels.rockyapi.inventory.RockyShapedRecipe;
 import com.volumetricpixels.rockyapi.inventory.RockyShapelessRecipe;
-import com.volumetricpixels.rockyapi.material.Armor;
-import com.volumetricpixels.rockyapi.material.Food;
+import com.volumetricpixels.rockyapi.material.Block;
+import com.volumetricpixels.rockyapi.material.Item;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialManager;
 import com.volumetricpixels.rockyapi.material.MaterialEnumType;
-import com.volumetricpixels.rockyapi.material.RangeWeapon;
-import com.volumetricpixels.rockyapi.material.Tool;
-import com.volumetricpixels.rockyapi.material.Weapon;
 import com.volumetricpixels.rockyapi.material.generic.GenericArmor;
+import com.volumetricpixels.rockyapi.material.generic.GenericBlock;
 import com.volumetricpixels.rockyapi.material.generic.GenericFood;
-import com.volumetricpixels.rockyapi.material.generic.GenericRangeWeapon;
+import com.volumetricpixels.rockyapi.material.generic.GenericItem;
 import com.volumetricpixels.rockyapi.material.generic.GenericTool;
 import com.volumetricpixels.rockyapi.material.generic.GenericWeapon;
 import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyplugin.block.RockyBlock;
 import com.volumetricpixels.rockyplugin.item.RockyItem;
 import com.volumetricpixels.rockyplugin.item.RockyItemArmor;
-import com.volumetricpixels.rockyplugin.item.RockyItemBow;
 import com.volumetricpixels.rockyplugin.item.RockyItemFood;
 import com.volumetricpixels.rockyplugin.item.RockyItemSword;
 import com.volumetricpixels.rockyplugin.item.RockyItemTool;
@@ -69,62 +63,107 @@ import com.volumetricpixels.rockyplugin.item.RockyItemTool;
  * 
  */
 public class RockyMaterialManager implements MaterialManager {
-	public final static int DEFAULT_ITEM_PLACEHOLDER_ID = 4097;
-	public final static int DEFAULT_ITEM_FOR_VANILLA = 318;
-
+	/**
+	 * Where to start the ID getter
+	 */
+	public final static int DEFAULT_ITEM_PLACEHOLDER_ID = 2300;
 	public final static int DEFAULT_BLOCK_PLACEHOLDER_ID = 196;
-	public final static int DEFAULT_BLOCK_FOR_VANILLA = 1;
+	public final static int MAX_FREE_ITEM_INDEX = 32000 - DEFAULT_ITEM_PLACEHOLDER_ID;
+	public final static int MAX_FREE_BLOCK_INDEX = 4096 - DEFAULT_BLOCK_PLACEHOLDER_ID;
 
-	private final static int MAX_FREE_ITEM_INDEX = 32000 - DEFAULT_ITEM_PLACEHOLDER_ID;
-	private final static int MAX_FREE_BLOCK_INDEX = 4096 - DEFAULT_BLOCK_PLACEHOLDER_ID;
+	/**
+	 * Folder where all the data is at
+	 */
+	public final static String MATERIAL_FOLDER = "Package";
 
-	private final static String MATERIAL_FOLDER = "Package";
-
+	/**
+	 * Item list data
+	 */
+	private Map<Integer, Item> itemList = new HashMap<Integer, Item>();
+	private BitSet itemIndexList = new BitSet(MAX_FREE_ITEM_INDEX);
 	private Map<String, Integer> itemNameList = new HashMap<String, Integer>();
+
+	/**
+	 * Block list data
+	 */
+	private Map<Integer, Block> blockList = new HashMap<Integer, Block>();
+	private BitSet blockIndexList = new BitSet(MAX_FREE_BLOCK_INDEX);
 	private Map<String, Integer> blockNameList = new HashMap<String, Integer>();
 
-	private Map<Integer, com.volumetricpixels.rockyapi.material.Item> itemList = new HashMap<Integer, com.volumetricpixels.rockyapi.material.Item>();
-	private Map<Integer, Material> blockList = new HashMap<Integer, Material>();
-
-	private BitSet itemIndexList = new BitSet(MAX_FREE_ITEM_INDEX);
-	private BitSet blockIndexList = new BitSet(MAX_FREE_BLOCK_INDEX);
-
-	private Map<String, Class<? extends Material>> registeredTypes = new HashMap<String, Class<? extends Material>>();
-
-	private YamlConfiguration defaultShape;
+	/**
+	 * The reference map
+	 */
+	private Map<String, Class<? extends Material>> referenceMaterial = new HashMap<String, Class<? extends Material>>();
+	private Map<Class<? extends Material>, Class<?>> referenceClazz = new HashMap<Class<? extends Material>, Class<?>>();
 
 	/**
-	 * 
+	 * Our default configuration loader
+	 */
+	private YamlConfiguration blockDefaultShape;
+
+	/**
+	 * Default constructor
 	 */
 	public RockyMaterialManager() {
-		registerType("Armor", GenericArmor.class);
-		registerType("Food", GenericFood.class);
-		registerType("Weapon", GenericWeapon.class);
-		registerType("Tool", GenericTool.class);
-		registerType("RangeWeapon", GenericRangeWeapon.class);
-		registerType(
-				"Item",
-				com.volumetricpixels.rockyapi.material.generic.GenericItem.class);
-		registerType(
-				"Block",
-				com.volumetricpixels.rockyapi.material.generic.GenericBlock.class);
+		registerType("Armor", GenericArmor.class, RockyItemArmor.class);
+		registerType("Food", GenericFood.class, RockyItemFood.class);
+		registerType("Sword", GenericWeapon.class, RockyItemSword.class);
+		registerType("Tool", GenericTool.class, RockyItemTool.class);
+		registerType("Item", GenericItem.class, RockyItem.class);
+		registerType("Block", GenericBlock.class, RockyBlock.class);
 
-		defaultShape = YamlConfiguration.loadConfiguration(Rocky.getInstance()
-				.getResource(MaterialManager.DEFAULT_SHAPE));
+		blockDefaultShape = YamlConfiguration.loadConfiguration(Rocky
+				.getInstance().getResource(MaterialManager.DEFAULT_SHAPE));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void registerType(String name, Class<? extends Material> clazz) {
-		registeredTypes.put(name, clazz);
+	@Override
+	public YamlConfiguration getDefaultShape() {
+		return blockDefaultShape;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	public Item[] getItemList() {
+		return itemList.values().toArray(new Item[0]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Item getItem(int id) {
+		return itemList.get(id);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Block getBlock(int id) {
+		return blockList.get(id);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void registerType(String name, Class<? extends Material> clazz,
+			Class<?> reference) {
+		referenceMaterial.put(name, clazz);
+		referenceClazz.put(clazz, reference);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void unregisterType(String name) {
-		registeredTypes.remove(name);
+		referenceClazz.remove(referenceMaterial.remove(name));
 	}
 
 	/**
@@ -132,7 +171,7 @@ public class RockyMaterialManager implements MaterialManager {
 	 */
 	@Override
 	public Class<? extends Material> getType(String name) {
-		return registeredTypes.get(name);
+		return referenceMaterial.get(name);
 	}
 
 	/**
@@ -197,16 +236,25 @@ public class RockyMaterialManager implements MaterialManager {
 			throw new IllegalArgumentException(
 					"Use replace instead for replacing blocks");
 		}
-		if (material instanceof com.volumetricpixels.rockyapi.material.Item) {
-			itemList.put(material.getId(),
-					(com.volumetricpixels.rockyapi.material.Item) material);
-			Item.byId[material.getId()] = getVanillaType(material.getId(),
-					material);
+		if (material instanceof Item) {
+			itemList.put(material.getId(), (Item) material);
+			try {
+				net.minecraft.server.Item.byId[material.getId()] = (net.minecraft.server.Item) referenceClazz
+						.get(material.getClass())
+						.getConstructor(Material.class).newInstance(material);
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 			return;
 		}
-		blockList.put(material.getId(), material);
-		Block.byId[material.getId()] = new RockyBlock(material.getId(),
-				(com.volumetricpixels.rockyapi.material.Block) material);
+		blockList.put(material.getId(), (Block) material);
+		try {
+			net.minecraft.server.Block.byId[material.getId()] = (net.minecraft.server.Block) referenceClazz
+					.get(material.getClass()).getConstructor(Material.class)
+					.newInstance(material);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -225,44 +273,14 @@ public class RockyMaterialManager implements MaterialManager {
 			throw new IllegalArgumentException(
 					"Trying to remove an invalid Material");
 		}
-		if (material instanceof com.volumetricpixels.rockyapi.material.Item) {
+		if (material instanceof Item) {
 			itemList.remove(material.getId());
-			Item.byId[material.getId()] = null;
+			net.minecraft.server.Item.byId[material.getId()] = null;
 			return;
 		}
 		blockList.remove(material.getId());
-		Block.byId[material.getId()] = null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void replaceMaterial(Material source, Material destination) {
-		if (source == null || destination == null) {
-			throw new IllegalArgumentException("Arguments cannot be null");
-		} else if (source instanceof com.volumetricpixels.rockyapi.material.Item
-				&& !itemList.containsKey(source.getId())) {
-			throw new IllegalArgumentException(
-					"Trying to replace an invalid Material");
-		} else if (source instanceof com.volumetricpixels.rockyapi.material.Block
-				&& !blockList.containsKey(source.getId())) {
-			throw new IllegalArgumentException(
-					"Trying to replace an invalid Material");
-		} else if (!source.getClass().equals(destination.getClass())) {
-			throw new IllegalArgumentException(
-					"Trying to replace two different things");
-		}
-		if (source instanceof com.volumetricpixels.rockyapi.material.Item) {
-			itemList.put(source.getId(),
-					(com.volumetricpixels.rockyapi.material.Item) destination);
-			Item.byId[source.getId()] = getVanillaType(source.getId(),
-					destination);
-			return;
-		}
-		blockList.put(source.getId(), destination);
-		Block.byId[source.getId()] = new RockyBlock(source.getId(),
-				(com.volumetricpixels.rockyapi.material.Block) destination);
+		net.minecraft.server.Block.byId[material.getId()] = null;
+		deleteMaterial(((Block) material).getItemBlock());
 	}
 
 	/**
@@ -274,44 +292,6 @@ public class RockyMaterialManager implements MaterialManager {
 			return itemIndexList.nextClearBit(DEFAULT_ITEM_PLACEHOLDER_ID);
 		}
 		return blockIndexList.nextClearBit(DEFAULT_BLOCK_PLACEHOLDER_ID);
-	}
-
-	/**
-	 * 
-	 * @param material
-	 * @return
-	 */
-	private Item getVanillaType(int id, Material material) {
-		if (material instanceof Armor) {
-			return new RockyItemArmor(id, (Armor) material);
-		} else if (material instanceof Food) {
-			return new RockyItemFood(id, (Food) material);
-		} else if (material instanceof Tool) {
-			return new RockyItemTool(id, (Tool) material);
-		} else if (material instanceof RangeWeapon) {
-			return new RockyItemBow(id, (RangeWeapon) material);
-		} else if (material instanceof Weapon) {
-			return new RockyItemSword(id, (Weapon) material);
-		} else if (material instanceof com.volumetricpixels.rockyapi.material.Item) {
-			return new RockyItem(id,
-					(com.volumetricpixels.rockyapi.material.Item) material);
-		}
-		throw new IllegalArgumentException(
-				"Trying to lookup for an invalid Material class");
-	}
-
-	/**
-	 * 
-	 * @param data
-	 * @return
-	 */
-	private int getItemID(String data) {
-		if (Character.isDigit(data.charAt(0))) {
-			return Integer.valueOf(data);
-		} else if (itemNameList.containsKey(data)) {
-			return itemNameList.get(data);
-		}
-		return blockNameList.get(data);
 	}
 
 	/**
@@ -365,7 +345,7 @@ public class RockyMaterialManager implements MaterialManager {
 					continue;
 				}
 
-				Class<? extends Material> clazz = registeredTypes
+				Class<? extends Material> clazz = referenceMaterial
 						.get(configuration.getString("Class"));
 				if (clazz == null) {
 					RockyManager
@@ -511,19 +491,15 @@ public class RockyMaterialManager implements MaterialManager {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * 
+	 * @param data
+	 * @return
 	 */
-	@Override
-	public com.volumetricpixels.rockyapi.material.Item[] getItemList() {
-		return itemList.values().toArray(
-				new com.volumetricpixels.rockyapi.material.Item[0]);
+	private int getItemID(String data) {
+		if (Character.isDigit(data.charAt(0))) {
+			return Integer.valueOf(data);
+		}
+		return itemNameList.get(data);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public YamlConfiguration getDefaultShape() {
-		return defaultShape;
-	}
 }

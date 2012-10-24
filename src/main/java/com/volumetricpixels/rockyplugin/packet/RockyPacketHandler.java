@@ -205,11 +205,17 @@ public class RockyPacketHandler extends NetServerHandler {
 			break;
 		case 0x14:
 			if (((Packet20NamedEntitySpawn) packet).h >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
-				((Packet20NamedEntitySpawn) packet).h = RockyMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
+				((Packet20NamedEntitySpawn) packet).h = RockyManager
+						.getMaterialManager()
+						.getItem(((Packet20NamedEntitySpawn) packet).h)
+						.getDefaultId();
 			break;
 		case 0x15:
 			if (((Packet21PickupSpawn) packet).h >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
-				((Packet21PickupSpawn) packet).h = RockyMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
+				((Packet20NamedEntitySpawn) packet).h = RockyManager
+						.getMaterialManager()
+						.getItem(((Packet20NamedEntitySpawn) packet).h)
+						.getDefaultId();
 			break;
 		case 0x67:
 			stack = ((Packet103SetSlot) packet).c;
@@ -219,7 +225,8 @@ public class RockyPacketHandler extends NetServerHandler {
 			for (ItemStack itemStack : stacks)
 				if (itemStack != null
 						&& itemStack.id >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
-					itemStack.id = RockyMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
+					itemStack.id = RockyManager.getMaterialManager()
+							.getItem(itemStack.id).getDefaultId();
 			break;
 		case 0x6B:
 			stack = ((Packet107SetCreativeSlot) packet).b;
@@ -229,7 +236,8 @@ public class RockyPacketHandler extends NetServerHandler {
 		// The stack contain a custom id and we don't have a custom client
 		if (stack != null
 				&& stack.id >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
-			stack.id = RockyMaterialManager.DEFAULT_ITEM_FOR_VANILLA;
+			stack.id = RockyManager.getMaterialManager().getItem(stack.id)
+					.getDefaultId();
 	}
 
 	/**

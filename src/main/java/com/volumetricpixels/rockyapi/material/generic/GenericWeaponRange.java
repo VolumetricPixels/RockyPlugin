@@ -22,10 +22,9 @@ package com.volumetricpixels.rockyapi.material.generic;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
-import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
+import com.volumetricpixels.rockyapi.material.MaterialTab;
 import com.volumetricpixels.rockyapi.material.Material;
-import com.volumetricpixels.rockyapi.material.RangeAmmoType;
-import com.volumetricpixels.rockyapi.material.RangeWeapon;
+import com.volumetricpixels.rockyapi.material.WeaponRange;
 import com.volumetricpixels.rockyapi.material.WeaponType;
 import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyapi.resource.Texture;
@@ -33,16 +32,15 @@ import com.volumetricpixels.rockyapi.resource.Texture;
 /**
  * 
  */
-public class GenericRangeWeapon extends GenericWeapon implements RangeWeapon {
+public class GenericWeaponRange extends GenericWeapon implements WeaponRange {
 
 	protected String shootSound = "random.bow";
 	protected int ammoId;
-	protected RangeAmmoType ammoType;
 
 	/**
 	 * 
 	 */
-	public GenericRangeWeapon() {
+	public GenericWeaponRange() {
 	}
 
 	/**
@@ -51,11 +49,11 @@ public class GenericRangeWeapon extends GenericWeapon implements RangeWeapon {
 	 * @param name
 	 * @param texture
 	 */
-	public GenericRangeWeapon(Plugin plugin, String name, Texture texture) {
+	public GenericWeaponRange(Plugin plugin, String name, Texture texture) {
 		super(plugin, name, texture);
-		
+
 		setStackable(false);
-		setCreativeTab(ItemCreativeTab.COMBAT);
+		setCreativeTab(MaterialTab.COMBAT);
 	}
 
 	/**
@@ -70,6 +68,14 @@ public class GenericRangeWeapon extends GenericWeapon implements RangeWeapon {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public int getDefaultId() {
+		return 261;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String getShootSound() {
 		return shootSound;
 	}
@@ -78,7 +84,7 @@ public class GenericRangeWeapon extends GenericWeapon implements RangeWeapon {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public RangeWeapon setShootSound(String sound) {
+	public WeaponRange setShootSound(String sound) {
 		this.shootSound = sound;
 		return this;
 	}
@@ -87,45 +93,16 @@ public class GenericRangeWeapon extends GenericWeapon implements RangeWeapon {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getAmmoId() {
-		return ammoId;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Material loadPreInitialization(Plugin plugin, ConfigurationSection section,
-			AddonPack pack) {
+	public Material loadPreInitialization(Plugin plugin,
+			ConfigurationSection section, AddonPack pack) {
 		super.loadPreInitialization(plugin, section, pack);
 
 		this.shootSound = section.getString("ShootSound", "random.bow");
-		this.ammoId = section.getInt("Ammo");
-		this.ammoType = RangeAmmoType.valueOf(section.getString("AmmoType",
-				"ITEM"));
 		this.type = WeaponType.RANGE;
 		this.isBlockAllowed = false;
-		setCreativeTab(ItemCreativeTab.valueOf(section.getString("CreativeTab",
+		setCreativeTab(MaterialTab.valueOf(section.getString("CreativeTab",
 				"COMBAT")));
-		
-		return this;
-	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public RangeAmmoType getAmmoType() {
-		return ammoType;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public RangeWeapon setAmmo(RangeAmmoType type, int id) {
-		this.ammoId = id;
-		this.ammoType = type;
 		return this;
 	}
 

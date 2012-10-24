@@ -22,67 +22,18 @@ package com.volumetricpixels.rockyapi.material;
 /**
  * 
  */
-public enum ItemCreativeTab {
-	/**
-	 * 
-	 */
-	BLOCK(0),
-	/**
-	 * 
-	 */
-	DECORATION(1),
-	/**
-	 * 
-	 */
-	REDSTONE(2),
-	/**
-	 * 
-	 */
-	TRANSPORT(3),
-	/**
-	 * 
-	 */
-	MISC(4),
-	/**
-	 * 
-	 */
-	FOOD(6),
-	/**
-	 * 
-	 */
-	TOOL(7),
-	/**
-	 * 
-	 */
-	COMBAT(8),
-	/**
-	 * 
-	 */
-	BREWING(9),
-	/**
-	 * 
-	 */
-	MATERIAL(10),
-	/**
-	 * 
-	 */
-	CUSTOM_ITEM(12);
-	
-	private int id;
-	
-	/**
-	 * 
-	 * @param id
-	 */
-	private ItemCreativeTab(int id) {
-		this.id = id;
-	}
-	
+public interface WeaponRange extends Weapon {
+
 	/**
 	 * 
 	 * @return
 	 */
-	public int getId() {
-		return id;
-	}
+	public String getShootSound();
+
+	/**
+	 * 
+	 * @param sound
+	 * @return
+	 */
+	public WeaponRange setShootSound(String sound);
 }

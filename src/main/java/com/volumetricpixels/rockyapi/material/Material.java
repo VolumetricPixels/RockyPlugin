@@ -38,6 +38,12 @@ public interface Material {
 	 * 
 	 * @return
 	 */
+	public int getDefaultId();
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getName();
 
 	/**

@@ -25,20 +25,27 @@ import net.minecraft.server.StepSound;
 import org.fest.reflect.core.Reflection;
 
 import com.volumetricpixels.rockyapi.block.design.BoundingBox;
+import com.volumetricpixels.rockyapi.material.Material;
 
 /**
  * 
  */
 public class RockyBlock extends Block {
-
 	/**
 	 * 
-	 * @param id
 	 * @param material
 	 */
-	public RockyBlock(int id,
+	public RockyBlock(Material material) {
+		this((com.volumetricpixels.rockyapi.material.Block)material);
+	}
+	
+	/**
+	 * 
+	 * @param material
+	 */
+	public RockyBlock(
 			com.volumetricpixels.rockyapi.material.Block material) {
-		super(id, material.getMaterial());
+		super(material.getId(), material.getMaterial());
 
 		Reflection.field("frictionFactor").ofType(float.class).in(this)
 				.set(material.getFriction());

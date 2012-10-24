@@ -28,6 +28,7 @@ import org.bukkit.craftbukkit.block.CraftBlockState;
 import org.fest.reflect.core.Reflection;
 
 import com.volumetricpixels.rockyapi.material.Block;
+import com.volumetricpixels.rockyapi.material.Material;
 
 /**
  * 
@@ -39,10 +40,18 @@ public class RockyItemBlock extends Item implements RockyItemType {
 
 	/**
 	 * 
+	 * @param material
+	 */
+	public RockyItemBlock(Material material) {
+		this((Block)material);
+	}
+	
+	/**
+	 * 
 	 * @param i
 	 */
-	public RockyItemBlock(int arg0, Block block) {
-		super(arg0 - 256);
+	public RockyItemBlock(Block block) {
+		super(block.getId() - 256);
 
 		Reflection.field("name").ofType(String.class).in(this)
 				.set("name." + block.getName());

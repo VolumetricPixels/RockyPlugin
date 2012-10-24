@@ -27,7 +27,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.material.Item;
-import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
+import com.volumetricpixels.rockyapi.material.MaterialTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialEnumType;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
@@ -46,7 +46,8 @@ public class GenericItem implements Item {
 	private boolean isFuel;
 	private boolean isStackable;
 	private boolean isThrowable;
-	private ItemCreativeTab creativeTab = ItemCreativeTab.CUSTOM_ITEM;
+	private MaterialTab creativeTab = MaterialTab.CUSTOM_ITEM;
+	private int defaultId = 318;
 	
 	/**
 	 * 
@@ -65,6 +66,7 @@ public class GenericItem implements Item {
 		this.itemID = RockyManager.getMaterialManager().getRegisteredName(name,
 				MaterialEnumType.ITEM);
 		RockyManager.getMaterialManager().addMaterial(this);
+		defaultId = 1;
 	}
 
 	/**
@@ -102,6 +104,14 @@ public class GenericItem implements Item {
 		return itemID;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getDefaultId() {
+		return defaultId;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -243,7 +253,7 @@ public class GenericItem implements Item {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ItemCreativeTab getCreativeTab() {
+	public MaterialTab getCreativeTab() {
 		return creativeTab;
 	}
 
@@ -251,7 +261,7 @@ public class GenericItem implements Item {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Item setCreativeTab(ItemCreativeTab tab) {
+	public Item setCreativeTab(MaterialTab tab) {
 		this.creativeTab = tab;
 		return this;
 	}

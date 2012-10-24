@@ -24,7 +24,9 @@ import net.minecraft.server.ItemArmor;
 
 import org.fest.reflect.core.Reflection;
 
+import com.volumetricpixels.rockyapi.material.Armor;
 import com.volumetricpixels.rockyapi.material.ArmorType;
+import com.volumetricpixels.rockyapi.material.Material;
 
 /**
  * 
@@ -34,14 +36,22 @@ public class RockyItemArmor extends ItemArmor implements RockyItemType {
 	 * 
 	 */
 	private static int lastUsedIdForArmorId = 4;
-
+	
+	/**
+	 * 
+	 * @param material
+	 */
+	public RockyItemArmor(Material material) {
+		this((Armor)material);
+	}
+	
 	/**
 	 * 
 	 * @param arg0
 	 * @param item
 	 */
-	public RockyItemArmor(int arg0, com.volumetricpixels.rockyapi.material.Armor item) {
-		super(arg0 - 256,
+	public RockyItemArmor(Armor item) {
+		super(item.getId() - 256,
 				EnumArmorMaterial.DIAMOND, 0, 0);
 
 		Reflection.field("maxStackSize").ofType(int.class).in(this)

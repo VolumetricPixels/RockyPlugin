@@ -22,13 +22,67 @@ package com.volumetricpixels.rockyapi.material;
 /**
  * 
  */
-public enum RangeAmmoType {
+public enum MaterialTab {
 	/**
 	 * 
 	 */
-	ITEM,
+	BLOCK(0),
 	/**
 	 * 
 	 */
-	ENTITY;
+	DECORATION(1),
+	/**
+	 * 
+	 */
+	REDSTONE(2),
+	/**
+	 * 
+	 */
+	TRANSPORT(3),
+	/**
+	 * 
+	 */
+	MISC(4),
+	/**
+	 * 
+	 */
+	FOOD(6),
+	/**
+	 * 
+	 */
+	TOOL(7),
+	/**
+	 * 
+	 */
+	COMBAT(8),
+	/**
+	 * 
+	 */
+	BREWING(9),
+	/**
+	 * 
+	 */
+	MATERIAL(10),
+	/**
+	 * 
+	 */
+	CUSTOM_ITEM(12);
+	
+	private int id;
+	
+	/**
+	 * 
+	 * @param id
+	 */
+	private MaterialTab(int id) {
+		this.id = id;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getId() {
+		return id;
+	}
 }

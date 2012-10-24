@@ -34,7 +34,7 @@ import com.volumetricpixels.rockyapi.block.design.GenericBlockDesign;
 import com.volumetricpixels.rockyapi.material.Block;
 import com.volumetricpixels.rockyapi.material.BlockType;
 import com.volumetricpixels.rockyapi.material.Item;
-import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
+import com.volumetricpixels.rockyapi.material.MaterialTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialEnumType;
 import com.volumetricpixels.rockyapi.material.MaterialManager;
@@ -61,7 +61,7 @@ public class GenericBlock implements Block {
 	protected List<BlockDesign> design = new LinkedList<BlockDesign>();
 	protected boolean allowRotation;
 	protected net.minecraft.server.Material material;
-
+	
 	/**
 	 * 
 	 */
@@ -108,6 +108,14 @@ public class GenericBlock implements Block {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public int getDefaultId() {
+		return 1;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Plugin getPlugin() {
 		return plugin;
 	}
@@ -125,7 +133,7 @@ public class GenericBlock implements Block {
 				MaterialEnumType.BLOCK);
 		this.allowRotation = section.getBoolean("IsRotated", false);
 		this.blockItem = new GenericItem(plugin, name);
-		this.blockItem.setCreativeTab(ItemCreativeTab.valueOf(section
+		this.blockItem.setCreativeTab(MaterialTab.valueOf(section
 				.getString("CreativeTab", "BLOCK")));
 		setStepSound(section.getString("StepSound", "stone"));
 		this.friction = (float) section.getDouble("Friction", 0.6f);

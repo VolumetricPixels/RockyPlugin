@@ -26,20 +26,29 @@ import net.minecraft.server.World;
 
 import org.fest.reflect.core.Reflection;
 
+import com.volumetricpixels.rockyapi.material.Material;
+
 /**
  * 
  */
 public class RockyItem extends Item implements RockyItemType {
 
 	protected boolean isThrowable;
-
+	
 	/**
 	 * 
-	 * @param arg0
+	 * @param material
+	 */
+	public RockyItem(Material material) {
+		this((com.volumetricpixels.rockyapi.material.Item)material);
+	}
+	
+	/**
+	 * 
 	 * @param item
 	 */
-	public RockyItem(int arg0, com.volumetricpixels.rockyapi.material.Item item) {
-		super(arg0 - 256);
+	public RockyItem(com.volumetricpixels.rockyapi.material.Item item) {
+		super(item.getId() - 256);
 
 		Reflection.field("maxStackSize").ofType(int.class).in(this)
 				.set(item.isStackable() ? 64 : 1);

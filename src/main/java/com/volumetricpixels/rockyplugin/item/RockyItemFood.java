@@ -22,6 +22,7 @@ package com.volumetricpixels.rockyplugin.item;
 import net.minecraft.server.ItemFood;
 
 import com.volumetricpixels.rockyapi.material.Food;
+import com.volumetricpixels.rockyapi.material.Material;
 
 /**
  * 
@@ -30,11 +31,18 @@ public class RockyItemFood extends ItemFood implements RockyItemType {
 
 	/**
 	 * 
-	 * @param arg0
+	 * @param material
+	 */
+	public RockyItemFood(Material material) {
+		this((Food)material);
+	}
+	
+	/**
+	 * 
 	 * @param item
 	 */
-	public RockyItemFood(int arg0, Food item) {
-		super(arg0 - 256, item.getRestoration(),
+	public RockyItemFood(Food item) {
+		super(item.getId() - 256, item.getRestoration(),
 				item.getSaturation(), true);
 	}
 

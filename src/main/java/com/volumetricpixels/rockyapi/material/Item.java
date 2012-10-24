@@ -32,14 +32,14 @@ public interface Item extends Material {
 	 * 
 	 * @return
 	 */
-	public ItemCreativeTab getCreativeTab();
+	public MaterialTab getCreativeTab();
 	
 	/**
 	 * 
 	 * @param tab
 	 * @return
 	 */
-	public Item setCreativeTab(ItemCreativeTab tab);
+	public Item setCreativeTab(MaterialTab tab);
 	
 	/**
 	 * 

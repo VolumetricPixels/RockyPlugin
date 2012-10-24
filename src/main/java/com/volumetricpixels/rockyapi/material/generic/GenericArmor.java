@@ -27,7 +27,7 @@ import org.bukkit.plugin.Plugin;
 import com.volumetricpixels.rockyapi.material.Armor;
 import com.volumetricpixels.rockyapi.material.ArmorModel;
 import com.volumetricpixels.rockyapi.material.ArmorType;
-import com.volumetricpixels.rockyapi.material.ItemCreativeTab;
+import com.volumetricpixels.rockyapi.material.MaterialTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
 import com.volumetricpixels.rockyapi.resource.AddonPack;
@@ -63,9 +63,9 @@ public class GenericArmor extends GenericItem implements Armor {
 			throw new IllegalArgumentException("Invalid Model Texture Lenght");
 		}
 		this.modelTexture = modelTexture;
-		
+
 		setStackable(false);
-		setCreativeTab(ItemCreativeTab.COMBAT);
+		setCreativeTab(MaterialTab.COMBAT);
 	}
 
 	/**
@@ -74,6 +74,24 @@ public class GenericArmor extends GenericItem implements Armor {
 	@Override
 	public int getTypeId() {
 		return 4;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getDefaultId() {
+		switch (type) {
+		case HELMET:
+			return 298;
+		case BODY:
+			return 299;
+		case LEGGING:
+			return 300;
+		case BOOTS:
+			return 301;
+		}
+		return 318;
 	}
 
 	/**
@@ -140,8 +158,8 @@ public class GenericArmor extends GenericItem implements Armor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Material loadPreInitialization(Plugin plugin, ConfigurationSection section,
-			AddonPack pack) {
+	public Material loadPreInitialization(Plugin plugin,
+			ConfigurationSection section, AddonPack pack) {
 		super.loadPreInitialization(plugin, section, pack);
 
 		this.durability = section.getInt("Durability", 100);
@@ -160,9 +178,9 @@ public class GenericArmor extends GenericItem implements Armor {
 		this.modelTexture[1] = new Texture(plugin, textureFile + "_2.png",
 				pack.getInputStream(textureFile + "_2.png"));
 		this.setStackable(false);
-		setCreativeTab(ItemCreativeTab.valueOf(section.getString("CreativeTab",
+		setCreativeTab(MaterialTab.valueOf(section.getString("CreativeTab",
 				"COMBAT")));
-		
+
 		return this;
 	}
 
