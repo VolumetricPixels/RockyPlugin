@@ -116,7 +116,7 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 * View Distance Addon
 	 */
 	private RenderDistance minimumDistance = RenderDistance.TINY;
-	private RenderDistance maximumDistance = RenderDistance.VERY_FAR;
+	private RenderDistance maximumDistance = RenderDistance.EXTREME;
 	private RenderDistance currentDistance = RenderDistance.NORMAL;
 
 	/**

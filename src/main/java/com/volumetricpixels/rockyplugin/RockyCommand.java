@@ -116,7 +116,7 @@ public class RockyCommand implements CommandExecutor {
 			} else if (RenderDistance.valueOf(name.toUpperCase()) == null) {
 				sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
 						+ "Valid distance " + ChatColor.GREEN
-						+ "[TINY, SHORT, NORMAL, FAR, VERY_FAR]");
+						+ "[TINY, SHORT, NORMAL, FAR, VERY_FAR, EXTREME]");
 				return true;
 			}
 			RockyManager.getPlayer(player).setRenderDistance(

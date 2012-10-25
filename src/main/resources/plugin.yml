@@ -16,7 +16,7 @@ commands:
             Usage: /<command> waypoint [Name]
             Usage: /<command> reload
             Usage: /<command> item [ID] (Amount) (Player)
-            Usage: /<command> view-distance [Player] [Tiny, Short, Normal, Far, Very_Far]
+            Usage: /<command> view-distance [Player] [Tiny, Short, Normal, Far, Very_Far, Extreme]
 
 permissions:
     rocky.plugin.force:
