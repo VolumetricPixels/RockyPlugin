@@ -60,8 +60,10 @@ public class PacketFileCacheBegin implements Packet {
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
 		output.writeShort(resourceList.length);
-		for (Resource resource : resourceList)
-			output.writeUTF(resource.getName() + ":" + resource.getRevision());
+		for (Resource resource : resourceList) {
+			output.writeUTF(resource.getName());
+			output.writeLong(resource.getRevision());
+		}
 	}
 
 	/**
@@ -71,9 +73,10 @@ public class PacketFileCacheBegin implements Packet {
 	public void handle(RockyPlayer player) {
 		for (String name : difResources) {
 			// Prevent a NPE hack by a hacked client.
-			if (RockyManager.getResourceManager().hasResource(name))
+			if (RockyManager.getResourceManager().hasResource(name)) {
 				player.sendPacket(new PacketFileCache(RockyManager
 						.getResourceManager().getResource(name)));
+			}
 		}
 		player.sendPacket(new PacketFileCacheFinish());
 	}

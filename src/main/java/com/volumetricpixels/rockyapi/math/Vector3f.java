@@ -44,7 +44,7 @@ public final class Vector3f implements Cloneable {
 	 * 
 	 */
 	public Vector3f() {
-		x = y = z = 0;
+		set(0.0f, 0.0f, 0.0f);
 	}
 
 	/**
@@ -120,7 +120,7 @@ public final class Vector3f implements Cloneable {
 	 * @return the resultant vector.
 	 */
 	public Vector3f add(Vector3f vec) {
-		if (null == vec) {
+		if (vec == null) {
 			throw new IllegalArgumentException(
 					"Provided vector is null, null returned.");
 		}
@@ -245,7 +245,7 @@ public final class Vector3f implements Cloneable {
 	 * @return the resultant dot product of this vector and a given vector.
 	 */
 	public float dot(Vector3f vec) {
-		if (null == vec) {
+		if (vec == null) {
 			throw new IllegalArgumentException("Provided vector is null, 0 returned.");
 		}
 		return x * vec.x + y * vec.y + z * vec.z;
@@ -296,9 +296,6 @@ public final class Vector3f implements Cloneable {
 	 */
 	public Vector3f cross(float otherX, float otherY, float otherZ,
 			Vector3f result) {
-		if (result == null) {
-			result = new Vector3f();
-		}
 		float resX = ((y * otherZ) - (z * otherY));
 		float resY = ((z * otherX) - (x * otherZ));
 		float resZ = ((x * otherY) - (y * otherX));
@@ -413,10 +410,6 @@ public final class Vector3f implements Cloneable {
 	 * @return product
 	 */
 	public Vector3f mult(float scalar, Vector3f product) {
-		if (null == product) {
-			product = new Vector3f();
-		}
-
 		product.x = x * scalar;
 		product.y = y * scalar;
 		product.z = z * scalar;
@@ -448,7 +441,7 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f multLocal(Vector3f vec) {
-		if (null == vec) {
+		if (vec == null) {
 			throw new IllegalArgumentException(
 					"Provided vector is null, null returned.");
 		}
@@ -484,7 +477,7 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f mult(Vector3f vec) {
-		if (null == vec) {
+		if (vec == null) {
 			throw new IllegalArgumentException(
 					"Provided vector is null, null returned.");
 		}
@@ -503,12 +496,9 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f mult(Vector3f vec, Vector3f store) {
-		if (null == vec) {
+		if (vec == null) {
 			throw new IllegalArgumentException(
 					"Provided vector is null, null returned.");
-		}
-		if (store == null) {
-			store = new Vector3f();
 		}
 		return store.set(x * vec.x, y * vec.y, z * vec.z);
 	}
@@ -522,7 +512,7 @@ public final class Vector3f implements Cloneable {
 	 * @return the result <code>Vector</code>.
 	 */
 	public Vector3f divide(float scalar) {
-		scalar = 1f / scalar;
+		scalar = 1.0f / scalar;
 		return new Vector3f(x * scalar, y * scalar, z * scalar);
 	}
 
@@ -536,7 +526,7 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f divideLocal(float scalar) {
-		scalar = 1f / scalar;
+		scalar = 1.0f / scalar;
 		x *= scalar;
 		y *= scalar;
 		z *= scalar;
@@ -640,9 +630,6 @@ public final class Vector3f implements Cloneable {
 	 * @return result
 	 */
 	public Vector3f subtract(Vector3f vec, Vector3f result) {
-		if (result == null) {
-			result = new Vector3f();
-		}
 		result.x = x - vec.x;
 		result.y = y - vec.y;
 		result.z = z - vec.z;
@@ -694,7 +681,7 @@ public final class Vector3f implements Cloneable {
 	 */
 	public Vector3f normalize() {
 		float length = x * x + y * y + z * z;
-		if (length != 1f && length != 0f) {
+		if (length != 1.0f && length != 0.0f) {
 			length = (float) (1.0f / Math.sqrt(length));
 			return new Vector3f(x * length, y * length, z * length);
 		}
@@ -746,7 +733,7 @@ public final class Vector3f implements Cloneable {
 	 * <code>zero</code> resets this vector's data to zero internally.
 	 */
 	public void zero() {
-		x = y = z = 0;
+		set(0.0f, 0.0f, 0.0f);
 	}
 
 	/**
@@ -759,9 +746,7 @@ public final class Vector3f implements Cloneable {
 	 * @return the angle in radians.
 	 */
 	public float angleBetween(Vector3f otherVector) {
-		float dotProduct = dot(otherVector);
-		float angle = (float) Math.acos(dotProduct);
-		return angle;
+		return (float) Math.acos(dot(otherVector));
 	}
 
 	/**
@@ -820,24 +805,6 @@ public final class Vector3f implements Cloneable {
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Saves this Vector3f into the given float[] object.
-	 * 
-	 * @param floats
-	 *            The float[] to take this Vector3f. If null, a new float[3] is
-	 *            created.
-	 * @return The array, with X, Y, Z float values in that order
-	 */
-	public float[] toArray(float[] floats) {
-		if (floats == null) {
-			floats = new float[3];
-		}
-		floats[0] = x;
-		floats[1] = y;
-		floats[2] = z;
-		return floats;
 	}
 
 	/**

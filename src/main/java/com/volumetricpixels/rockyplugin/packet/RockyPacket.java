@@ -88,7 +88,7 @@ public class RockyPacket extends Packet {
 			RockyManager.printConsole("------------------------");
 			RockyManager.printConsole("Unexpected Exception: "
 					+ PacketType.getPacketFromId(packetID) + ", " + packetID);
-			ex.printStackTrace();
+			RockyManager.printConsole(ex.getMessage());
 			RockyManager.printConsole("------------------------");
 		}
 	}

@@ -56,8 +56,9 @@ public class PacketCustomItem implements Packet {
 	@Override
 	public void writeData(PacketOutputStream output) throws IOException {
 		output.writeShort(itemList.length);
-		for (Item item : itemList)
+		for (Item item : itemList) {
 			item.writeToPacket(output);
+		}
 	}
 
 	/**

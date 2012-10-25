@@ -65,14 +65,14 @@ import com.volumetricpixels.rockyplugin.item.RockyItemTool;
 /**
  * 
  */
-public class RockyMaterialManager implements MaterialManager {
+public final class RockyMaterialManager implements MaterialManager {
 	/**
 	 * Where to start the ID getter
 	 */
-	public final static int DEFAULT_ITEM_PLACEHOLDER_ID = 2300;
-	public final static int DEFAULT_BLOCK_PLACEHOLDER_ID = 196;
-	public final static int MAX_FREE_ITEM_INDEX = 32000 - DEFAULT_ITEM_PLACEHOLDER_ID;
-	public final static int MAX_FREE_BLOCK_INDEX = 4096 - DEFAULT_BLOCK_PLACEHOLDER_ID;
+	public static final int DEFAULT_ITEM_PLACEHOLDER_ID = 2300;
+	public static final int DEFAULT_BLOCK_PLACEHOLDER_ID = 196;
+	public static final int MAX_FREE_ITEM_INDEX = 32000 - DEFAULT_ITEM_PLACEHOLDER_ID;
+	public static final int MAX_FREE_BLOCK_INDEX = 4096 - DEFAULT_BLOCK_PLACEHOLDER_ID;
 
 	/**
 	 * Folder where all the data is at
@@ -346,8 +346,9 @@ public class RockyMaterialManager implements MaterialManager {
 
 				// Get the current entry
 				ZipEntry zipEntry = enumeration.nextElement();
-				if (!zipEntry.getName().endsWith(".yml"))
+				if (!zipEntry.getName().endsWith(".yml")) {
 					continue;
+				}
 
 				// Load the configuration of the type
 				YamlConfiguration configuration = new YamlConfiguration();
@@ -478,11 +479,12 @@ public class RockyMaterialManager implements MaterialManager {
 									wRecipe.setIngredient(
 											ingredientKey.charAt(0),
 											(Integer) value);
-								} else if (value instanceof String)
+								} else if (value instanceof String) {
 									wRecipe.setIngredient(ingredientKey
 											.charAt(0),
 											getItemID((String) ingredientMap
 													.get(ingredientKey)));
+								}
 							}
 							wRecipe.shape(lA, lB, lC);
 							RockyRecipeManager.addToCraftingManager(wRecipe);

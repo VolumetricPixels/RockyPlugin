@@ -31,7 +31,7 @@ import com.volumetricpixels.rockyapi.resource.Texture;
 /**
  * 
  */
-public class GenericBlockDesign implements BlockDesign {
+public final class GenericBlockDesign implements BlockDesign {
 
 	private Texture texture;
 	private Quad[] quadList;
@@ -110,11 +110,11 @@ public class GenericBlockDesign implements BlockDesign {
 
 			}
 			// Check for quad ending (Join vertices)
-			if (j == 3)
+			if (j == 3) {
 				quad.addVertex(j, Float.parseFloat(coordLine[0]),
 						Float.parseFloat(coordLine[1]),
 						Float.parseFloat(coordLine[2]));
-
+			}
 			setQuad(quad);
 			id++;
 		}

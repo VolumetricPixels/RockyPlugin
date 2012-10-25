@@ -176,7 +176,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 	 * 
 	 * @return
 	 */
-	public final static Rocky getInstance() {
+	public static final Rocky getInstance() {
 		return instance;
 	}
 

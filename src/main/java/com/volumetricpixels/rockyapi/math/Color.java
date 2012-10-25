@@ -116,7 +116,6 @@ public class Color {
 	 * @param floatBits
 	 */
 	public Color(float floatBits) {	
-		//TODO
 	}
 	
 	/**
@@ -125,7 +124,10 @@ public class Color {
 	 * 
 	 */
 	public Color() {
-		r = g = b = a = 1.0f;
+		this.r = 1.0f;
+		this.g = 1.0f;
+		this.b = 1.0f;
+		this.a = 1.0f;
 	}
 
 	/**
@@ -369,25 +371,6 @@ public class Color {
 	@Override
 	public String toString() {
 		return "(" + r + ", " + g + ", " + b + ", " + a + ")";
-	}
-
-	/**
-	 * Saves this ColorRGBA into the given float[] object.
-	 * 
-	 * @param floats
-	 *            The float[] to take this ColorRGBA. If null, a new float[4] is
-	 *            created.
-	 * @return The array, with R, G, B, A float values in that order
-	 */
-	public float[] toArray(float[] floats) {
-		if (floats == null) {
-			floats = new float[4];
-		}
-		floats[0] = r;
-		floats[1] = g;
-		floats[2] = b;
-		floats[3] = a;
-		return floats;
 	}
 
 	/**

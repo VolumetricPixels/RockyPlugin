@@ -65,14 +65,16 @@ public class PacketAchievementList implements Packet {
 			output.writeShort(achievement.getItemId());
 			output.writeUTF(achievement.getName());
 			output.writeUTF(achievement.getDescription());
-			for (RockyAchievement dependency : achievement.getDependency())
+			for (RockyAchievement dependency : achievement.getDependency()) {
 				output.writeShort(dependency.getId());
+			}
 		}
 
 		Integer[] playerAchievementList = player.getAchievement();
 		output.writeShort(playerAchievementList.length);
-		for (Integer id : playerAchievementList)
+		for (Integer id : playerAchievementList) {
 			output.writeShort(id);
+		}
 	}
 
 	/**

@@ -55,7 +55,7 @@ public class RockyPacketHandler extends NetServerHandler {
 	/**
 	 * 
 	 */
-	private final static int QUEUE_PACKET_SIZE = 9437184;
+	private static final int QUEUE_PACKET_SIZE = 9437184;
 
 	private LinkedBlockingDeque<Packet> resyncQueue = new LinkedBlockingDeque<Packet>();
 
@@ -188,7 +188,7 @@ public class RockyPacketHandler extends NetServerHandler {
 		try {
 			packetId = packet.k();
 		} catch (Exception e) {
-			e.printStackTrace();
+			return;
 		}
 		try {
 			RockyPlayer player = (RockyPlayer) RockyManager

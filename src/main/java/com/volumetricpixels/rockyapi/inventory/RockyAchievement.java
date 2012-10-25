@@ -39,7 +39,7 @@ public class RockyAchievement {
 	public RockyAchievement(int id, String name, String description,
 			int itemId, RockyAchievement... depends) {
 		this.id = id;
-		this.itemId = id;
+		this.itemId = itemId;
 		this.name = name;
 		this.description = description;
 		this.depends = depends;

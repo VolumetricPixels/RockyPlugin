@@ -109,7 +109,6 @@ public class RockyConfig {
 			}
 		} catch (Exception e) {
 			RockyManager.printConsole("Error while loading waypoints: ");
-			e.printStackTrace();
 		}
 	}
 
@@ -134,10 +133,11 @@ public class RockyConfig {
 		Waypoint waypoint = new Waypoint(location.getX(), location.getY(),
 				location.getZ(), name);
 
-		for (Player p : location.getWorld().getPlayers())
+		for (Player p : location.getWorld().getPlayers()) {
 			if (p instanceof RockyPlayer) {
 				((RockyPlayer) p).addWaypoint(waypoint);
 			}
+		}
 		waypoints.get(location.getWorld().getName()).add(waypoint);
 	}
 
@@ -154,7 +154,6 @@ public class RockyConfig {
 			f.setAccessible(true);
 			return (Map<String, Object>) f.get(section);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return null;
 	}

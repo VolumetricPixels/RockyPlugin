@@ -28,7 +28,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  * 
  */
 public class PlayerEnterPlayerArea extends Event {
-	private final static HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 	private final RockyPlayer player;
 	private final RockyPlayer trigger;
 

@@ -37,7 +37,7 @@ import com.volumetricpixels.rockyapi.player.RenderDistance;
  */
 public class RockyCommand implements CommandExecutor {
 
-	private final static String MESSAGE_PREFIX = "[" + ChatColor.DARK_PURPLE
+	private static final String MESSAGE_PREFIX = "[" + ChatColor.DARK_PURPLE
 			+ "Rocky" + ChatColor.WHITE + "]: ";
 
 	/**

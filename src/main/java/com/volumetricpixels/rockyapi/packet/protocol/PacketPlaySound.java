@@ -76,8 +76,9 @@ public class PacketPlaySound implements Packet {
 		output.writeBoolean(isStreaming);
 		output.writeUTF(name);
 		output.writeShort(volumePercent);
-		if (!isStreaming)
+		if (!isStreaming) {
 			output.writeShort(distance);
+		}
 	}
 
 	/**

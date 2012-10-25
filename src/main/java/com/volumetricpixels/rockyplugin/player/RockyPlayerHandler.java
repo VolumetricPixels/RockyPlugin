@@ -438,16 +438,17 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 			throw new IllegalArgumentException(
 					"Hostnames may not contain the : symbol");
 		}
-		if (message == null) {
-			message = "[Redirect] Please reconnect to";
-		} else if (message.contains(":")) {
+		String clientMessage = message;
+		if (clientMessage == null) {
+			clientMessage = "[Redirect] Please reconnect to";
+		} else if (clientMessage.contains(":")) {
 			throw new IllegalArgumentException(
 					"Kick messages may not contain the : symbol");
 		}
 		if (port == 25565) {
- 			this.kickPlayer(message + " : " + hostname);
+ 			this.kickPlayer(clientMessage + " : " + hostname);
 		} else {
-			this.kickPlayer(message + " : " + hostname + ":" + port);
+			this.kickPlayer(clientMessage + " : " + hostname + ":" + port);
 		}
 	}
 

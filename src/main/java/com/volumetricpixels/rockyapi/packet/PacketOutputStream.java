@@ -136,8 +136,9 @@ public class PacketOutputStream extends OutputStream implements DataOutput {
 	@Override
 	public void writeBytes(String s) throws IOException {
 		writeShort(s.length());
-		for (int i = 0, j = s.length(); i < j; i++)
+		for (int i = 0, j = s.length(); i < j; i++) {
 			writeChar(s.charAt(i));
+		}
 	}
 
 	/**
@@ -145,8 +146,9 @@ public class PacketOutputStream extends OutputStream implements DataOutput {
 	 */
 	@Override
 	public void writeChars(String s) throws IOException {
-		for (int i = 0, j = s.length(); i < j; i++)
+		for (int i = 0, j = s.length(); i < j; i++) {
 			writeChar(s.charAt(i));
+		}
 	}
 
 	/**
@@ -172,8 +174,9 @@ public class PacketOutputStream extends OutputStream implements DataOutput {
 	 */
 	public void writeUTFArray(String... array) throws IOException {
 		writeShort(array.length);
-		for (String node : array)
+		for (String node : array) {
 			writeUTF(node);
+		}
 	}
 
 	/**

@@ -54,8 +54,9 @@ public class PacketFileCacheFinish implements Packet {
 	 */
 	@Override
 	public void handle(RockyPlayer player) {
-		if (!isAllowToContinue)
+		if (!isAllowToContinue) {
 			player.kickPlayer("Error downloading cache files");
+		}
 	}
 
 	/**

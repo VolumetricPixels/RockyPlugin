@@ -103,7 +103,7 @@ public enum PacketType {
 
 	private final int id;
 	private final Class<? extends Packet> clazz;
-	private final static Map<Integer, PacketType> packetList = new HashMap<Integer, PacketType>();
+	private static final Map<Integer, PacketType> packetList = new HashMap<Integer, PacketType>();
 
 	/**
 	 * 

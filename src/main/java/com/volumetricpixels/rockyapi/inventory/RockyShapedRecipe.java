@@ -21,6 +21,7 @@
 package com.volumetricpixels.rockyapi.inventory;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -31,7 +32,7 @@ import org.bukkit.inventory.Recipe;
 public class RockyShapedRecipe implements Recipe {
 	private ItemStack output;
 	private String[] rows;
-	private HashMap<Character, Integer> ingredients = new HashMap<Character, Integer>();
+	private Map<Character, Integer> ingredients = new HashMap<Character, Integer>();
 
 	/**
 	 * Create a shaped recipe to craft the specified ItemStack. The constructor
@@ -70,7 +71,7 @@ public class RockyShapedRecipe implements Recipe {
 			}
 		}
 		this.rows = shape;
-		HashMap<Character, Integer> ingredientsTemp = this.ingredients;
+		Map<Character, Integer> ingredientsTemp = this.ingredients;
 
 		this.ingredients = new HashMap<Character, Integer>();
 		for (char key : ingredientsTemp.keySet()) {
@@ -121,7 +122,7 @@ public class RockyShapedRecipe implements Recipe {
 	 * 
 	 * @return The mapping of character to ingredients.
 	 */
-	public HashMap<Character, Integer> getIngredientMap() {
+	public Map<Character, Integer> getIngredientMap() {
 		return ingredients;
 	}
 

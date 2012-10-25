@@ -171,9 +171,9 @@ public class GenericBlock implements Block {
 
 		// Load the block shape
 		YamlConfiguration configuration = null;
-		if (shapeFile.equals(MaterialManager.DEFAULT_SHAPE))
+		if (shapeFile.equals(MaterialManager.DEFAULT_SHAPE)) {
 			configuration = RockyManager.getMaterialManager().getDefaultShape();
-		else {
+		} else {
 			configuration = YamlConfiguration.loadConfiguration(pack
 					.getInputStream(shapeFile));
 		}

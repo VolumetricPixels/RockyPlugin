@@ -21,12 +21,14 @@
 package com.volumetricpixels.rockyplugin;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.event.input.KeyBindingEvent;
 import com.volumetricpixels.rockyapi.keyboard.BindingExecutionDelegate;
 import com.volumetricpixels.rockyapi.keyboard.KeyBinding;
@@ -39,7 +41,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  * 
  */
 public class RockyKeyBindingManager implements KeyBindingManager {
-	private HashMap<UUID, KeyBinding> bindings = new HashMap<UUID, KeyBinding>();
+	private Map<UUID, KeyBinding> bindings = new HashMap<UUID, KeyBinding>();
 
 	/**
 	 * {@inheritDoc}
@@ -96,22 +98,20 @@ public class RockyKeyBindingManager implements KeyBindingManager {
 				binding.getDelegate().keyPressed(
 						new KeyBindingEvent(player, binding));
 			} catch (Exception e) {
-				System.out
-						.println("Could not execute Key Press Delegate of plugin ["
+				RockyManager
+						.printConsole("Could not execute Key Press Delegate of plugin ["
 								+ plugin.getDescription().getName()
 								+ "] for action [" + id + "]!");
-				e.printStackTrace();
 			}
 		} else {
 			try {
 				binding.getDelegate().keyReleased(
 						new KeyBindingEvent(player, binding));
 			} catch (Exception e) {
-				System.out
-						.println("Could not execute Key Release Delegate of plugin ["
+				RockyManager
+						.printConsole("Could not execute Key Release Delegate of plugin ["
 								+ plugin.getDescription().getName()
 								+ "] for action [" + id + "]!");
-				e.printStackTrace();
 			}
 		}
 	}

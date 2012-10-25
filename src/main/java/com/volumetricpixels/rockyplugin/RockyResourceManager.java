@@ -178,9 +178,9 @@ public class RockyResourceManager implements ResourceManager {
 				boolean isLocal = !(fileName.contains("http.") || fileName
 						.contains("www."));
 
-				if (!isLocal)
+				if (!isLocal) {
 					resourceData.setData(fileName);
-				else
+				} else {
 					try {
 						resourceData.setData(read(input));
 					} catch (IOException e) {
@@ -193,6 +193,7 @@ public class RockyResourceManager implements ResourceManager {
 						} catch (IOException e) {
 						}
 					}
+				}
 				resource.put(fileName, resourceData);
 				try {
 					input.close();
@@ -299,8 +300,9 @@ public class RockyResourceManager implements ResourceManager {
 			}
 		} finally {
 			try {
-				if (ous != null)
+				if (ous != null) {
 					ous.close();
+				}
 			} catch (IOException e) {
 			}
 		}

@@ -21,6 +21,7 @@
 package com.volumetricpixels.rockyapi.inventory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -30,7 +31,7 @@ import org.bukkit.inventory.Recipe;
  */
 public class RockyShapelessRecipe implements Recipe {
 	private ItemStack output;
-	private ArrayList<Integer> ingredients = new ArrayList<Integer>();
+	private List<Integer> ingredients = new ArrayList<Integer>();
 
 	/**
 	 * Create a shapeless recipe to craft the specified ItemStack. The
@@ -71,7 +72,7 @@ public class RockyShapelessRecipe implements Recipe {
 			throw new IllegalArgumentException(
 					"Shapeless recipes cannot have more than 9 ingredients");
 		}
-		while (count-- > 0) {
+		for(int i = 0; i < count; i++) {
 			ingredients.add(ingredient);
 		}
 		return this;
@@ -104,7 +105,7 @@ public class RockyShapelessRecipe implements Recipe {
 	 * 
 	 * @return The input list
 	 */
-	public ArrayList<Integer> getIngredientList() {
+	public List<Integer> getIngredientList() {
 		return ingredients;
 	}
 }

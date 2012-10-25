@@ -43,9 +43,9 @@ public class RockyItemBlock extends Item implements RockyItemType {
 	 * @param material
 	 */
 	public RockyItemBlock(Material material) {
-		this((Block)material);
+		this((Block) material);
 	}
-	
+
 	/**
 	 * 
 	 * @param i
@@ -66,7 +66,7 @@ public class RockyItemBlock extends Item implements RockyItemType {
 	@Override
 	public boolean interactWith(ItemStack itemstack, EntityHuman entityhuman,
 			World world, int i, int j, int k, int l, float f, float f1, float f2) {
-		int clickedX = i, clickedY = j, clickedZ = k; // CraftBukkit
+		int clickedX = i, clickedY = j, clickedZ = k;
 
 		if (itemstack.count == 0) {
 			return false;
@@ -113,8 +113,9 @@ public class RockyItemBlock extends Item implements RockyItemType {
 			}
 
 			return true;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	/**

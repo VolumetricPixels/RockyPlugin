@@ -33,7 +33,8 @@ public class KeyEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 	private final RockyPlayer player;
 	private final Keyboard key;
-
+	private final boolean isPressed;
+	
 	/**
 	 * 
 	 * @param keyPress
@@ -45,6 +46,7 @@ public class KeyEvent extends Event {
 			boolean isPressed) {
 		this.player = player;
 		this.key = Keyboard.getKey(keyPress);
+		this.isPressed = isPressed;
 	}
 
 	/**
@@ -63,6 +65,14 @@ public class KeyEvent extends Event {
 		return key;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isPressed() {
+		return isPressed;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
