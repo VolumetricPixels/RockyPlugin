@@ -26,7 +26,7 @@ import com.volumetricpixels.rockyapi.block.design.BlockDesign;
 /**
  * 
  */
-interface Block extends Material {
+public interface Block extends Material {
 	/**
 	 * 
 	 * @return

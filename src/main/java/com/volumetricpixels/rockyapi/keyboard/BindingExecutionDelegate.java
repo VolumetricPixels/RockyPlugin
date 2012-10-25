@@ -29,7 +29,7 @@ import com.volumetricpixels.rockyapi.event.input.KeyBindingEvent;
  * 
  * @see KeyBindingManager
  */
-interface BindingExecutionDelegate {
+public interface BindingExecutionDelegate {
 	/**
 	 * Called when the key bound to the delegate is pressed
 	 * 

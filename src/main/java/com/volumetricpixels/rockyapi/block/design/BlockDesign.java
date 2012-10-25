@@ -24,7 +24,7 @@ import com.volumetricpixels.rockyapi.resource.Texture;
 /**
  * 
  */
-interface BlockDesign {
+public interface BlockDesign {
 	/**
 	 * Sets the maximum brightness of the block
 	 * 

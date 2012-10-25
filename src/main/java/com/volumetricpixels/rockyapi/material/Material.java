@@ -27,7 +27,7 @@ import com.volumetricpixels.rockyapi.resource.AddonPack;
 /**
  * 
  */
-interface Material {
+public interface Material {
 	/**
 	 * 
 	 * @return

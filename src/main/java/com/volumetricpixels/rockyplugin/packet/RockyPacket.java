@@ -31,7 +31,7 @@ import net.minecraft.server.Packet;
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
-import com.volumetricpixels.rockyapi.packet.PacketType;
+import com.volumetricpixels.rockyapi.packet.protocol.PacketType;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 
 /**

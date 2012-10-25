@@ -40,41 +40,41 @@ public interface MaterialManager extends Listener {
 	 * 
 	 * @return
 	 */
-	public Item[] getItemList();
+	Item[] getItemList();
 	
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public Item getItem(int id);
+	Item getItem(int id);
 	
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public Block getBlock(int id);
+	Block getBlock(int id);
 	
 	/**
 	 * 
 	 * @param name
 	 * @param clazz
 	 */
-	public void registerType(String name, Class<? extends Material> clazz, Class<?> reference);
+	void registerType(String name, Class<? extends Material> clazz, Class<?> reference);
 
 	/**
 	 * 
 	 * @param name
 	 */
-	public void unregisterType(String name);
+	void unregisterType(String name);
 
 	/**
 	 * 
 	 * @param name
 	 * @return
 	 */
-	public Class<? extends Material> getType(String name);
+	Class<? extends Material> getType(String name);
 
 	/**
 	 * 
@@ -82,14 +82,14 @@ public interface MaterialManager extends Listener {
 	 * @param type
 	 * @return
 	 */
-	public int getRegisteredName(String name, MaterialEnumType type);
+	int getRegisteredName(String name, MaterialEnumType type);
 
 	/**
 	 * 
 	 * @param name
 	 * @param type
 	 */
-	public int registerName(String name, MaterialEnumType type);
+	int registerName(String name, MaterialEnumType type);
 
 	/**
 	 * 
@@ -97,23 +97,23 @@ public interface MaterialManager extends Listener {
 	 * @param id
 	 * @param type
 	 */
-	public void registerName(String name, int id, MaterialEnumType type);
+	void registerName(String name, int id, MaterialEnumType type);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public Map<String, Integer> getRegisteredNames(MaterialEnumType type);
+	Map<String, Integer> getRegisteredNames(MaterialEnumType type);
 
 	/**
 	 * 
 	 * @param material
 	 */
-	public void addMaterial(Material material);
+	void addMaterial(Material material);
 
 	/**
 	 * 
 	 * @param material
 	 */
-	public void deleteMaterial(Material material);
+	void deleteMaterial(Material material);
 }

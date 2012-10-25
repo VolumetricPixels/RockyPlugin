@@ -332,7 +332,7 @@ public class RockyMaterialManager implements MaterialManager {
 			ZipFile zipFile = null;
 			try {
 				zipFile = new ZipFile(file);
-			} catch (Throwable ex) {
+			} catch (IOException ex) {
 				continue;
 			}
 			// Get each file within this file

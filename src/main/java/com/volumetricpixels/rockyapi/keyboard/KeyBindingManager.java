@@ -29,7 +29,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
 /**
  * 
  */
-interface KeyBindingManager {
+public interface KeyBindingManager {
 	/**
 	 * Registers a new kind binding
 	 * 
@@ -47,8 +47,7 @@ interface KeyBindingManager {
 	 *             if the id passed is not unique.
 	 */
 	void registerBinding(String id, Keyboard defaultKey,
-			String description, BindingExecutionDelegate callback, Plugin plugin)
-			throws IllegalArgumentException;
+			String description, BindingExecutionDelegate callback, Plugin plugin);
 
 	/**
 	 * 

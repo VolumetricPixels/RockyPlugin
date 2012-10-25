@@ -25,7 +25,6 @@ import com.volumetricpixels.rockyapi.material.Item;
 import com.volumetricpixels.rockyapi.packet.Packet;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
-import com.volumetricpixels.rockyapi.packet.PacketType;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 
 /**

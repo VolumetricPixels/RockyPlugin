@@ -21,6 +21,7 @@ package com.volumetricpixels.rockyapi.packet;
 
 import java.io.IOException;
 
+import com.volumetricpixels.rockyapi.packet.protocol.PacketType;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 
 /**

@@ -17,29 +17,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.volumetricpixels.rockyapi.packet;
+package com.volumetricpixels.rockyapi.packet.protocol;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.volumetricpixels.rockyapi.packet.protocol.PacketAccessory;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketAchievement;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketAchievementList;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketAlert;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketCustomItem;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCache;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCacheBegin;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCacheFinish;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketKeyBinding;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketKeyEvent;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketMovementAddon;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketPlaySound;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketSetVelocity;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketSkyAddon;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketStopMusic;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketVersion;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketWaypoint;
+import com.volumetricpixels.rockyapi.packet.Packet;
 
 /**
  * 

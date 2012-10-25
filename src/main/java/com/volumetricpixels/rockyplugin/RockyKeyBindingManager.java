@@ -46,8 +46,7 @@ public class RockyKeyBindingManager implements KeyBindingManager {
 	 */
 	@Override
 	public void registerBinding(String id, Keyboard defaultKey,
-			String description, BindingExecutionDelegate callback, Plugin plugin)
-			throws IllegalArgumentException {
+			String description, BindingExecutionDelegate callback, Plugin plugin) {
 		if (searchBinding(id, plugin) != null) {
 			throw new IllegalArgumentException(
 					"This binding is already registered: " + id

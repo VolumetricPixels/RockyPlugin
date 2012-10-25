@@ -28,12 +28,12 @@ public interface WeaponRange extends Weapon {
 	 * 
 	 * @return
 	 */
-	public String getShootSound();
+	String getShootSound();
 
 	/**
 	 * 
 	 * @param sound
 	 * @return
 	 */
-	public WeaponRange setShootSound(String sound);
+	WeaponRange setShootSound(String sound);
 }
