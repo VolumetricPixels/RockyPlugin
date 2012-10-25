@@ -30,7 +30,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  * 
  */
 public class KeyBindingEvent extends Event {
-	private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList HANDLER = new HandlerList();
 	private final KeyBinding binding;
 	private final RockyPlayer player;
 
@@ -65,7 +65,7 @@ public class KeyBindingEvent extends Event {
 	 */
 	@Override
 	public HandlerList getHandlers() {
-		return handlers;
+		return HANDLER;
 	}
 
 	/**
@@ -73,6 +73,6 @@ public class KeyBindingEvent extends Event {
 	 * @return
 	 */
 	public static HandlerList getHandlerList() {
-		return handlers;
+		return HANDLER;
 	}
 }

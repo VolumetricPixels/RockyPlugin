@@ -19,10 +19,21 @@
  */
 package com.volumetricpixels.rockyapi;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
+import net.minecraft.server.CraftingManager;
+import net.minecraft.server.ItemStack;
+import net.minecraft.server.RecipesFurnace;
+
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
+import com.volumetricpixels.rockyapi.inventory.RockyFurnaceRecipe;
+import com.volumetricpixels.rockyapi.inventory.RockyShapedRecipe;
+import com.volumetricpixels.rockyapi.inventory.RockyShapelessRecipe;
 import com.volumetricpixels.rockyapi.keyboard.KeyBindingManager;
 import com.volumetricpixels.rockyapi.material.MaterialManager;
 import com.volumetricpixels.rockyapi.packet.PacketManager;
@@ -244,9 +255,58 @@ public final class RockyManager {
 	}
 
 	/**
+	 * 
+	 * @param recipe
+	 */
+	public static void addToCraftingManager(RockyShapedRecipe recipe) {
+		String[] shapeList = recipe.getShape();
+		Map<Character, Integer> ingredient = recipe.getIngredientMap();
+		int lenght = (shapeList.length) + ingredient.size() * 2;
+		Object[] data = new Object[lenght];
+		int i = 0;
+
+		for (i = 0; i < shapeList.length; i++) {
+			data[i] = shapeList[i];
+		}
+		for (Character character : ingredient.keySet()) {
+			Integer material = ingredient.get(character);
+
+			data[i++] = character;
+			data[i++] = new CraftItemStack(material, 1).getHandle();
+		}
+		CraftingManager.getInstance().registerShapedRecipe(
+				new CraftItemStack(recipe.getResult()).getHandle(), data);
+	}
+
+	/**
+	 * 
+	 * @param recipe
+	 */
+	public static void addToCraftingManager(RockyShapelessRecipe recipe) {
+		Material[] array = recipe.getIngredientList().toArray(new Material[0]);
+		Object[] stackArray = new ItemStack[array.length];
+		for (int i = 0; i < array.length; i++) {
+			stackArray[i] = new CraftItemStack(array[i].getId(), 1).getHandle();
+		}
+		CraftingManager.getInstance().registerShapelessRecipe(
+				new CraftItemStack(recipe.getResult()).getHandle(), stackArray);
+	}
+
+	/**
+	 * 
+	 * @param recipe
+	 */
+	public static void addToFurnaceManager(RockyFurnaceRecipe recipe) {
+		RecipesFurnace.getInstance().registerRecipe(recipe.getIngredient(),
+				new CraftItemStack(recipe.getResult()).getHandle(),
+				(float) recipe.getSpeed());
+	}
+
+	/**
 	 */
 	public static void printConsole(String data, Object... type) {
-		System.out.println("[Rocky]: " + String.format(data, type));
+		Logger.getLogger("RockyPlugin").info(
+				"[Rocky]: " + String.format(data, type));
 	}
 
 }

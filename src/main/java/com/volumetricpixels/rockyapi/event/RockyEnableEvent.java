@@ -28,7 +28,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  * 
  */
 public class RockyEnableEvent extends Event {
-	private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList HANDLER = new HandlerList();
 	private final RockyPlayer player;
 
 	/**
@@ -53,7 +53,7 @@ public class RockyEnableEvent extends Event {
 	 */
 	@Override
 	public HandlerList getHandlers() {
-		return handlers;
+		return HANDLER;
 	}
 
 	/**
@@ -61,6 +61,6 @@ public class RockyEnableEvent extends Event {
 	 * @return
 	 */
 	public static HandlerList getHandlerList() {
-		return handlers;
+		return HANDLER;
 	}
 }

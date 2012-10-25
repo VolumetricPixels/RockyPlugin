@@ -27,6 +27,8 @@ import com.volumetricpixels.rockyapi.block.design.BlockDesign;
  * 
  */
 public interface Block extends Material {
+	String DEFAULT_SHAPE = "cube.shape";
+	
 	/**
 	 * 
 	 * @return

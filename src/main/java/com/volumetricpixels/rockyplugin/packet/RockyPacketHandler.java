@@ -190,19 +190,11 @@ public class RockyPacketHandler extends NetServerHandler {
 		} catch (Exception e) {
 			return;
 		}
-		try {
-			RockyPlayer player = (RockyPlayer) RockyManager
-					.getPlayer(getPlayer());
-			if (!RockyManager.getPacketManager().isAllowedToSend(player,
-					packetId)) {
-				return;
-			} else {
-				super.sendPacket(packet);
-			}
-		} catch (NullPointerException npe) {
-			throw new IllegalArgumentException(
-					"Null pointer exception thrown when trying to process packet of type "
-							+ packet.getClass().getName(), npe);
+		RockyPlayer player = (RockyPlayer) RockyManager.getPlayer(getPlayer());
+		if (!RockyManager.getPacketManager().isAllowedToSend(player, packetId)) {
+			return;
+		} else {
+			super.sendPacket(packet);
 		}
 	}
 

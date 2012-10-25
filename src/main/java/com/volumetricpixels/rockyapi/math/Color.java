@@ -35,65 +35,65 @@ public class Color {
 	/**
 	 * the color black (0,0,0).
 	 */
-	public static final Color Black = new Color(0f, 0f, 0f, 1f);
+	public static final Color BLACK = new Color(0f, 0f, 0f, 1f);
 	/**
 	 * the color white (1,1,1).
 	 */
-	public static final Color White = new Color(1f, 1f, 1f, 1f);
+	public static final Color WHITE = new Color(1f, 1f, 1f, 1f);
 	/**
 	 * the color gray (.2,.2,.2).
 	 */
-	public static final Color DarkGray = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+	public static final Color DARK_GRAY = new Color(0.2f, 0.2f, 0.2f, 1.0f);
 	/**
 	 * the color gray (.5,.5,.5).
 	 */
-	public static final Color Gray = new Color(0.5f, 0.5f, 0.5f, 1.0f);
+	public static final Color GRAY = new Color(0.5f, 0.5f, 0.5f, 1.0f);
 	/**
 	 * the color gray (.8,.8,.8).
 	 */
-	public static final Color LightGray = new Color(0.8f, 0.8f, 0.8f, 1.0f);
+	public static final Color LIGHT_GRAY = new Color(0.8f, 0.8f, 0.8f, 1.0f);
 	/**
 	 * the color red (1,0,0).
 	 */
-	public static final Color Red = new Color(1f, 0f, 0f, 1f);
+	public static final Color RED = new Color(1f, 0f, 0f, 1f);
 	/**
 	 * the color green (0,1,0).
 	 */
-	public static final Color Green = new Color(0f, 1f, 0f, 1f);
+	public static final Color GREEN = new Color(0f, 1f, 0f, 1f);
 	/**
 	 * the color blue (0,0,1).
 	 */
-	public static final Color Blue = new Color(0f, 0f, 1f, 1f);
+	public static final Color BLUE = new Color(0f, 0f, 1f, 1f);
 	/**
 	 * the color yellow (1,1,0).
 	 */
-	public static final Color Yellow = new Color(1f, 1f, 0f, 1f);
+	public static final Color YELLOW = new Color(1f, 1f, 0f, 1f);
 	/**
 	 * the color magenta (1,0,1).
 	 */
-	public static final Color Magenta = new Color(1f, 0f, 1f, 1f);
+	public static final Color MAGENTA = new Color(1f, 0f, 1f, 1f);
 	/**
 	 * the color cyan (0,1,1).
 	 */
-	public static final Color Cyan = new Color(0f, 1f, 1f, 1f);
+	public static final Color CYAN = new Color(0f, 1f, 1f, 1f);
 	/**
 	 * the color orange (251/255, 130/255,0).
 	 */
-	public static final Color Orange = new Color(251f / 255f, 130f / 255f, 0f,
+	public static final Color ORANGE = new Color(251f / 255f, 130f / 255f, 0f,
 			1f);
 	/**
 	 * the color brown (65/255, 40/255, 25/255).
 	 */
-	public static final Color Brown = new Color(65f / 255f, 40f / 255f,
+	public static final Color BROWN = new Color(65f / 255f, 40f / 255f,
 			25f / 255f, 1f);
 	/**
 	 * the color pink (1, 0.68, 0.68).
 	 */
-	public static final Color Pink = new Color(1f, 0.68f, 0.68f, 1f);
+	public static final Color PINK = new Color(1f, 0.68f, 0.68f, 1f);
 	/**
 	 * the black color with no alpha (0, 0, 0, 0);
 	 */
-	public static final Color BlackNoAlpha = new Color(0f, 0f, 0f, 0f);
+	public static final Color BLACK_NO_ALPHA = new Color(0f, 0f, 0f, 0f);
 	/**
 	 * The red component of the color.
 	 */
@@ -115,9 +115,15 @@ public class Color {
 	 * 
 	 * @param floatBits
 	 */
-	public Color(float floatBits) {	
+	public Color(float floatBits) {
+		int color = Float.floatToIntBits(floatBits);
+		
+		this.a = (255 * color) << 24;
+		this.b = (255 * color) << 16;
+		this.g = (255 * color) << 8;
+		this.r = (255 * color);
 	}
-	
+
 	/**
 	 * Constructor instantiates a new <code>ColorRGBA</code> object. This color
 	 * is the default "white" with all values 1.

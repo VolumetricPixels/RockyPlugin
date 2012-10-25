@@ -26,14 +26,14 @@ import org.bukkit.event.HandlerList;
  * 
  */
 public class RockyLoadingEvent extends Event {
-	private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList HANDLER = new HandlerList();
 
 	/**
 	 * {@inhericDoc}
 	 */
 	@Override
 	public HandlerList getHandlers() {
-		return handlers;
+		return HANDLER;
 	}
 
 	/**
@@ -41,6 +41,6 @@ public class RockyLoadingEvent extends Event {
 	 * @return
 	 */
 	public static HandlerList getHandlerList() {
-		return handlers;
+		return HANDLER;
 	}
 }

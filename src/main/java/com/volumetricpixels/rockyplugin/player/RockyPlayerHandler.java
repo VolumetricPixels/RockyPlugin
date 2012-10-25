@@ -97,8 +97,8 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	private int skyCloudHeight = 108, skyStarFrequency = 1500,
 			skySunPercent = 100, skyMoonPercent = 100;
 	private String skySunUrl = "[R]", skyMoonUrl = "[R]";
-	private Color skyColor = Color.White, skyFogColor = Color.White,
-			skyCloudColor = Color.White;
+	private Color skyColor = Color.WHITE, skyFogColor = Color.WHITE,
+			skyCloudColor = Color.WHITE;
 
 	/**
 	 * View Distance Addon
@@ -468,7 +468,7 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 			} catch (NumberFormatException nfe) {
 				throw new IllegalArgumentException(
 						"Unable to parse port number: " + split[1] + " in "
-								+ hostname);
+								+ hostname, nfe);
 			}
 		} else {
 			reconnect(message, hostname, 25565);

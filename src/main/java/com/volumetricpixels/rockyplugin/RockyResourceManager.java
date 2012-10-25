@@ -245,7 +245,7 @@ public class RockyResourceManager implements ResourceManager {
 	 */
 	@Override
 	public boolean canCache(String fileUrl) {
-		String extension = fileUrl.substring(fileUrl.lastIndexOf(".") + 1);
+		String extension = fileUrl.substring(fileUrl.lastIndexOf('.') + 1);
 		for (String validExtension : VALID_EXTENSION) {
 			if (validExtension.equalsIgnoreCase(extension)) {
 				return true;

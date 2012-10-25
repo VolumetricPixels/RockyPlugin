@@ -512,8 +512,8 @@ public final class Vector3f implements Cloneable {
 	 * @return the result <code>Vector</code>.
 	 */
 	public Vector3f divide(float scalar) {
-		scalar = 1.0f / scalar;
-		return new Vector3f(x * scalar, y * scalar, z * scalar);
+		float s = 1.0f / scalar;
+		return new Vector3f(x * s, y * s, z * s);
 	}
 
 	/**
@@ -526,10 +526,10 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f divideLocal(float scalar) {
-		scalar = 1.0f / scalar;
-		x *= scalar;
-		y *= scalar;
-		z *= scalar;
+		float s = 1.0f / scalar;
+		x *= s;
+		y *= s;
+		z *= s;
 		return this;
 	}
 

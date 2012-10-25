@@ -37,7 +37,6 @@ import com.volumetricpixels.rockyapi.material.Item;
 import com.volumetricpixels.rockyapi.material.MaterialTab;
 import com.volumetricpixels.rockyapi.material.Material;
 import com.volumetricpixels.rockyapi.material.MaterialEnumType;
-import com.volumetricpixels.rockyapi.material.MaterialManager;
 import com.volumetricpixels.rockyapi.resource.AddonPack;
 import com.volumetricpixels.rockyapi.resource.Sound;
 import com.volumetricpixels.rockyapi.resource.Texture;
@@ -154,7 +153,7 @@ public class GenericBlock implements Block {
 		String shapeFile = section.getString("Shape", section.getName()
 				+ ".shape");
 		if (!pack.hasEntry(shapeFile)) {
-			shapeFile = MaterialManager.DEFAULT_SHAPE;
+			shapeFile = Block.DEFAULT_SHAPE;
 		}
 		if (!pack.hasEntry(textureFile)) {
 			throw new IllegalArgumentException(textureFile + " cannot be found.");
@@ -171,7 +170,7 @@ public class GenericBlock implements Block {
 
 		// Load the block shape
 		YamlConfiguration configuration = null;
-		if (shapeFile.equals(MaterialManager.DEFAULT_SHAPE)) {
+		if (shapeFile.equals(Block.DEFAULT_SHAPE)) {
 			configuration = RockyManager.getMaterialManager().getDefaultShape();
 		} else {
 			configuration = YamlConfiguration.loadConfiguration(pack

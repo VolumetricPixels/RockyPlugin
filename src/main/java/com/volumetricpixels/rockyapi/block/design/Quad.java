@@ -32,7 +32,7 @@ public class Quad {
 	private Texture texture;
 	private Vertex[] vertices = new Vertex[4];
 	private Vector3f lightSource = new Vector3f();
-	private Color color = Color.White;
+	private Color color = Color.WHITE;
 
 	/**
 	 * 

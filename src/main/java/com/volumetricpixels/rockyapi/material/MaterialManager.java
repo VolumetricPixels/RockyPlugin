@@ -27,9 +27,7 @@ import org.bukkit.event.Listener;
 /**
  * 
  */
-public interface MaterialManager extends Listener {
-	static final String DEFAULT_SHAPE = "cube.shape";
-	
+public interface MaterialManager extends Listener {	
 	/**
 	 * 
 	 * @return

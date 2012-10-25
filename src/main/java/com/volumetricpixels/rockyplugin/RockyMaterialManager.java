@@ -40,7 +40,6 @@ import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.event.RockyFinishedLoadingEvent;
 import com.volumetricpixels.rockyapi.event.RockyLoadingEvent;
 import com.volumetricpixels.rockyapi.inventory.RockyFurnaceRecipe;
-import com.volumetricpixels.rockyapi.inventory.RockyRecipeManager;
 import com.volumetricpixels.rockyapi.inventory.RockyShapedRecipe;
 import com.volumetricpixels.rockyapi.inventory.RockyShapelessRecipe;
 import com.volumetricpixels.rockyapi.material.Block;
@@ -77,7 +76,7 @@ public final class RockyMaterialManager implements MaterialManager {
 	/**
 	 * Folder where all the data is at
 	 */
-	public final static String MATERIAL_FOLDER = "Package";
+	public static final String MATERIAL_FOLDER = "Package";
 
 	/**
 	 * Item list data
@@ -116,7 +115,7 @@ public final class RockyMaterialManager implements MaterialManager {
 		registerType("Block", GenericBlock.class, RockyBlock.class);
 
 		blockDefaultShape = YamlConfiguration.loadConfiguration(Rocky
-				.getInstance().getResource(MaterialManager.DEFAULT_SHAPE));
+				.getInstance().getResource(Block.DEFAULT_SHAPE));
 	}
 
 	/**
@@ -312,7 +311,8 @@ public final class RockyMaterialManager implements MaterialManager {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onLoadingEvent(RockyLoadingEvent event) {
-		int itemLoaded = 0, packageLoaded = 0;
+		int itemLoaded = 0;
+		int packageLoaded = 0;
 
 		// Find each package within the directory
 		File directory = new File(Rocky.getInstance().getDataFolder(),
@@ -395,7 +395,8 @@ public final class RockyMaterialManager implements MaterialManager {
 	@SuppressWarnings("unchecked")
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFinishedLoadingEvent(RockyFinishedLoadingEvent event) {
-		int recipeLoaded = 0, packageLoaded = 0;
+		int recipeLoaded = 0;
+		int packageLoaded = 0;
 
 		// Find each package within the directory
 		File directory = new File(Rocky.getInstance().getDataFolder(),
@@ -455,7 +456,7 @@ public final class RockyMaterialManager implements MaterialManager {
 									new ItemStack(result, amount),
 									(key.containsKey("Speed") ? (Double) key
 											.get("Speed") : 1.0f));
-							RockyRecipeManager.addToFurnaceManager(fRecipe);
+							RockyManager.addToFurnaceManager(fRecipe);
 						} else if (type.equals("Shaped")) {
 
 							Map<String, String> lineMap = (Map<String, String>) key
@@ -487,7 +488,7 @@ public final class RockyMaterialManager implements MaterialManager {
 								}
 							}
 							wRecipe.shape(lA, lB, lC);
-							RockyRecipeManager.addToCraftingManager(wRecipe);
+							RockyManager.addToCraftingManager(wRecipe);
 
 						} else if (type.equals("Shapeless")) {
 							RockyShapelessRecipe wRecipe = new RockyShapelessRecipe(
@@ -497,7 +498,7 @@ public final class RockyMaterialManager implements MaterialManager {
 							for (String ingredientKey : ingredientList) {
 								wRecipe.addIngredient(getItemID(ingredientKey));
 							}
-							RockyRecipeManager.addToCraftingManager(wRecipe);
+							RockyManager.addToCraftingManager(wRecipe);
 						}
 						recipeLoaded++;
 					}

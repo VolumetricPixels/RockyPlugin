@@ -103,7 +103,7 @@ public enum PacketType {
 
 	private final int id;
 	private final Class<? extends Packet> clazz;
-	private static final Map<Integer, PacketType> packetList = new HashMap<Integer, PacketType>();
+	private static final Map<Integer, PacketType> PACKET_LIST = new HashMap<Integer, PacketType>();
 
 	/**
 	 * 
@@ -135,7 +135,7 @@ public enum PacketType {
 	 * @param packet
 	 */
 	public static void registerPacket(PacketType packet) {
-		packetList.put(packet.getId(), packet);
+		PACKET_LIST.put(packet.getId(), packet);
 	}
 
 	/**
@@ -144,6 +144,6 @@ public enum PacketType {
 	 * @return
 	 */
 	public static PacketType getPacketFromId(int id) {
-		return packetList.get(id);
+		return PACKET_LIST.get(id);
 	}
 }
