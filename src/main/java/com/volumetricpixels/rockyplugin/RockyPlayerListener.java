@@ -19,6 +19,10 @@
  */
 package com.volumetricpixels.rockyplugin;
 
+import net.minecraft.server.PlayerManager;
+
+import org.bukkit.World;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,12 +32,16 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.event.world.WorldInitEvent;
+import org.fest.reflect.core.Reflection;
+import org.fest.reflect.field.Invoker;
 
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.event.player.PlayerEnterPlayerArea;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 import com.volumetricpixels.rockyplugin.player.RockyPlayerHandler;
+import com.volumetricpixels.rockyplugin.player.RockyPlayerServerManager;
 
 /**
  * 
@@ -65,9 +73,7 @@ public class RockyPlayerListener implements Listener {
 		if (!event.getReason().equals("You moved too quickly :( (Hacking?)")) {
 			return;
 		}
-		if (player.isOp()) {
-			event.setCancelled(true);
-		} else if (player instanceof RockyPlayer
+		if (player.isOp() || player instanceof RockyPlayer
 				&& ((RockyPlayer) player).canFly())
 			event.setCancelled(true);
 	}
@@ -92,6 +98,20 @@ public class RockyPlayerListener implements Listener {
 	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
 		RockyPlayer splr = RockyManager.getPlayer(event.getPlayer());
 		splr.updateWaypoints();
+	}
+
+	/**
+	 * 
+	 * @param event
+	 */
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onWorldInit(WorldInitEvent event) {
+		World world = event.getWorld();
+
+		Invoker<PlayerManager> pm = Reflection.field("manager")
+				.ofType(PlayerManager.class)
+				.in(((CraftWorld) world).getHandle());
+		pm.set(new RockyPlayerServerManager(pm.get()));
 	}
 
 	/**

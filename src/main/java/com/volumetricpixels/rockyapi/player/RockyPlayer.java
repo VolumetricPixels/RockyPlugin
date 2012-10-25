@@ -44,6 +44,12 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return
 	 */
+	public String getLocale();
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public EntityPlayer getHandle();
 
 	/**

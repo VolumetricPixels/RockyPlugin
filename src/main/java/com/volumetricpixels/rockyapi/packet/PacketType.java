@@ -36,7 +36,6 @@ import com.volumetricpixels.rockyapi.packet.protocol.PacketKeyEvent;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketMovementAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlaySound;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketRenderDistanceAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketScreenAction;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSetVelocity;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSkyAddon;
@@ -95,10 +94,6 @@ public enum PacketType {
 	 * {@see PacketWaypoint}
 	 */
 	PacketWaypoint(11, PacketWaypoint.class),
-	/**
-	 * {@see PacketRenderDistanceAddon}
-	 */
-	PacketRenderDistanceAddon(12, PacketRenderDistanceAddon.class),
 	/**
 	 * {@see PacketAccessory}
 	 */

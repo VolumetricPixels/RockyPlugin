@@ -26,23 +26,23 @@ public enum RenderDistance {
 	/**
 	 * 
 	 */
-	VERY_FAR(4),
+	VERY_FAR(15),
 	/**
 	 * 
 	 */
-	FAR(3),
+	FAR(9),
 	/**
 	 * 
 	 */
-	NORMAL(2),
+	NORMAL(7),
 	/**
 	 * 
 	 */
-	SHORT(1),
+	SHORT(5),
 	/**
 	 * 
 	 */
-	TINY(0);
+	TINY(3);
 
 	private final int value;
 
@@ -68,11 +68,18 @@ public enum RenderDistance {
 	 * @return
 	 */
 	public static RenderDistance getRenderDistanceFromValue(int value) {
-		for (RenderDistance rd : values()) {
-			if (rd.getValue() == value) {
-				return rd;
-			}
+		switch (value) {
+		case 4:
+			return VERY_FAR;
+		case 3:
+			return TINY;
+		case 2:
+			return SHORT;
+		case 1:
+			return NORMAL;
+		case 0:
+			return FAR;
 		}
-		return null;
+		return NORMAL;
 	}
 }

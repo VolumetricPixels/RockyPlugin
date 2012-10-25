@@ -26,13 +26,11 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.server.Packet;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.fest.reflect.core.Reflection;
-
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.event.RockyEnableEvent;
 import com.volumetricpixels.rockyapi.event.RockyFailedEvent;
@@ -117,12 +115,14 @@ public class Rocky extends JavaPlugin implements Runnable {
 			List<String> list = itemConfig.getStringList("| ItemArray |");
 			for (String key : list) {
 				RockyManager.getMaterialManager().registerName(key,
-						itemConfig.getInt("| ItemArray |." + key), MaterialEnumType.ITEM);
+						itemConfig.getInt("| ItemArray |." + key),
+						MaterialEnumType.ITEM);
 			}
 			list = itemConfig.getStringList("| BlockArray |");
 			for (String key : list) {
 				RockyManager.getMaterialManager().registerName(key,
-						itemConfig.getInt("| BlockArray |." + key), MaterialEnumType.BLOCK);
+						itemConfig.getInt("| BlockArray |." + key),
+						MaterialEnumType.BLOCK);
 			}
 		} catch (FileNotFoundException e) {
 		} catch (Throwable e) {

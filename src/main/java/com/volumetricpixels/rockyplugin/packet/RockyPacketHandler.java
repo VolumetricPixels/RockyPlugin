@@ -31,6 +31,7 @@ import net.minecraft.server.Packet103SetSlot;
 import net.minecraft.server.Packet104WindowItems;
 import net.minecraft.server.Packet107SetCreativeSlot;
 import net.minecraft.server.Packet14BlockDig;
+import net.minecraft.server.Packet204LocaleAndViewDistance;
 import net.minecraft.server.Packet20NamedEntitySpawn;
 import net.minecraft.server.Packet21PickupSpawn;
 import net.minecraft.server.Packet250CustomPayload;
@@ -42,6 +43,7 @@ import org.fest.reflect.core.Reflection;
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.event.player.PlayerEnterPlayerArea;
 import com.volumetricpixels.rockyapi.event.player.PlayerLeavePlayerArea;
+import com.volumetricpixels.rockyapi.player.RenderDistance;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 import com.volumetricpixels.rockyplugin.Rocky;
 import com.volumetricpixels.rockyplugin.RockyMaterialManager;
@@ -101,6 +103,21 @@ public class RockyPacketHandler extends NetServerHandler {
 			Rocky.getInstance().handlePlayerAuthentication(player);
 		} else
 			super.a(packet250custompayload);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void a(Packet204LocaleAndViewDistance packet204localeandviewdistance) {
+		RenderDistance distance = RenderDistance
+				.getRenderDistanceFromValue(256 >> packet204localeandviewdistance
+						.f());
+		RockyPlayer player = (RockyPlayer) RockyManager.getPlayer(getPlayer());
+		player.setRenderDistance(distance);
+		Reflection.field("b").ofType(int.class)
+				.in(packet204localeandviewdistance).set(distance.getValue());
+		super.a(packet204localeandviewdistance);
 	}
 
 	/**

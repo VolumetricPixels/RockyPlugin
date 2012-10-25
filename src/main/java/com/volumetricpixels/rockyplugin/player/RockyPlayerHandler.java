@@ -32,6 +32,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetServerHandler;
 import net.minecraft.server.Packet250CustomPayload;
+import net.minecraft.server.PlayerManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,6 +46,7 @@ import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.fest.reflect.core.Reflection;
+import org.fest.reflect.field.Invoker;
 
 import com.volumetricpixels.rockyapi.gui.GenericOverlayScreen;
 import com.volumetricpixels.rockyapi.gui.InGameHUD;
@@ -61,7 +63,6 @@ import com.volumetricpixels.rockyapi.packet.protocol.PacketAlert;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketMovementAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlaySound;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketRenderDistanceAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketScreenAction;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSetVelocity;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSkyAddon;
@@ -114,8 +115,9 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	/**
 	 * View Distance Addon
 	 */
-	private RenderDistance minimumDistance, maximumDistance, currentDistance;
-	private boolean needDistanceUpdate = false;
+	private RenderDistance minimumDistance = RenderDistance.TINY;
+	private RenderDistance maximumDistance = RenderDistance.VERY_FAR;
+	private RenderDistance currentDistance = RenderDistance.NORMAL;
 
 	/**
 	 * 
@@ -124,6 +126,15 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 */
 	public RockyPlayerHandler(CraftServer server, EntityPlayer entity) {
 		super(server, entity);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getLocale() {
+		return Reflection.field("d").ofType(String.class)
+				.in(getHandle().getLocale()).get();
 	}
 
 	/**
@@ -194,12 +205,18 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 */
 	@Override
 	public void setRenderDistance(RenderDistance distance) {
-		if (distance.ordinal() < minimumDistance.ordinal()
-				|| distance.ordinal() > maximumDistance.ordinal()) {
-			return;
-		}
-		currentDistance = distance;
-		needDistanceUpdate = true;
+		Invoker<PlayerManager> pm = Reflection.field("manager")
+				.ofType(PlayerManager.class).in(getHandle().world);
+		((RockyPlayerServerManager) pm.get()).removePlayer(getHandle());
+		
+		if (distance.ordinal() > minimumDistance.ordinal()) {
+			currentDistance = minimumDistance;
+		} else if (distance.ordinal() < maximumDistance.ordinal()) {
+			currentDistance = maximumDistance;
+		} else
+			currentDistance = distance;
+
+		((RockyPlayerServerManager) pm.get()).addPlayer(getHandle());
 	}
 
 	/**
@@ -216,10 +233,8 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	@Override
 	public void setMaximumRenderDistance(RenderDistance maximum) {
 		maximumDistance = maximum;
-		if (currentDistance.ordinal() > maximum.ordinal()) {
+		if (currentDistance.ordinal() < maximum.ordinal())
 			setRenderDistance(maximum);
-		}
-		needDistanceUpdate = true;
 	}
 
 	/**
@@ -236,10 +251,8 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	@Override
 	public void setMinimumRenderDistance(RenderDistance minimum) {
 		minimumDistance = minimum;
-		if (currentDistance.ordinal() < minimum.ordinal()) {
+		if (currentDistance.ordinal() > minimum.ordinal())
 			setRenderDistance(minimum);
-		}
-		needDistanceUpdate = true;
 	}
 
 	/**
@@ -386,7 +399,8 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 */
 	@Override
 	public boolean canFly() {
-		return isAllowedToFly && (System.currentTimeMillis() < velocityAdjustment);
+		return isAllowedToFly
+				&& (System.currentTimeMillis() < velocityAdjustment);
 	}
 
 	/**
@@ -1023,12 +1037,6 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 		if (needSkyUpdate) {
 			needSkyUpdate = false;
 			sendPacket(new PacketSkyAddon(this));
-		}
-
-		// Check if the render distance addon needs update
-		if (needDistanceUpdate) {
-			needDistanceUpdate = false;
-			sendPacket(new PacketRenderDistanceAddon(this));
 		}
 
 		// Flush the entire queue packet

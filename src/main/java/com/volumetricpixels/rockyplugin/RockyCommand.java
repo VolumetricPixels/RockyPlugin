@@ -29,6 +29,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.volumetricpixels.rockyapi.RockyManager;
+import com.volumetricpixels.rockyapi.player.RenderDistance;
+
 /**
  * 
  */
@@ -103,8 +106,23 @@ public class RockyCommand implements CommandExecutor {
 			}
 			player.getInventory().addItem(new ItemStack(item, amount));
 			return true;
+		} else if (c.equals("view-distance") && args.length > 2) {
+			Player player = Bukkit.getPlayerExact(args[1]);
+			String name = args[2];
+			if (player == null) {
+				sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+						+ "The user must be online.");
+				return true;
+			} else if (RenderDistance.valueOf(name.toUpperCase()) == null) {
+				sender.sendMessage(MESSAGE_PREFIX + ChatColor.RED
+						+ "Valid distance " + ChatColor.GREEN
+						+ "[TINY, SHORT, NORMAL, FAR, VERY_FAR]");
+				return true;
+			}
+			RockyManager.getPlayer(player).setRenderDistance(
+					RenderDistance.valueOf(name.toUpperCase()));
+			return true;
 		}
-
 		return false;
 	}
 }
