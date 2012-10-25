@@ -44,7 +44,7 @@ public class RockyRecipeManager {
 		Object[] data = new Object[lenght];
 		int i = 0;
 
-		for (; i < shapeList.length; i++) {
+		for (i = 0; i < shapeList.length; i++) {
 			data[i] = shapeList[i];
 		}
 		for (Character character : ingredient.keySet()) {

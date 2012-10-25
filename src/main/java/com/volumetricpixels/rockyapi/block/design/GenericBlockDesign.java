@@ -127,9 +127,9 @@ public class GenericBlockDesign implements BlockDesign {
 	 */
 	protected GenericBlockDesign(GenericBlockDesign clone) {
 		this.texture = clone.getTexture();
-		this.boundingBox.set(boundingBox.lowXBound, boundingBox.lowYBound,
-				boundingBox.lowZBound, boundingBox.highXBound,
-				boundingBox.highYBound, boundingBox.highZBound);
+		this.boundingBox.set(boundingBox.getX(), boundingBox.getY(),
+				boundingBox.getZ(), boundingBox.getX2(), boundingBox.getY2(),
+				boundingBox.getZ2());
 		this.maxBrightness = clone.maxBrightness;
 		this.minBrightness = clone.minBrightness;
 		this.renderPass = clone.renderPass;
@@ -304,16 +304,15 @@ public class GenericBlockDesign implements BlockDesign {
 			float x3 = v3.getX();
 			float z3 = v3.getZ();
 
-			normal.x = (((y1 - y2) * (z2 - z3)) - ((z1 - z2) * (y2 - y3)));
-			normal.y = (((z1 - z2) * (x2 - x3)) - ((x1 - x2) * (z2 - z3)));
-			normal.z = (((x1 - x2) * (y2 - y3)) - ((y1 - y2) * (x2 - x3)));
+			float x = (((y1 - y2) * (z2 - z3)) - ((z1 - z2) * (y2 - y3)));
+			float y = (((z1 - z2) * (x2 - x3)) - ((x1 - x2) * (z2 - z3)));
+			float z = (((x1 - x2) * (y2 - y3)) - ((y1 - y2) * (x2 - x3)));
 
-			Double length = Math.sqrt((normal.x * normal.x)
-					+ (normal.y * normal.y) + (normal.z * normal.z));
+			normal.set(x, y, z);
+			Double length = Math.sqrt((x * x) + (y * y) + (z * z));
 
-			quad.setLightSource((int) Math.round(normal.x / length),
-					(int) Math.round(normal.y / length),
-					(int) Math.round(normal.z / length));
+			quad.setLightSource((int) Math.round(x / length),
+					(int) Math.round(y / length), (int) Math.round(z / length));
 		}
 		return this;
 	}

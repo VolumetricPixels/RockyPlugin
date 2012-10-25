@@ -24,11 +24,11 @@ package com.volumetricpixels.rockyapi.inventory;
  */
 public class RockyAchievement {
 
-	protected int id;
-	protected int itemId;
-	protected String name;
-	protected String description;
-	protected RockyAchievement[] depends;
+	private int id;
+	private int itemId;
+	private String name;
+	private String description;
+	private RockyAchievement[] depends;
 
 	/**
 	 * 

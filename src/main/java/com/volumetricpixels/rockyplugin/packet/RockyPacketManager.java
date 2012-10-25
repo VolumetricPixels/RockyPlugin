@@ -20,6 +20,7 @@
 package com.volumetricpixels.rockyplugin.packet;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import net.minecraft.server.Packet;
 
+import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.packet.PacketListener;
 import com.volumetricpixels.rockyapi.packet.PacketManager;
 import com.volumetricpixels.rockyapi.packet.PacketVanilla;
@@ -38,15 +40,9 @@ import com.volumetricpixels.rockyplugin.packet.vanilla.RockyPacketVanilla;
  */
 public class RockyPacketManager implements PacketManager {
 
-	protected Map<Integer, Class<? extends PacketVanilla>> corePacket = new HashMap<Integer, Class<? extends PacketVanilla>>();
-	protected Map<Integer, Class<? extends Packet>> vanillaPacket = new HashMap<Integer, Class<? extends Packet>>();
-	protected Map<Integer, List<PacketListener>> listenerList = new HashMap<Integer, List<PacketListener>>();
-
-	/**
-	 * 
-	 */
-	public RockyPacketManager() {
-	}
+	private Map<Integer, Class<? extends PacketVanilla>> corePacket = new HashMap<Integer, Class<? extends PacketVanilla>>();
+	private Map<Integer, Class<? extends Packet>> vanillaPacket = new HashMap<Integer, Class<? extends Packet>>();
+	private Map<Integer, List<PacketListener>> listenerList = new HashMap<Integer, List<PacketListener>>();
 
 	/**
 	 * {@inheritDoc}
@@ -76,9 +72,32 @@ public class RockyPacketManager implements PacketManager {
 				RockyPacketVanilla<Packet> vanilla = (RockyPacketVanilla<Packet>) constructor
 						.newInstance();
 				vanilla.setPacket(packet);
-			} catch (Throwable ex) {
-				throw new RuntimeException(ex);
+			} catch (InstantiationException e) {
+				RockyManager.printConsole(
+						"Error trying to get a vanilla packet instance: %s",
+						e.getMessage());
+			} catch (IllegalAccessException e) {
+				RockyManager.printConsole(
+						"Error trying to get a vanilla packet instance: %s",
+						e.getMessage());
+			} catch (IllegalArgumentException e) {
+				RockyManager.printConsole(
+						"Error trying to get a vanilla packet instance: %s",
+						e.getMessage());
+			} catch (InvocationTargetException e) {
+				RockyManager.printConsole(
+						"Error trying to get a vanilla packet instance: %s",
+						e.getMessage());
+			} catch (NoSuchMethodException e) {
+				RockyManager.printConsole(
+						"Error trying to get a vanilla packet instance: %s",
+						e.getMessage());
+			} catch (SecurityException e) {
+				RockyManager.printConsole(
+						"Error trying to get a vanilla packet instance: %s",
+						e.getMessage());
 			}
+
 		}
 		return null;
 	}
@@ -128,9 +147,11 @@ public class RockyPacketManager implements PacketManager {
 	 */
 	@Override
 	public void clearAllListeners() {
-		for (List<PacketListener> listener : listenerList.values())
-			if (listener != null)
+		for (List<PacketListener> listener : listenerList.values()) {
+			if (listener != null) {
 				listener.clear();
+			}
+		}
 	}
 
 	/**

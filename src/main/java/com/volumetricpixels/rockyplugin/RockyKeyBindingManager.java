@@ -57,9 +57,11 @@ public class RockyKeyBindingManager implements KeyBindingManager {
 		KeyBinding binding = new KeyBinding(id, defaultKey, description,
 				plugin, callback);
 		bindings.put(binding.getUniqueId(), binding);
-		for (Player p : Bukkit.getServer().getOnlinePlayers())
-			if (p instanceof RockyPlayer)
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			if (p instanceof RockyPlayer) {
 				((RockyPlayer) p).sendPacket(new PacketKeyBinding(binding));
+			}
+		}
 	}
 
 	/**
@@ -132,8 +134,9 @@ public class RockyKeyBindingManager implements KeyBindingManager {
 		if (!player.isModded()) {
 			return;
 		}
-		for (KeyBinding binding : bindings.values())
+		for (KeyBinding binding : bindings.values()) {
 			player.sendPacket(new PacketKeyBinding(binding));
+		}
 	}
 
 }

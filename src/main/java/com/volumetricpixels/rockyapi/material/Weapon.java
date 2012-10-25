@@ -80,4 +80,11 @@ public interface Weapon extends Item {
 	 * @return
 	 */
 	public WeaponType getType();
+	
+	/**
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public Weapon setType(WeaponType type);
 }

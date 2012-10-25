@@ -171,8 +171,9 @@ public final class RockyManager {
 	 */
 	public static void playGlobalSoundEffect(String effect) {
 		RockyPlayer[] listPlayer = getOnlinePlayers();
-		for (RockyPlayer player : listPlayer)
+		for (RockyPlayer player : listPlayer) {
 			player.playSoundEffect(effect);
+		}
 	}
 
 	/**
@@ -186,8 +187,9 @@ public final class RockyManager {
 	 */
 	public static void playGlobalSoundEffect(String effect, int distance) {
 		RockyPlayer[] listPlayer = getOnlinePlayers();
-		for (RockyPlayer player : listPlayer)
+		for (RockyPlayer player : listPlayer) {
 			player.playSoundEffect(effect, distance);
+		}
 	}
 
 	/**
@@ -207,8 +209,9 @@ public final class RockyManager {
 	public static void playGlobalSoundEffect(String effect, int distance,
 			int volumePercent) {
 		RockyPlayer[] listPlayer = getOnlinePlayers();
-		for (RockyPlayer player : listPlayer)
+		for (RockyPlayer player : listPlayer) {
 			player.playSoundEffect(effect, distance, volumePercent);
+		}
 	}
 
 	/**
@@ -219,8 +222,9 @@ public final class RockyManager {
 	 */
 	public static void playGlobalMusic(String music) {
 		RockyPlayer[] listPlayer = getOnlinePlayers();
-		for (RockyPlayer player : listPlayer)
+		for (RockyPlayer player : listPlayer) {
 			player.playMusic(music);
+		}
 	}
 
 	/**
@@ -234,8 +238,9 @@ public final class RockyManager {
 	 */
 	public static void playGlobalMusic(String music, int volumePercent) {
 		RockyPlayer[] listPlayer = getOnlinePlayers();
-		for (RockyPlayer player : listPlayer)
+		for (RockyPlayer player : listPlayer) {
 			player.playMusic(music, volumePercent);
+		}
 	}
 
 	/**

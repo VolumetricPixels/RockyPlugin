@@ -34,8 +34,8 @@ import com.volumetricpixels.rockyapi.resource.Resource;
  */
 public class PacketFileCacheBegin implements Packet {
 
-	protected Resource[] resourceList;
-	protected String[] difResources;
+	private Resource[] resourceList;
+	private String[] difResources;
 
 	/**
 	 * 
@@ -43,7 +43,7 @@ public class PacketFileCacheBegin implements Packet {
 	 * @param names
 	 * @param crcExpected
 	 */
-	public PacketFileCacheBegin(Resource[] resourceList) {
+	public PacketFileCacheBegin(Resource... resourceList) {
 		this.resourceList = resourceList;
 	}
 

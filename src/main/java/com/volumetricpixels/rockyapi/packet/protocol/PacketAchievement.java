@@ -32,7 +32,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  */
 public class PacketAchievement implements Packet {
 
-	protected int achievementId;
+	private int achievementId;
 	
 	/**
 	 * 

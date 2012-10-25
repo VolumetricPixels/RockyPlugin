@@ -69,7 +69,10 @@ public class RockyPacket extends Packet {
 		try {
 			packet = PacketType.getPacketFromId(packetID).getClazz()
 					.newInstance();
-		} catch (Throwable e) {
+		} catch (InstantiationException e) {
+			RockyManager.printConsole("Failed to identify packet id: ",
+					packetID);
+		} catch (IllegalAccessException e) {
 			RockyManager.printConsole("Failed to identify packet id: ",
 					packetID);
 		}
@@ -81,7 +84,7 @@ public class RockyPacket extends Packet {
 			packet.readData(in);
 
 			isSuccess = true;
-		} catch (Throwable ex) {
+		} catch (IOException ex) {
 			RockyManager.printConsole("------------------------");
 			RockyManager.printConsole("Unexpected Exception: "
 					+ PacketType.getPacketFromId(packetID) + ", " + packetID);
@@ -118,10 +121,11 @@ public class RockyPacket extends Packet {
 		RockyPlayer player = RockyManager
 				.getPlayerFromId(((RockyPacketHandler) arg0).getPlayer()
 						.getEntityId());
-		if (isSuccess)
+		if (isSuccess) {
 			packet.handle(player);
-		else
+		} else {
 			packet.failure(player);
+		}
 	}
 
 }

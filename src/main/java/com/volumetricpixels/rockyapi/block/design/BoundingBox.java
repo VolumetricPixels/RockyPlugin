@@ -24,12 +24,60 @@ package com.volumetricpixels.rockyapi.block.design;
  */
 public class BoundingBox {
 
-	public float lowXBound;
-	public float lowYBound;
-	public float lowZBound;
-	public float highXBound;
-	public float highYBound;
-	public float highZBound;
+	private float lowXBound;
+	private float lowYBound;
+	private float lowZBound;
+	private float highXBound;
+	private float highYBound;
+	private float highZBound;
+
+	/**
+	 * 
+	 * @return
+	 */
+	public float getX() {
+		return lowXBound;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public float getY() {
+		return lowYBound;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public float getZ() {
+		return lowZBound;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public float getX2() {
+		return highXBound;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public float getY2() {
+		return highYBound;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public float getZ2() {
+		return highZBound;
+	}
 
 	/**
 	 * 

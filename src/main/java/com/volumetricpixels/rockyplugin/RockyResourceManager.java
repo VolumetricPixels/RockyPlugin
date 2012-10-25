@@ -45,19 +45,27 @@ import com.volumetricpixels.rockyapi.resource.ResourceManager;
  * 
  */
 public class RockyResourceManager implements ResourceManager {
-	private static final String[] VALID_EXTENSION = { "yml", "png", "jpg", "ogg",
-			"midi", "wav" };
-	protected Map<Plugin, Map<String, Resource>> cacheList = new HashMap<Plugin, Map<String, Resource>>();
-	protected Map<String, Resource> resourceList = new HashMap<String, Resource>();
-	protected ExecutorService service;
-	
+	private static final String[] VALID_EXTENSION = { "yml", "png", "jpg",
+			"ogg", "midi", "wav" };
+	private Map<Plugin, Map<String, Resource>> cacheList = new HashMap<Plugin, Map<String, Resource>>();
+	private Map<String, Resource> resourceList = new HashMap<String, Resource>();
+	private ExecutorService service;
+
 	/**
 	 * 
 	 */
 	public RockyResourceManager() {
 		service = Executors.newCachedThreadPool();
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Resource[] getResourceList() {
+		return resourceList.values().toArray(new Resource[0]);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -146,11 +154,10 @@ public class RockyResourceManager implements ResourceManager {
 		final Map<String, Resource> resource;
 		final Resource resourceData = resourceList.get(fileName);
 		if (!cacheList.containsKey(plugin)) {
-			cacheList.put(plugin,
-					new HashMap<String, Resource>());
+			cacheList.put(plugin, new HashMap<String, Resource>());
 		}
 		resource = cacheList.get(plugin);
-		
+
 		// Create our worker
 		Runnable runnable = new Runnable() {
 			@Override
@@ -194,7 +201,7 @@ public class RockyResourceManager implements ResourceManager {
 			}
 		};
 		service.submit(runnable);
-		
+
 		return true;
 	}
 
@@ -257,7 +264,9 @@ public class RockyResourceManager implements ResourceManager {
 		try {
 			cis = new CheckedInputStream(is, new Adler32());
 			byte[] tempBuf = new byte[128];
-			while (cis.read(tempBuf) >= 0) {
+			int readBytes = 1;
+			while (readBytes >= 0) {
+				readBytes = cis.read(tempBuf);
 			}
 			checksum = cis.getChecksum().getValue();
 		} catch (IOException e) {
@@ -297,4 +306,5 @@ public class RockyResourceManager implements ResourceManager {
 		}
 		return ous.toByteArray();
 	}
+
 }

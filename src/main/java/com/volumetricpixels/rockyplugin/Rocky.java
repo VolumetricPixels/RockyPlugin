@@ -21,12 +21,14 @@ package com.volumetricpixels.rockyplugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.minecraft.server.Packet;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,7 +43,6 @@ import com.volumetricpixels.rockyapi.packet.protocol.PacketAchievementList;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketCustomItem;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCacheBegin;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
-import com.volumetricpixels.rockyapi.resource.Resource;
 import com.volumetricpixels.rockyplugin.packet.RockyPacket;
 import com.volumetricpixels.rockyplugin.packet.RockyPacketManager;
 import com.volumetricpixels.rockyplugin.player.RockyPlayerHandler;
@@ -125,8 +126,11 @@ public class Rocky extends JavaPlugin implements Runnable {
 						MaterialEnumType.BLOCK);
 			}
 		} catch (FileNotFoundException e) {
-		} catch (Throwable e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			RockyManager.printConsole("Can't read the configuration file");
+		} catch (InvalidConfigurationException e) {
+			RockyManager
+					.printConsole("The configuration file contains an illegal expresion");
 		}
 
 		Bukkit.getServer().getPluginManager()
@@ -152,7 +156,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 					RockyManager.getMaterialManager().getRegisteredNames(
 							MaterialEnumType.BLOCK));
 			itemConfig.save(new File(getDataFolder(), "map.yml"));
-		} catch (Throwable e) {
+		} catch (IOException e) {
 			RockyManager.printConsole("Unable to save global item map");
 		}
 
@@ -206,8 +210,9 @@ public class Rocky extends JavaPlugin implements Runnable {
 							+ " for not running Rocky");
 					player.kickPlayer(configuration.getKickMessage());
 				}
-			} else
+			} else {
 				playerTimer.put(name, tickLeft);
+			}
 		}
 	}
 
@@ -227,10 +232,8 @@ public class Rocky extends JavaPlugin implements Runnable {
 		playerTimer.remove(player.getName());
 
 		// Send each custom data.
-		Resource[] resources = ((RockyResourceManager) RockyManager
-				.getResourceManager()).resourceList.values().toArray(
-				new Resource[0]);
-		player.sendPacket(new PacketFileCacheBegin(resources));
+		player.sendPacket(new PacketFileCacheBegin(RockyManager
+				.getResourceManager().getResourceList()));
 
 		player.sendPacket(new PacketCustomItem(RockyManager
 				.getMaterialManager().getItemList()));

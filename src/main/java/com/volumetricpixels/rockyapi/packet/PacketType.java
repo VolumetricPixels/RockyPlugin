@@ -26,7 +26,6 @@ import com.volumetricpixels.rockyapi.packet.protocol.PacketAccessory;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketAchievement;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketAchievementList;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketAlert;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketAllowAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketCustomItem;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCache;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketFileCacheBegin;
@@ -36,15 +35,11 @@ import com.volumetricpixels.rockyapi.packet.protocol.PacketKeyEvent;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketMovementAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlaySound;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketScreenAction;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSetVelocity;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSkyAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketStopMusic;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketVersion;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketWaypoint;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketWidget;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketWidgetComboBox;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketWidgetRemove;
 
 /**
  * 
@@ -66,10 +61,6 @@ public enum PacketType {
 	 * {@see PacketFileCacheFinish}
 	 */
 	PacketFileCacheFinish(4, PacketFileCacheFinish.class),
-	/**
-	 * {@see PacketAllowAddon}
-	 */
-	PacketAllowAddon(5, PacketAllowAddon.class),
 	/**
 	 * {@see PacketMovementAddon}
 	 */
@@ -125,28 +116,11 @@ public enum PacketType {
 	/**
 	 * {@see PacketSetVelocity}
 	 */
-	PacketSetVelocity(20, PacketSetVelocity.class),
+	PacketSetVelocity(20, PacketSetVelocity.class);
 
-	/**
-	 * {@see PacketWidget}
-	 */
-	PacketWidget(100, PacketWidget.class),
-	/**
-	 * {@see PacketWidgetRemove}
-	 */
-	PacketWidgetRemove(101, PacketWidgetRemove.class),
-	/**
-	 * {@see PacketScreenAction}
-	 */
-	PacketScreenAction(102, PacketScreenAction.class),
-	/**
-	 * {@see PacketWidgetComboBox}
-	 */
-	PacketWidgetComboBox(103, PacketWidgetComboBox.class);
-
-	protected final int id;
-	protected final Class<? extends Packet> clazz;
-	protected final static Map<Integer, PacketType> packetList = new HashMap<Integer, PacketType>();
+	private final int id;
+	private final Class<? extends Packet> clazz;
+	private final static Map<Integer, PacketType> packetList = new HashMap<Integer, PacketType>();
 
 	/**
 	 * 

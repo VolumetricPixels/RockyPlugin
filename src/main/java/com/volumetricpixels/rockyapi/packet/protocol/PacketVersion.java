@@ -33,7 +33,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  */
 public class PacketVersion implements Packet {
 
-	protected String version;
+	private String version;
 
 	/**
 	 * {@inhericDoc}

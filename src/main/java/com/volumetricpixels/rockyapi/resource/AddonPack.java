@@ -29,7 +29,7 @@ import java.util.zip.ZipFile;
  */
 public class AddonPack {
 
-	protected ZipFile file;
+	private ZipFile file;
 
 	/**
 	 * 

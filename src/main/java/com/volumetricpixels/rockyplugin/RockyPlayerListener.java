@@ -74,8 +74,9 @@ public class RockyPlayerListener implements Listener {
 			return;
 		}
 		if (player.isOp() || player instanceof RockyPlayer
-				&& ((RockyPlayer) player).canFly())
+				&& ((RockyPlayer) player).canFly()) {
 			event.setCancelled(true);
+		}
 	}
 
 	/**
@@ -86,8 +87,9 @@ public class RockyPlayerListener implements Listener {
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		RockyPlayer splr = RockyManager.getPlayer(event.getPlayer());
 		if (event.getCause() == TeleportCause.UNKNOWN && splr.isModded()
-				&& splr.isFlying() && splr.getFlySpeed() > 1.0f)
+				&& splr.isFlying() && splr.getFlySpeed() > 1.0f) {
 			event.setCancelled(true);
+		}
 	}
 
 	/**
@@ -120,9 +122,10 @@ public class RockyPlayerListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerEnterPlayerArea(PlayerEnterPlayerArea event) {
-		if (event.getPlayer().isModded())
+		if (event.getPlayer().isModded()) {
 			event.getPlayer().sendPacket(
 					new PacketPlayerAppearance(event.getTriggerPlayer()));
+		}
 	}
 
 }

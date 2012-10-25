@@ -123,10 +123,12 @@ public class Texture implements Resource {
 			int spriteSize) {
 		this(plugin, name, width, height);
 
-		for (int y = height; y >= 0; y -= spriteSize)
-			for (int x = 0; x < width; x += spriteSize)
+		for (int y = height; y >= 0; y -= spriteSize) {
+			for (int x = 0; x < width; x += spriteSize) {
 				textureList.add(new Texture(name, x, y, x + spriteSize, y
 						+ spriteSize));
+			}
+		}
 	}
 
 	/**

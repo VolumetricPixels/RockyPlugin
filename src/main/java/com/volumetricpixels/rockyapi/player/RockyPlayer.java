@@ -27,9 +27,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.volumetricpixels.rockyapi.gui.InGameHUD;
-import com.volumetricpixels.rockyapi.gui.Screen;
-import com.volumetricpixels.rockyapi.gui.ScreenType;
 import com.volumetricpixels.rockyapi.math.Color;
 import com.volumetricpixels.rockyapi.packet.Packet;
 import com.volumetricpixels.rockyapi.packet.PacketVanilla;
@@ -51,23 +48,6 @@ public interface RockyPlayer extends Player {
 	 * @return
 	 */
 	public EntityPlayer getHandle();
-
-	/**
-	 * Gets a copy of the in game HUD to attach widget and launch popups from
-	 * 
-	 * @return In game HUD
-	 */
-	public InGameHUD getMainScreen();
-
-	/**
-	 * Gets a copy of the current opened screen of the player. This can be the
-	 * InGameHUD, but also other screen types. Check the screentype with
-	 * Screen.getType();
-	 * 
-	 * @return the currently open screen
-	 * @see Screen.getType()
-	 */
-	public Screen getCurrentScreen();
 
 	/**
 	 * Return's true if the player is using the mod
@@ -418,21 +398,6 @@ public interface RockyPlayer extends Player {
 	public void reconnect(String hostname);
 
 	/**
-	 * Gets the active screen open for this player
-	 * 
-	 * @return active screen
-	 */
-	public ScreenType getActiveScreen();
-
-	/**
-	 * Orders the client to open the appriopriate screen type
-	 * 
-	 * @param type
-	 *            of screen to open
-	 */
-	public void openScreen(ScreenType type);
-
-	/**
 	 * Sets the skin of this player
 	 * 
 	 * @param url
@@ -541,14 +506,6 @@ public interface RockyPlayer extends Player {
 	 * @param viewingPlayer
 	 */
 	public void resetTitleFor(RockyPlayer viewingPlayer);
-
-	/**
-	 * Internal use only
-	 * 
-	 * @param type
-	 * @param packet
-	 */
-	public void openScreen(ScreenType type, boolean packet);
 
 	/**
 	 * 

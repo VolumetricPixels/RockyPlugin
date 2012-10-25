@@ -88,8 +88,9 @@ public class RockyPacketHandler extends NetServerHandler {
 			player.getHandle().onGround = true;
 		}
 		super.a(packet);
-		if (inAir)
+		if (inAir) {
 			player.getHandle().onGround = false;
+		}
 	}
 
 	/**
@@ -101,8 +102,9 @@ public class RockyPacketHandler extends NetServerHandler {
 			RockyPlayer player = (RockyPlayer) RockyManager
 					.getPlayer(getPlayer());
 			Rocky.getInstance().handlePlayerAuthentication(player);
-		} else
+		} else {
 			super.a(packet250custompayload);
+		}
 	}
 
 	/**
@@ -221,29 +223,33 @@ public class RockyPacketHandler extends NetServerHandler {
 					.get();
 			break;
 		case 0x14:
-			if (((Packet20NamedEntitySpawn) packet).h >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
+			if (((Packet20NamedEntitySpawn) packet).h >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID) {
 				((Packet20NamedEntitySpawn) packet).h = RockyManager
 						.getMaterialManager()
 						.getItem(((Packet20NamedEntitySpawn) packet).h)
 						.getDefaultId();
+			}
 			break;
 		case 0x15:
-			if (((Packet21PickupSpawn) packet).h >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
+			if (((Packet21PickupSpawn) packet).h >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID) {
 				((Packet20NamedEntitySpawn) packet).h = RockyManager
 						.getMaterialManager()
 						.getItem(((Packet20NamedEntitySpawn) packet).h)
 						.getDefaultId();
+			}
 			break;
 		case 0x67:
 			stack = ((Packet103SetSlot) packet).c;
 			break;
 		case 0x68:
 			ItemStack[] stacks = ((Packet104WindowItems) packet).b;
-			for (ItemStack itemStack : stacks)
+			for (ItemStack itemStack : stacks) {
 				if (itemStack != null
-						&& itemStack.id >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
+						&& itemStack.id >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID) {
 					itemStack.id = RockyManager.getMaterialManager()
 							.getItem(itemStack.id).getDefaultId();
+				}
+			}
 			break;
 		case 0x6B:
 			stack = ((Packet107SetCreativeSlot) packet).b;
@@ -252,9 +258,10 @@ public class RockyPacketHandler extends NetServerHandler {
 
 		// The stack contain a custom id and we don't have a custom client
 		if (stack != null
-				&& stack.id >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID)
+				&& stack.id >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID) {
 			stack.id = RockyManager.getMaterialManager().getItem(stack.id)
 					.getDefaultId();
+		}
 	}
 
 	/**
@@ -277,10 +284,11 @@ public class RockyPacketHandler extends NetServerHandler {
 			int[] ids = ((Packet29DestroyEntity) packet).a;
 			for (int id : ids) {
 				player = RockyManager.getPlayerFromId(id);
-				if (player != null)
+				if (player != null) {
 					Bukkit.getPluginManager().callEvent(
 							new PlayerLeavePlayerArea(player, RockyManager
 									.getPlayer(getPlayer())));
+				}
 			}
 			break;
 		}

@@ -28,15 +28,15 @@ public final class Vector3f implements Cloneable {
 	/**
 	 * the x value of the vector.
 	 */
-	public float x;
+	private float x;
 	/**
 	 * the y value of the vector.
 	 */
-	public float y;
+	private float y;
 	/**
 	 * the z value of the vector.
 	 */
-	public float z;
+	private float z;
 
 	/**
 	 * Constructor instantiates a new <code>Vector3f</code> with default values

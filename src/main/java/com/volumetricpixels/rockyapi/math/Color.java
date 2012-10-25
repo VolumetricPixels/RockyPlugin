@@ -97,19 +97,19 @@ public class Color {
 	/**
 	 * The red component of the color.
 	 */
-	protected float r;
+	private float r;
 	/**
 	 * The green component of the color.
 	 */
-	protected float g;
+	private float g;
 	/**
 	 * the blue component of the color.
 	 */
-	protected float b;
+	private float b;
 	/**
 	 * the alpha component of the color. 0 is transparent and 1 is opaque
 	 */
-	protected float a;
+	private float a;
 
 	/**
 	 * 

@@ -31,10 +31,16 @@ import org.bukkit.plugin.Plugin;
 public interface ResourceManager {
 	/**
 	 * 
+	 * @return
+	 */
+	Resource[] getResourceList();
+
+	/**
+	 * 
 	 * @param resource
 	 */
 	public void addResource(Plugin plugin, Resource resource);
-	
+
 	/**
 	 * 
 	 * @param name

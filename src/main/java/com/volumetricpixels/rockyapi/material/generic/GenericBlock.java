@@ -47,20 +47,20 @@ import com.volumetricpixels.rockyapi.resource.Texture;
  */
 public class GenericBlock implements Block {
 
-	protected int id;
-	protected Plugin plugin;
-	protected String name;
-	protected Sound stepSound;
-	protected float friction;
-	protected float hardness;
-	protected boolean isOpaque;
-	protected float light;
-	protected BlockType type;
-	protected Item blockItem;
-	protected ItemStack dropStack;
-	protected List<BlockDesign> design = new LinkedList<BlockDesign>();
-	protected boolean allowRotation;
-	protected net.minecraft.server.Material material;
+	private int id;
+	private Plugin plugin;
+	private String name;
+	private Sound stepSound;
+	private float friction;
+	private float hardness;
+	private boolean isOpaque;
+	private float light;
+	private BlockType type;
+	private Item blockItem;
+	private ItemStack dropStack;
+	private List<BlockDesign> design = new LinkedList<BlockDesign>();
+	private boolean allowRotation;
+	private net.minecraft.server.Material material;
 	
 	/**
 	 * 

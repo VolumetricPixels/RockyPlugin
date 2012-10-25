@@ -28,7 +28,7 @@ import com.volumetricpixels.rockyapi.packet.PacketVanilla;
  */
 public class RockyPacketVanilla<T extends Packet> implements PacketVanilla {
 
-	protected T packet;
+	private T packet;
 
 	/**
 	 * 

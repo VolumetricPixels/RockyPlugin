@@ -24,7 +24,6 @@ import java.io.IOException;
 import org.bukkit.Bukkit;
 
 import com.volumetricpixels.rockyapi.event.input.KeyEvent;
-import com.volumetricpixels.rockyapi.gui.ScreenType;
 import com.volumetricpixels.rockyapi.packet.Packet;
 import com.volumetricpixels.rockyapi.packet.PacketInputStream;
 import com.volumetricpixels.rockyapi.packet.PacketOutputStream;
@@ -38,7 +37,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
 public class PacketKeyEvent implements Packet {
 	private boolean pressDown;
 	private byte key;
-	private int screenType = -1;
+
 
 	/**
 	 * {@inhericDoc}
@@ -47,7 +46,6 @@ public class PacketKeyEvent implements Packet {
 	public void readData(PacketInputStream input) throws IOException {
 		this.key = (byte) input.read();
 		this.pressDown = input.readBoolean();
-		this.screenType = input.readInt();
 	}
 
 	/**
@@ -66,8 +64,7 @@ public class PacketKeyEvent implements Packet {
 		Bukkit.getServer()
 				.getPluginManager()
 				.callEvent(
-						new KeyEvent(this.key, player, ScreenType
-								.getType(screenType), pressDown));
+						new KeyEvent(this.key, player, pressDown));
 	}
 
 	/**

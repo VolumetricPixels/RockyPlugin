@@ -34,8 +34,7 @@ import com.volumetricpixels.rockyapi.resource.Texture;
  */
 public class GenericWeaponRange extends GenericWeapon implements WeaponRange {
 
-	protected String shootSound = "random.bow";
-	protected int ammoId;
+	private String shootSound = "random.bow";
 
 	/**
 	 * 
@@ -98,8 +97,8 @@ public class GenericWeaponRange extends GenericWeapon implements WeaponRange {
 		super.loadPreInitialization(plugin, section, pack);
 
 		this.shootSound = section.getString("ShootSound", "random.bow");
-		this.type = WeaponType.RANGE;
-		this.isBlockAllowed = false;
+		this.setBlockFlag(false);
+		this.setType(WeaponType.RANGE);
 		setCreativeTab(MaterialTab.valueOf(section.getString("CreativeTab",
 				"COMBAT")));
 

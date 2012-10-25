@@ -48,13 +48,6 @@ import org.bukkit.util.Vector;
 import org.fest.reflect.core.Reflection;
 import org.fest.reflect.field.Invoker;
 
-import com.volumetricpixels.rockyapi.gui.GenericOverlayScreen;
-import com.volumetricpixels.rockyapi.gui.InGameHUD;
-import com.volumetricpixels.rockyapi.gui.InGameScreen;
-import com.volumetricpixels.rockyapi.gui.OverlayScreen;
-import com.volumetricpixels.rockyapi.gui.Screen;
-import com.volumetricpixels.rockyapi.gui.ScreenAction;
-import com.volumetricpixels.rockyapi.gui.ScreenType;
 import com.volumetricpixels.rockyapi.math.Color;
 import com.volumetricpixels.rockyapi.packet.Packet;
 import com.volumetricpixels.rockyapi.packet.PacketVanilla;
@@ -63,12 +56,10 @@ import com.volumetricpixels.rockyapi.packet.protocol.PacketAlert;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketMovementAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlaySound;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketPlayerAppearance;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketScreenAction;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSetVelocity;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketSkyAddon;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketStopMusic;
 import com.volumetricpixels.rockyapi.packet.protocol.PacketWaypoint;
-import com.volumetricpixels.rockyapi.packet.protocol.PacketWidget;
 import com.volumetricpixels.rockyapi.player.AccessoryType;
 import com.volumetricpixels.rockyapi.player.RenderDistance;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
@@ -86,9 +77,6 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	private List<Packet> queuePackets = new LinkedList<Packet>();
 	private boolean isAllowedToFly = false;
 	private Map<AccessoryType, String> accessories = new HashMap<AccessoryType, String>();
-	private InGameScreen mainScreen;
-	private ScreenType activeScreen = ScreenType.GAME_SCREEN;
-	private GenericOverlayScreen currentScreen;
 	private List<Player> observers = new LinkedList<Player>();
 	private String skin, cape, title;
 	private Map<String, String> titleFor;
@@ -141,26 +129,6 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 * {@inhericDoc}
 	 */
 	@Override
-	public InGameHUD getMainScreen() {
-		return mainScreen;
-	}
-
-	/**
-	 * {@inhericDoc}
-	 */
-	@Override
-	public Screen getCurrentScreen() {
-		if (getActiveScreen() == ScreenType.GAME_SCREEN)
-			return getMainScreen();
-		else
-			return currentScreen;
-
-	}
-
-	/**
-	 * {@inhericDoc}
-	 */
-	@Override
 	public boolean isModded() {
 		return (build != -1);
 	}
@@ -178,10 +146,11 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 */
 	@Override
 	public void setAchievement(int id, boolean flag) {
-		if (flag)
+		if (flag) {
 			achievementList.add(id);
-		else
+		} else {
 			achievementList.remove(id);
+		}
 	}
 
 	/**
@@ -213,9 +182,9 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 			currentDistance = minimumDistance;
 		} else if (distance.ordinal() < maximumDistance.ordinal()) {
 			currentDistance = maximumDistance;
-		} else
+		} else {
 			currentDistance = distance;
-
+		}
 		((RockyPlayerServerManager) pm.get()).addPlayer(getHandle());
 	}
 
@@ -233,8 +202,9 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	@Override
 	public void setMaximumRenderDistance(RenderDistance maximum) {
 		maximumDistance = maximum;
-		if (currentDistance.ordinal() < maximum.ordinal())
+		if (currentDistance.ordinal() < maximum.ordinal()) {
 			setRenderDistance(maximum);
+		}
 	}
 
 	/**
@@ -251,8 +221,9 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	@Override
 	public void setMinimumRenderDistance(RenderDistance minimum) {
 		minimumDistance = minimum;
-		if (currentDistance.ordinal() > minimum.ordinal())
+		if (currentDistance.ordinal() > minimum.ordinal()) {
 			setRenderDistance(minimum);
+		}
 	}
 
 	/**
@@ -451,10 +422,11 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 */
 	@Override
 	public void sendImmediatePacket(PacketVanilla packet) {
-		if (getHandle().netServerHandler instanceof RockyPacketHandler)
+		if (getHandle().netServerHandler instanceof RockyPacketHandler) {
 			getNetServerHandler().sendImmediatePacket((RockyPacket) packet);
-		else
+		} else {
 			sendPacket(packet);
+		}
 	}
 
 	/**
@@ -472,10 +444,11 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 			throw new IllegalArgumentException(
 					"Kick messages may not contain the : symbol");
 		}
-		if (port == 25565)
-			this.kickPlayer(message + " : " + hostname);
-		else
+		if (port == 25565) {
+ 			this.kickPlayer(message + " : " + hostname);
+		} else {
 			this.kickPlayer(message + " : " + hostname + ":" + port);
+		}
 	}
 
 	/**
@@ -496,8 +469,9 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 						"Unable to parse port number: " + split[1] + " in "
 								+ hostname);
 			}
-		} else
+		} else {
 			reconnect(message, hostname, 25565);
+		}
 	}
 
 	/**
@@ -514,14 +488,6 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	@Override
 	public void reconnect(String hostname) {
 		reconnect(null, hostname);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ScreenType getActiveScreen() {
-		return activeScreen;
 	}
 
 	/**
@@ -646,38 +612,6 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void openScreen(ScreenType type) {
-		openScreen(type, true);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void openScreen(ScreenType type, boolean packet) {
-		if (type == activeScreen) {
-			return;
-		}
-		activeScreen = type;
-		if (packet) {
-			sendPacket(new PacketScreenAction(ScreenAction.Open, type));
-		}
-		if (activeScreen != ScreenType.GAME_SCREEN
-				&& activeScreen != ScreenType.CUSTOM_SCREEN) {
-			currentScreen = (GenericOverlayScreen) new GenericOverlayScreen(
-					getEntityId(), getActiveScreen()).setX(0).setY(0);
-			PacketWidget packetW = new PacketWidget(currentScreen,
-					currentScreen.getId());
-			sendPacket(packetW);
-			currentScreen.onTick();
-		} else
-			currentScreen = null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void sendPacket(Packet packet) {
 		if (!isModded()) {
 			queuePackets.add(packet);
@@ -723,9 +657,11 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 */
 	@Override
 	public void sendPacketToObservers(Packet packet) {
-		for (Player player : observers)
-			if (player instanceof RockyPlayer)
+		for (Player player : observers) {
+			if (player instanceof RockyPlayer) {
 				((RockyPlayer) player).sendPacket(packet);
+			}
+		}
 	}
 
 	/**
@@ -1020,12 +956,6 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 		if (!isModded()) {
 			return;
 		}
-		// Tick the current screen we're at
-		mainScreen.onTick();
-		Screen currentScreen = getCurrentScreen();
-		if (currentScreen != null && currentScreen instanceof OverlayScreen) {
-			currentScreen.onTick();
-		}
 
 		// Check if the movement addon needs update
 		if (needMovementUpdate) {
@@ -1050,8 +980,9 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	public void updateWaypoints() {
 		List<Waypoint> waypoints = Rocky.getInstance().getConfiguration()
 				.getWaypoints(getWorld().getName().toLowerCase());
-		for (Waypoint p : waypoints)
+		for (Waypoint p : waypoints) {
 			addWaypoint(p);
+		}
 	}
 
 	/**

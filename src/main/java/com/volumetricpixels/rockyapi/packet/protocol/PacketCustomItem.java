@@ -33,7 +33,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  */
 public class PacketCustomItem implements Packet {
 
-	protected Item[] itemList;
+	private Item[] itemList;
 
 	/**
 	 * 

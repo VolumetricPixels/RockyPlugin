@@ -33,8 +33,8 @@ import com.volumetricpixels.rockyapi.resource.Texture;
  */
 public class GenericFood extends GenericItem implements Food {
 
-	protected float saturation;
-	protected int restoration;
+	private float saturation;
+	private int restoration;
 
 	/**
 	 * 

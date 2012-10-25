@@ -58,8 +58,8 @@ public class RockyBlock extends Block {
 				.withParameterTypes(float.class, float.class, float.class,
 						float.class, float.class, float.class)
 				.in(this)
-				.invoke(bb.lowXBound, bb.lowYBound, bb.lowZBound,
-						bb.highXBound, bb.highYBound, bb.highZBound);
+				.invoke(bb.getX(), bb.getY(), bb.getZ(),
+						bb.getX2(), bb.getY2(), bb.getZ2());
 		Reflection.method("a").withParameterTypes(float.class).in(this)
 				.invoke(material.getLightLevel());
 		Reflection.field("stepSound").ofType(StepSound.class).in(this)

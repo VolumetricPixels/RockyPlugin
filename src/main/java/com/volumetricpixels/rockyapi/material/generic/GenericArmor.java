@@ -56,13 +56,13 @@ public class GenericArmor extends GenericItem implements Armor {
 	 * @param texture
 	 */
 	public GenericArmor(Plugin plugin, String name, Texture texture,
-			Texture[] modelTexture) {
+			Texture frontModel, Texture backModel) {
 		super(plugin, name, texture);
 
-		if (modelTexture.length != 2) {
-			throw new IllegalArgumentException("Invalid Model Texture Lenght");
+		if (frontModel == null || backModel == null) {
+			throw new IllegalArgumentException("Invalid model textures");
 		}
-		this.modelTexture = modelTexture;
+		this.modelTexture = new Texture[] { frontModel, backModel };
 
 		setStackable(false);
 		setCreativeTab(MaterialTab.COMBAT);

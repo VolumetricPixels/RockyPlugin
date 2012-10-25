@@ -37,7 +37,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  * 
  */
 public class RockyPlayerManager implements PlayerManager {
-	protected Map<Integer, RockyAchievement> achievementList = new HashMap<Integer, RockyAchievement>();
+	private Map<Integer, RockyAchievement> achievementList = new HashMap<Integer, RockyAchievement>();
 
 	/**
 	 * {@inheritDoc}
@@ -97,10 +97,9 @@ public class RockyPlayerManager implements PlayerManager {
 	public void setPlayerVersion(RockyPlayer player, String version) {
 		RockyManager.printConsole("Authenticated " + player.getName()
 				+ " using Rocky " + version);
-		int build = 1700;
-		try {
-			build = Integer.parseInt(version);
-		} catch (Throwable ex) {
+		int build = 2100;
+		if (Character.isDigit(version.charAt(0))) {
+			build = Integer.valueOf(version);
 		}
 		player.setBuildVersion(build);
 	}

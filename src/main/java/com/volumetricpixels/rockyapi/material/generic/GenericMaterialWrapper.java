@@ -30,7 +30,7 @@ import net.minecraft.server.MaterialMapColor;
  */
 public class GenericMaterialWrapper extends Material {
 
-	protected Block block;
+	private Block block;
 	
 	/**
 	 * 

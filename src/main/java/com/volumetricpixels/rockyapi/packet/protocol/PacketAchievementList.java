@@ -35,7 +35,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
  */
 public class PacketAchievementList implements Packet {
 
-	protected RockyPlayer player;
+	private RockyPlayer player;
 
 	/**
 	 * 

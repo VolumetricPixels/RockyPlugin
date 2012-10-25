@@ -23,7 +23,6 @@ package com.volumetricpixels.rockyapi.event.input;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.volumetricpixels.rockyapi.gui.ScreenType;
 import com.volumetricpixels.rockyapi.keyboard.Keyboard;
 import com.volumetricpixels.rockyapi.player.RockyPlayer;
 
@@ -34,7 +33,6 @@ public class KeyEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 	private final RockyPlayer player;
 	private final Keyboard key;
-	private final ScreenType screenType;
 
 	/**
 	 * 
@@ -43,11 +41,10 @@ public class KeyEvent extends Event {
 	 * @param screenType
 	 * @param isPressed
 	 */
-	public KeyEvent(int keyPress, RockyPlayer player, ScreenType screenType,
+	public KeyEvent(int keyPress, RockyPlayer player,
 			boolean isPressed) {
 		this.player = player;
 		this.key = Keyboard.getKey(keyPress);
-		this.screenType = screenType;
 	}
 
 	/**
@@ -64,14 +61,6 @@ public class KeyEvent extends Event {
 	 */
 	public Keyboard getKey() {
 		return key;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public ScreenType getScreenType() {
-		return screenType;
 	}
 
 	/**

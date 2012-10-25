@@ -37,11 +37,11 @@ import com.volumetricpixels.rockyapi.resource.Texture;
  */
 public class GenericWeapon extends GenericItem implements Weapon {
 
-	protected int durability;
-	protected int damage;
-	protected int attackSpeed;
-	protected boolean isBlockAllowed;
-	protected WeaponType type;
+	private int durability;
+	private int damage;
+	private int attackSpeed;
+	private boolean isBlockAllowed;
+	private WeaponType type;
 
 	/**
 	 * 
@@ -69,7 +69,7 @@ public class GenericWeapon extends GenericItem implements Weapon {
 	public int getTypeId() {
 		return 3;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -158,6 +158,15 @@ public class GenericWeapon extends GenericItem implements Weapon {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Weapon setType(WeaponType type) {
+		this.type = type;
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Material loadPreInitialization(Plugin plugin,
 			ConfigurationSection section, AddonPack pack) {
 		super.loadPreInitialization(plugin, section, pack);
@@ -187,4 +196,5 @@ public class GenericWeapon extends GenericItem implements Weapon {
 		out.writeShort(attackSpeed);
 		out.writeShort(durability);
 	}
+
 }
