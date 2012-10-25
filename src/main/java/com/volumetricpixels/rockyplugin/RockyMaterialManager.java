@@ -20,6 +20,8 @@
 package com.volumetricpixels.rockyplugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.BitSet;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -238,12 +241,17 @@ public class RockyMaterialManager implements MaterialManager {
 		}
 		if (material instanceof Item) {
 			itemList.put(material.getId(), (Item) material);
+
 			try {
 				net.minecraft.server.Item.byId[material.getId()] = (net.minecraft.server.Item) referenceClazz
 						.get(material.getClass())
 						.getConstructor(Material.class).newInstance(material);
-			} catch (Throwable e) {
-				e.printStackTrace();
+			} catch (InstantiationException e) {
+			} catch (IllegalAccessException e) {
+			} catch (IllegalArgumentException e) {
+			} catch (InvocationTargetException e) {
+			} catch (NoSuchMethodException e) {
+			} catch (SecurityException e) {
 			}
 			return;
 		}
@@ -252,8 +260,12 @@ public class RockyMaterialManager implements MaterialManager {
 			net.minecraft.server.Block.byId[material.getId()] = (net.minecraft.server.Block) referenceClazz
 					.get(material.getClass()).getConstructor(Material.class)
 					.newInstance(material);
-		} catch (Throwable e) {
-			e.printStackTrace();
+		} catch (InstantiationException e) {
+		} catch (IllegalAccessException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (InvocationTargetException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (SecurityException e) {
 		}
 	}
 
@@ -312,9 +324,10 @@ public class RockyMaterialManager implements MaterialManager {
 		for (File file : directory.listFiles()) {
 
 			// Check if the package is valid
-			if (!file.getName().endsWith(".smp"))
+			if (!file.getName().endsWith(".smp")) {
 				continue;
-
+			}
+			
 			// Load the package
 			ZipFile zipFile = null;
 			try {
@@ -340,8 +353,9 @@ public class RockyMaterialManager implements MaterialManager {
 				YamlConfiguration configuration = new YamlConfiguration();
 				try {
 					configuration.load(zipFile.getInputStream(zipEntry));
-				} catch (Throwable ex) {
-					ex.printStackTrace();
+				} catch (IOException ex) {
+					continue;
+				} catch (InvalidConfigurationException e) {
 					continue;
 				}
 
@@ -358,8 +372,9 @@ public class RockyMaterialManager implements MaterialManager {
 				try {
 					material = clazz.newInstance().loadPreInitialization(
 							Rocky.getInstance(), configuration, pack);
-				} catch (Throwable e) {
-					e.printStackTrace();
+				} catch (InstantiationException e) {
+					continue;
+				} catch (IllegalAccessException e) {
 					continue;
 				}
 				addMaterial(material);
@@ -387,14 +402,15 @@ public class RockyMaterialManager implements MaterialManager {
 		for (File file : directory.listFiles()) {
 
 			// Check if the package is valid
-			if (!file.getName().endsWith(".smp"))
+			if (!file.getName().endsWith(".smp")) {
 				continue;
-
+			}
+			
 			// Load the package
 			ZipFile zipFile = null;
 			try {
 				zipFile = new ZipFile(file);
-			} catch (Throwable ex) {
+			} catch (IOException ex) {
 				continue;
 			}
 			// Get each file within this file
@@ -408,15 +424,17 @@ public class RockyMaterialManager implements MaterialManager {
 
 				// Get the current entry
 				ZipEntry zipEntry = enumeration.nextElement();
-				if (!zipEntry.getName().endsWith(".yml"))
+				if (!zipEntry.getName().endsWith(".yml")) {
 					continue;
-
+				}
+				
 				// Load the configuration of the type
 				YamlConfiguration configuration = new YamlConfiguration();
 				try {
 					configuration.load(zipFile.getInputStream(zipEntry));
-				} catch (Throwable ex) {
-					ex.printStackTrace();
+				} catch (IOException ex) {
+					continue;
+				} catch (InvalidConfigurationException e) {
 					continue;
 				}
 

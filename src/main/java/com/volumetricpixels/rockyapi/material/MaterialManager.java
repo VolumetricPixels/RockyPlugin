@@ -34,7 +34,7 @@ public interface MaterialManager extends Listener {
 	 * 
 	 * @return
 	 */
-	public YamlConfiguration getDefaultShape();
+	YamlConfiguration getDefaultShape();
 	
 	/**
 	 * 

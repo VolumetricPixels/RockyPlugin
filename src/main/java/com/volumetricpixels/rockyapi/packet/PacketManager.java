@@ -33,7 +33,7 @@ public interface PacketManager {
 	 * @param vanilla
 	 * @param extended
 	 */
-	public void addVanillaPacket(int id, Class<? extends Packet> vanilla,
+	void addVanillaPacket(int id, Class<? extends Packet> vanilla,
 			Class<? extends PacketVanilla> extended);
 
 	/**
@@ -42,7 +42,7 @@ public interface PacketManager {
 	 * @param packet
 	 * @return
 	 */
-	public boolean isAllowedToSend(RockyPlayer player, int packet);
+	boolean isAllowedToSend(RockyPlayer player, int packet);
 
 	/**
 	 * Returns a MCPacket instance with the default constructor.
@@ -53,7 +53,7 @@ public interface PacketManager {
 	 *            the id of the desired packet
 	 * @return an empty MCPacket of type packetId
 	 */
-	public PacketVanilla getInstance(int packetId);
+	PacketVanilla getInstance(int packetId);
 
 	/**
 	 * adds a packet listener for uncompressed map chunk packets
@@ -63,7 +63,7 @@ public interface PacketManager {
 	 * @param listener
 	 *            the listener instance
 	 */
-	public void addListenerUncompressedChunk(PacketListener listener);
+	void addListenerUncompressedChunk(PacketListener listener);
 
 	/**
 	 * adds a packet listener for packets of the given id
@@ -75,7 +75,7 @@ public interface PacketManager {
 	 * @param listener
 	 *            the listener instance
 	 */
-	public void addListener(int packetId, PacketListener listener);
+	void addListener(int packetId, PacketListener listener);
 
 	/**
 	 * removes a packet listener for uncompressed map chunk packets
@@ -84,7 +84,7 @@ public interface PacketManager {
 	 *            the listener instance
 	 * @return true if listener was removed
 	 */
-	public boolean removeListenerUncompressedChunk(PacketListener listener);
+	boolean removeListenerUncompressedChunk(PacketListener listener);
 
 	/**
 	 * removes a packet listener for packets of the given id
@@ -93,7 +93,7 @@ public interface PacketManager {
 	 *            the listener instance
 	 * @return true if listener was removed
 	 */
-	public boolean removeListener(int packetId, PacketListener listener);
+	boolean removeListener(int packetId, PacketListener listener);
 
 	/**
 	 * removes all packet listeners
@@ -102,5 +102,5 @@ public interface PacketManager {
 	 *            the listener instance
 	 * @return true if listener was removed
 	 */
-	public void clearAllListeners();
+	void clearAllListeners();
 }

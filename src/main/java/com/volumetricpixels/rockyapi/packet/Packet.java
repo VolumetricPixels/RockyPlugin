@@ -35,7 +35,7 @@ public interface Packet {
 	 * @param input
 	 *            stream to read data from
 	 */
-	public void readData(PacketInputStream input) throws IOException;
+	void readData(PacketInputStream input) throws IOException;
 
 	/**
 	 * Writes the outgoing data to the output stream.
@@ -43,7 +43,7 @@ public interface Packet {
 	 * @param output
 	 *            to write data to
 	 */
-	public void writeData(PacketOutputStream output) throws IOException;
+	void writeData(PacketOutputStream output) throws IOException;
 
 	/**
 	 * Performs any tasks for the packet after data has been successfully read
@@ -52,7 +52,7 @@ public interface Packet {
 	 * @param player
 	 *            for the packet
 	 */
-	public void handle(RockyPlayer player);
+	void handle(RockyPlayer player);
 
 	/**
 	 * Performs any tasks for the packet after the data has NOT been
@@ -66,11 +66,11 @@ public interface Packet {
 	 * 
 	 * @param player
 	 */
-	public void failure(RockyPlayer player);
+	void failure(RockyPlayer player);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public PacketType getType();
+	PacketType getType();
 }

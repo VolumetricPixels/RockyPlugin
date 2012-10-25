@@ -39,21 +39,21 @@ public interface ResourceManager {
 	 * 
 	 * @param resource
 	 */
-	public void addResource(Plugin plugin, Resource resource);
+	void addResource(Plugin plugin, Resource resource);
 
 	/**
 	 * 
 	 * @param name
 	 * @return
 	 */
-	public boolean hasResource(String name);
+	boolean hasResource(String name);
 
 	/**
 	 * 
 	 * @param name
 	 * @return
 	 */
-	public <T extends Resource> T getResource(String name);
+	<T extends Resource> T getResource(String name);
 
 	/**
 	 * Adds a file to the cache for clients. This file will be downloaded
@@ -66,7 +66,7 @@ public interface ResourceManager {
 	 *            to pre-cache
 	 * @return true if the file was pre-cached
 	 */
-	public boolean addToCache(Plugin plugin, File file);
+	boolean addToCache(Plugin plugin, File file);
 
 	/**
 	 * Adds a file to the cache for clients. This file will be downloaded
@@ -79,7 +79,7 @@ public interface ResourceManager {
 	 *            to pre-cache
 	 * @return true if the file was pre-cached
 	 */
-	public boolean addToCache(Plugin plugin, String fileUrl);
+	boolean addToCache(Plugin plugin, String fileUrl);
 
 	/**
 	 * Sends the contents of the input stream to clients. The contents of the
@@ -96,14 +96,14 @@ public interface ResourceManager {
 	 *            name of the resulting file.
 	 * @return true if the files were pre-cached
 	 */
-	public boolean addToCache(Plugin plugin, InputStream input, String fileName)
+	boolean addToCache(Plugin plugin, InputStream input, String fileName)
 			throws IOException;
 
 	/**
 	 * 
 	 * @param plugin
 	 */
-	public void removeFromCache(Plugin plugin);
+	void removeFromCache(Plugin plugin);
 
 	/**
 	 * Removes the given filename from the cache, if it exists.
@@ -113,7 +113,7 @@ public interface ResourceManager {
 	 * @param file
 	 *            name to remove
 	 */
-	public void removeFromCache(Plugin plugin, String file);
+	void removeFromCache(Plugin plugin, String file);
 
 	/**
 	 * Checks if the file is approved for pre-caching. The file types approved
@@ -123,7 +123,7 @@ public interface ResourceManager {
 	 *            to check
 	 * @return true if the file can be cached on the client
 	 */
-	public boolean canCache(File file);
+	boolean canCache(File file);
 
 	/**
 	 * Checks if the fileUrl is approved for pre-caching. The file types
@@ -134,5 +134,5 @@ public interface ResourceManager {
 	 *            to check
 	 * @return true if the file can be cached on the client
 	 */
-	public boolean canCache(String fileUrl);
+	boolean canCache(String fileUrl);
 }

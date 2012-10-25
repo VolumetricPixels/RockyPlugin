@@ -90,10 +90,15 @@ public class GenericBlock implements Block {
 		this.name = name;
 		this.id = RockyManager.getMaterialManager().getRegisteredName(name,
 				MaterialEnumType.BLOCK);
-		this.allowRotation = true;
-		this.setBlockDesign(design);
+		this.allowRotation = allowRotation;
 		this.blockItem = new GenericItem(plugin, name);
 		this.material = new GenericMaterialWrapper(this);
+		if (allowRotation) {
+			this.design.add(1, design.rotate(90));
+			this.design.add(2, design.rotate(180));
+			this.design.add(3, design.rotate(270));
+		}
+		this.design.add(0, design);
 	}
 
 	/**
@@ -152,7 +157,7 @@ public class GenericBlock implements Block {
 			shapeFile = MaterialManager.DEFAULT_SHAPE;
 		}
 		if (!pack.hasEntry(textureFile)) {
-			throw new RuntimeException(textureFile + " cannot be found.");
+			throw new IllegalArgumentException(textureFile + " cannot be found.");
 		}
 		Texture texture = null;
 		if (RockyManager.getResourceManager().hasResource(textureFile)) {
@@ -333,13 +338,12 @@ public class GenericBlock implements Block {
 	@Override
 	public Block setBlockDesign(BlockDesign design) {
 		if (allowRotation) {
-			setBlockDesign(design, 0);
 			setBlockDesign(design.rotate(90), 1);
 			setBlockDesign(design.rotate(180), 2);
 			setBlockDesign(design.rotate(270), 3);
-			return this;
 		}
-		return setBlockDesign(design, 0);
+		setBlockDesign(design, 0);
+		return this;
 	}
 
 	/**

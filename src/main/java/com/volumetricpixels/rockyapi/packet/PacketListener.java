@@ -32,5 +32,5 @@ public interface PacketListener {
 	 *            The packet to check
 	 * @return false if the packet should be stopped, true otherwise.
 	 */
-	public boolean checkPacket(Player player, Object packet);
+	boolean checkPacket(Player player, Object packet);
 }

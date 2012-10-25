@@ -33,36 +33,36 @@ public interface Resource {
 	 * 
 	 * @return
 	 */
-	public String getName();
+	String getName();
 
 	/**
 	 * 
 	 * @return
 	 */
-	public long getRevision();
+	long getRevision();
 
 	/**
 	 * 
 	 * @param revision
 	 */
-	public void setRevision(long revision);
+	void setRevision(long revision);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public <T> T getData();
+	<T> T getData();
 
 	/**
 	 * 
 	 * @param data
 	 */
-	public <T> void setData(T data);
+	<T> void setData(T data);
 
 	/**
 	 * 
 	 * @param out
 	 * @throws IOException
 	 */
-	public void writeToPacket(PacketOutputStream out) throws IOException;
+	void writeToPacket(PacketOutputStream out) throws IOException;
 }

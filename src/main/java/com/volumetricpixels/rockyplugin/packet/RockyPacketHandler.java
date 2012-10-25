@@ -200,7 +200,7 @@ public class RockyPacketHandler extends NetServerHandler {
 				super.sendPacket(packet);
 			}
 		} catch (NullPointerException npe) {
-			throw new RuntimeException(
+			throw new IllegalArgumentException(
 					"Null pointer exception thrown when trying to process packet of type "
 							+ packet.getClass().getName(), npe);
 		}

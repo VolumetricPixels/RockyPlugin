@@ -169,7 +169,7 @@ public class GenericArmor extends GenericItem implements Armor {
 		String textureFile = section.getString("Model");
 		if (!pack.hasEntry(textureFile + "_1.png")
 				|| !pack.hasEntry(textureFile + "_2.png")) {
-			throw new RuntimeException("The armor model is missing");
+			throw new IllegalArgumentException("The armor model is missing");
 		}
 
 		this.modelTexture = new Texture[2];

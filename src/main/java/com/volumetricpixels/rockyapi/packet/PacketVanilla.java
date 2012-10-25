@@ -26,5 +26,5 @@ public interface PacketVanilla {
 	/**
 	 * @return the packet id of the packet
 	 */
-	public int getId();
+	int getId();
 }

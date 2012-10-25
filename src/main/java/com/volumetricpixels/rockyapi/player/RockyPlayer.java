@@ -41,47 +41,47 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return
 	 */
-	public String getLocale();
+	String getLocale();
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public EntityPlayer getHandle();
+	EntityPlayer getHandle();
 
 	/**
 	 * Return's true if the player is using the mod
 	 * 
 	 * @return if the mod enabled
 	 */
-	public boolean isModded();
+	boolean isModded();
 
 	/**
 	 * 
 	 * @param name
 	 * @return
 	 */
-	public boolean hasAchievement(int id);
+	boolean hasAchievement(int id);
 
 	/**
 	 * 
 	 * @param name
 	 * @param flag
 	 */
-	public void setAchievement(int id, boolean flag);
+	void setAchievement(int id, boolean flag);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public Integer[] getAchievement();
+	Integer[] getAchievement();
 
 	/**
 	 * Gets the render distance that the player views, or null if unknown
 	 * 
 	 * @return render distance
 	 */
-	public RenderDistance getRenderDistance();
+	RenderDistance getRenderDistance();
 
 	/**
 	 * Sets the render distance that the player views
@@ -89,7 +89,7 @@ public interface RockyPlayer extends Player {
 	 * @param distance
 	 *            to set
 	 */
-	public void setRenderDistance(RenderDistance distance);
+	void setRenderDistance(RenderDistance distance);
 
 	/**
 	 * Gets the maximum render distance that the player can view, or null if
@@ -97,7 +97,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return maximum distance
 	 */
-	public RenderDistance getMaximumRenderDistance();
+	RenderDistance getMaximumRenderDistance();
 
 	/**
 	 * Sets the maximum render distance that the player can view
@@ -105,7 +105,7 @@ public interface RockyPlayer extends Player {
 	 * @param maximum
 	 *            distance
 	 */
-	public void setMaximumRenderDistance(RenderDistance maximum);
+	void setMaximumRenderDistance(RenderDistance maximum);
 
 	/**
 	 * Gets the minimum render distance that the player can view, or null if
@@ -113,7 +113,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return minimum distance
 	 */
-	public RenderDistance getMinimumRenderDistance();
+	RenderDistance getMinimumRenderDistance();
 
 	/**
 	 * Sets the minimum render distance that the player can view
@@ -121,7 +121,7 @@ public interface RockyPlayer extends Player {
 	 * @param minimum
 	 *            distance
 	 */
-	public void setMinimumRenderDistance(RenderDistance minimum);
+	void setMinimumRenderDistance(RenderDistance minimum);
 
 	/**
 	 * Send's the player a notification (using the existing Achievement Get
@@ -136,7 +136,7 @@ public interface RockyPlayer extends Player {
 	 * @param toRender
 	 *            to render
 	 */
-	public void sendNotification(String title, String message, Material toRender);
+	void sendNotification(String title, String message, Material toRender);
 
 	/**
 	 * Send's the player a notification (using the existing Achievement Get
@@ -155,7 +155,7 @@ public interface RockyPlayer extends Player {
 	 * @param time
 	 *            for the notification to remain in milliseconds
 	 */
-	public void sendNotification(String title, String message,
+	void sendNotification(String title, String message,
 			Material toRender, short data, int time);
 
 	/**
@@ -173,7 +173,7 @@ public interface RockyPlayer extends Player {
 	 * @param time
 	 *            for the notification to remain in milliseconds
 	 */
-	public void sendNotification(String title, String message, ItemStack item,
+	void sendNotification(String title, String message, ItemStack item,
 			int time);
 
 	/**
@@ -183,7 +183,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return gravity multiplier
 	 */
-	public float getGravityMultiplier();
+	float getGravityMultiplier();
 
 	/**
 	 * Modifies the effects of gravity on the player's y axis movement.
@@ -198,7 +198,7 @@ public interface RockyPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setGravityMultiplier(float multiplier);
+	void setGravityMultiplier(float multiplier);
 
 	/**
 	 * Gets the swimming multiplier for this player
@@ -207,7 +207,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return swimming multiplier
 	 */
-	public float getSwimmingMultiplier();
+	float getSwimmingMultiplier();
 
 	/**
 	 * Modifies the default swimming speed for this player
@@ -222,7 +222,7 @@ public interface RockyPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setSwimmingMultiplier(float multiplier);
+	void setSwimmingMultiplier(float multiplier);
 
 	/**
 	 * Gets the walking multiplier for this player
@@ -231,7 +231,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return walking multiplier
 	 */
-	public float getWalkingMultiplier();
+	float getWalkingMultiplier();
 
 	/**
 	 * Modifies the default walking speed for this player
@@ -246,7 +246,7 @@ public interface RockyPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setWalkingMultiplier(float multiplier);
+	void setWalkingMultiplier(float multiplier);
 
 	/**
 	 * Gets the jumping multiplier for this player
@@ -255,7 +255,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return jumping multiplier
 	 */
-	public float getJumpingMultiplier();
+	float getJumpingMultiplier();
 
 	/**
 	 * Modifies the default jumping speed for this player
@@ -270,7 +270,7 @@ public interface RockyPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setJumpingMultiplier(float multiplier);
+	void setJumpingMultiplier(float multiplier);
 
 	/**
 	 * Gets the air speed multiplier for this player
@@ -279,7 +279,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return air speed multiplier
 	 */
-	public float getAirSpeedMultiplier();
+	float getAirSpeedMultiplier();
 
 	/**
 	 * Modifies the default air speed for this player
@@ -294,13 +294,13 @@ public interface RockyPlayer extends Player {
 	 * @param multiplier
 	 *            to set.
 	 */
-	public void setAirSpeedMultiplier(float multiplier);
+	void setAirSpeedMultiplier(float multiplier);
 
 	/**
 	 * Resets all modified movement speeds, including walking, swimming,
 	 * gravity, air speed, and jumping modifiers.
 	 */
-	public void resetMovement();
+	void resetMovement();
 
 	/**
 	 * Returns either the server wide fly setting, or specific player setting if
@@ -308,7 +308,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return whether this player can fly.
 	 */
-	public boolean canFly();
+	boolean canFly();
 
 	/**
 	 * Overrides the server wide fly setting, allowing this player to fly, or
@@ -316,7 +316,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @param fly
 	 */
-	public void setCanFly(boolean fly);
+	void setCanFly(boolean fly);
 
 	/**
 	 * Sends a MCPacket to the client
@@ -324,7 +324,7 @@ public interface RockyPlayer extends Player {
 	 * @param packet
 	 *            to send
 	 */
-	public void sendPacket(PacketVanilla packet);
+	void sendPacket(PacketVanilla packet);
 
 	/**
 	 * Sends the packet immediately. Packets sent using this method are placed
@@ -335,7 +335,7 @@ public interface RockyPlayer extends Player {
 	 * @param packet
 	 *            the packet to send
 	 */
-	public void sendImmediatePacket(PacketVanilla packet);
+	void sendImmediatePacket(PacketVanilla packet);
 
 	/**
 	 * Orders the client to reconnect to another server
@@ -352,7 +352,7 @@ public interface RockyPlayer extends Player {
 	 * @param port
 	 *            the port of the other server
 	 */
-	public void reconnect(String message, String hostname, int port);
+	void reconnect(String message, String hostname, int port);
 
 	/**
 	 * Orders the client to reconnect to another server.
@@ -367,7 +367,7 @@ public interface RockyPlayer extends Player {
 	 * @param hostname
 	 *            the hostname of the other server
 	 */
-	public void reconnect(String message, String hostname);
+	void reconnect(String message, String hostname);
 
 	/**
 	 * Orders the client to reconnect to another server
@@ -382,7 +382,7 @@ public interface RockyPlayer extends Player {
 	 * @param port
 	 *            the port of the other server
 	 */
-	public void reconnect(String hostname, int port);
+	void reconnect(String hostname, int port);
 
 	/**
 	 * Orders the client to reconnect to another server.
@@ -395,7 +395,7 @@ public interface RockyPlayer extends Player {
 	 * @param hostname
 	 *            the hostname of the other server
 	 */
-	public void reconnect(String hostname);
+	void reconnect(String hostname);
 
 	/**
 	 * Sets the skin of this player
@@ -403,19 +403,19 @@ public interface RockyPlayer extends Player {
 	 * @param url
 	 *            to set to
 	 */
-	public void setSkin(String url);
+	void setSkin(String url);
 
 	/**
 	 * Gets the skin url that this player is using
 	 * 
 	 * @return skin
 	 */
-	public String getSkin();
+	String getSkin();
 
 	/**
 	 * Resets the skin to the default
 	 */
-	public void resetSkin();
+	void resetSkin();
 
 	/**
 	 * Sets the cape url of this player
@@ -423,19 +423,19 @@ public interface RockyPlayer extends Player {
 	 * @param url
 	 *            to set to
 	 */
-	public void setCape(String url);
+	void setCape(String url);
 
 	/**
 	 * Gets the cape that this player is wearing
 	 * 
 	 * @return cape url
 	 */
-	public String getCape();
+	String getCape();
 
 	/**
 	 * Resets the cape that this player is wearing
 	 */
-	public void resetCape();
+	void resetCape();
 
 	/**
 	 * Sets the overhead title for the player.
@@ -448,7 +448,7 @@ public interface RockyPlayer extends Player {
 	 * @param title
 	 *            to set overhead.
 	 */
-	public void setTitle(String title);
+	void setTitle(String title);
 
 	/**
 	 * Sets the overhead title for the player, only visible to the
@@ -464,14 +464,14 @@ public interface RockyPlayer extends Player {
 	 * @param title
 	 *            to set overhead.
 	 */
-	public void setTitleFor(RockyPlayer viewingPlayer, String title);
+	void setTitleFor(RockyPlayer viewingPlayer, String title);
 
 	/**
 	 * Gets the overhead title for the player.
 	 * 
 	 * @return overhead title
 	 */
-	public String getTitle();
+	String getTitle();
 
 	/**
 	 * Gets the overhead title that is visible to the viewingPlayer
@@ -480,12 +480,12 @@ public interface RockyPlayer extends Player {
 	 *            that this title is visible for
 	 * @return overhead title
 	 */
-	public String getTitleFor(RockyPlayer viewingPlayer);
+	String getTitleFor(RockyPlayer viewingPlayer);
 
 	/**
 	 * Completely hides the title from view of all players.
 	 */
-	public void hideTitle();
+	void hideTitle();
 
 	/**
 	 * Completely hides the title from the view of the viewingPlayer
@@ -493,57 +493,57 @@ public interface RockyPlayer extends Player {
 	 * @param viewingPlayer
 	 *            to hide the title from.
 	 */
-	public void hideTitleFrom(RockyPlayer viewingPlayer);
+	void hideTitleFrom(RockyPlayer viewingPlayer);
 
 	/**
 	 * Resets the title back to it's default state.
 	 */
-	public void resetTitle();
+	void resetTitle();
 
 	/**
 	 * Resets the title back to it's default state for the viewingPlayer.
 	 * 
 	 * @param viewingPlayer
 	 */
-	public void resetTitleFor(RockyPlayer viewingPlayer);
+	void resetTitleFor(RockyPlayer viewingPlayer);
 
 	/**
 	 * 
 	 * @param player
 	 * @return
 	 */
-	public boolean hasObserver(Player player);
+	boolean hasObserver(Player player);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public List<Player> getObservers();
+	List<Player> getObservers();
 
 	/**
 	 * 
 	 * @param player
 	 */
-	public void addObserver(Player player);
+	void addObserver(Player player);
 
 	/**
 	 * 
 	 * @param player
 	 */
-	public void removeObserver(Player player);
+	void removeObserver(Player player);
 
 	/**
 	 * 
 	 * @param packet
 	 */
-	public void sendPacketToObservers(Packet packet);
+	void sendPacketToObservers(Packet packet);
 
 	/**
 	 * Internal use only
 	 * 
 	 * @param packet
 	 */
-	public void sendPacket(Packet packet);
+	void sendPacket(Packet packet);
 
 	/**
 	 * Adds a waypoint to the minimap of the client, with the given loation and
@@ -555,17 +555,17 @@ public interface RockyPlayer extends Player {
 	 * @param waypoint
 	 *            waypoint
 	 */
-	public void addWaypoint(Waypoint waypoint);
+	void addWaypoint(Waypoint waypoint);
 
 	/**
 	 * Gets the Player's SC version as an int.
 	 */
-	public int getBuildVersion();
+	int getBuildVersion();
 
 	/**
 	 * Gets the Player's SC version as a String.
 	 */
-	public String getVersionString();
+	String getVersionString();
 
 	/**
 	 * Checks if the player has that accessory type.
@@ -574,7 +574,7 @@ public interface RockyPlayer extends Player {
 	 *            The type to check for.
 	 * @return Whether the player has that type of accessory.
 	 */
-	public boolean hasAccessory(AccessoryType type);
+	boolean hasAccessory(AccessoryType type);
 
 	/**
 	 * Adds a new accessory to the player.
@@ -584,7 +584,7 @@ public interface RockyPlayer extends Player {
 	 * @param url
 	 *            The accessory's url.
 	 */
-	public void addAccessory(AccessoryType type, String url);
+	void addAccessory(AccessoryType type, String url);
 
 	/**
 	 * Removes an accessory from the player.
@@ -593,7 +593,7 @@ public interface RockyPlayer extends Player {
 	 *            The accessory type.
 	 * @return The accessory's url.
 	 */
-	public String removeAccessory(AccessoryType type);
+	String removeAccessory(AccessoryType type);
 
 	/**
 	 * Gets the accessory's url
@@ -602,7 +602,7 @@ public interface RockyPlayer extends Player {
 	 *            The accessory.
 	 * @return The url.
 	 */
-	public String getAccessoryURL(AccessoryType type);
+	String getAccessoryURL(AccessoryType type);
 
 	/**
 	 * Gets the y-axis height that cloud tops are rendered at for the given
@@ -610,7 +610,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return height
 	 */
-	public int getCloudHeight();
+	int getCloudHeight();
 
 	/**
 	 * Sets the y-axis heigh that cloud tops are rendered at for the given
@@ -619,7 +619,7 @@ public interface RockyPlayer extends Player {
 	 * @param y
 	 *            axis level to render the cloud top at
 	 */
-	public void setCloudHeight(int y);
+	void setCloudHeight(int y);
 
 	/**
 	 * Gets the frequency of stars overhead at night. The default frequency is
@@ -628,14 +628,14 @@ public interface RockyPlayer extends Player {
 	 * @param player
 	 *            to get the frequency for
 	 */
-	public int getStarFrequency();
+	int getStarFrequency();
 
 	/**
 	 * Sets the frequency of stars overhead at night for the given player
 	 * 
 	 * @param frequency
 	 */
-	public void setStarFrequency(int frequency);
+	void setStarFrequency(int frequency);
 
 	/**
 	 * Gets the percent size of the sun, relative to the default size. 100
@@ -644,7 +644,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return percent size of the sun
 	 */
-	public int getSunSizePercent();
+	int getSunSizePercent();
 
 	/**
 	 * Sets the percent size of the sun, relative to the default size. 100
@@ -654,7 +654,7 @@ public interface RockyPlayer extends Player {
 	 * @param percent
 	 *            to set
 	 */
-	public void setSunSizePercent(int percent);
+	void setSunSizePercent(int percent);
 
 	/**
 	 * Gets the custom url of the custom sun texture, or null if no custom
@@ -662,7 +662,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return url of the custom texture
 	 */
-	public String getSunTextureUrl();
+	String getSunTextureUrl();
 
 	/**
 	 * Sets the texture of the sun to the picture in the given format, or if the
@@ -672,7 +672,7 @@ public interface RockyPlayer extends Player {
 	 * @param Url
 	 *            of the texture
 	 */
-	public void setSunTextureUrl(String url);
+	void setSunTextureUrl(String url);
 
 	/**
 	 * Gets the size percent of the moon, relative to the default size. 100
@@ -681,7 +681,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return percent size
 	 */
-	public int getMoonSizePercent();
+	int getMoonSizePercent();
 
 	/**
 	 * Sets the percent size of the moon, relative to the default size. 100
@@ -691,7 +691,7 @@ public interface RockyPlayer extends Player {
 	 * @param percent
 	 *            to set
 	 */
-	public void setMoonSizePercent(int percent);
+	void setMoonSizePercent(int percent);
 
 	/**
 	 * Gets the custom url of the custom moon texture, or null if no custom
@@ -699,7 +699,7 @@ public interface RockyPlayer extends Player {
 	 * 
 	 * @return url of the custom texture
 	 */
-	public String getMoonTextureUrl();
+	String getMoonTextureUrl();
 
 	/**
 	 * Sets the texture of the moon to the picture in the given format, or if
@@ -709,33 +709,33 @@ public interface RockyPlayer extends Player {
 	 * @param Url
 	 *            of the texture
 	 */
-	public void setMoonTextureUrl(String url);
+	void setMoonTextureUrl(String url);
 
 	/**
 	 * Sets the sky color for the player
 	 * 
 	 * @param skyColor
 	 */
-	public void setSkyColor(Color skyColor);
+	void setSkyColor(Color skyColor);
 
 	/**
 	 * @return the set sky color of given player
 	 * @warning the return value can be null!
 	 */
-	public Color getSkyColor();
+	Color getSkyColor();
 
 	/**
 	 * Sets the fog color for the player
 	 * 
 	 * @param fogColor
 	 */
-	public void setFogColor(Color fogColor);
+	void setFogColor(Color fogColor);
 
 	/**
 	 * @return the set fog color of given player.
 	 * @warning the return value can be null!
 	 */
-	public Color getFogColor();
+	Color getFogColor();
 
 	/**
 	 * Sets the cloud color for the player
@@ -743,13 +743,13 @@ public interface RockyPlayer extends Player {
 	 * @param player
 	 * @param cloudColor
 	 */
-	public void setCloudColor(Color cloudColor);
+	void setCloudColor(Color cloudColor);
 
 	/**
 	 * @return the set cloud color of the player
 	 * @warning the return value can be null!
 	 */
-	public Color getCloudColor();
+	Color getCloudColor();
 
 	/**
 	 * Plays a sound effect for the target player, at the given location
@@ -759,7 +759,7 @@ public interface RockyPlayer extends Player {
 	 * @param location
 	 *            to play at
 	 */
-	public void playSoundEffect(String effect);
+	void playSoundEffect(String effect);
 
 	/**
 	 * Plays a sound effect for the target player, at the given location
@@ -772,7 +772,7 @@ public interface RockyPlayer extends Player {
 	 *            away it can be heard from (in full blocks) or -1 for any
 	 *            distance
 	 */
-	public void playSoundEffect(String effect, int distance);
+	void playSoundEffect(String effect, int distance);
 
 	/**
 	 * Plays a sound effect for the target player, at the given location, with
@@ -788,7 +788,7 @@ public interface RockyPlayer extends Player {
 	 *            to play at (100 = normal, 200 = double volume, 50 = half
 	 *            volume)
 	 */
-	public void playSoundEffect(String effect, int distance, int volumePercent);
+	void playSoundEffect(String effect, int distance, int volumePercent);
 
 	/**
 	 * Plays the music for the target player
@@ -796,7 +796,7 @@ public interface RockyPlayer extends Player {
 	 * @param music
 	 *            to play
 	 */
-	public void playMusic(String music);
+	void playMusic(String music);
 
 	/**
 	 * Plays the music for the target player at the given volume
@@ -807,12 +807,12 @@ public interface RockyPlayer extends Player {
 	 *            to play at (100 = normal, 200 = double volume, 50 = half
 	 *            volume)
 	 */
-	public void playMusic(String music, int volumePercent);
+	void playMusic(String music, int volumePercent);
 
 	/**
 	 * Stops the background music if it is playing for the given player
 	 */
-	public void stopMusic();
+	void stopMusic();
 
 	/**
 	 * Stops the background music if it is playing for the given player
@@ -821,7 +821,7 @@ public interface RockyPlayer extends Player {
 	 *            whether to reset the timer (between 12000-24000 ticks) before
 	 *            new music plays
 	 */
-	public void stopMusic(boolean resetTimer);
+	void stopMusic(boolean resetTimer);
 
 	/**
 	 * Stops the background music if it is playing for the given player
@@ -832,21 +832,21 @@ public interface RockyPlayer extends Player {
 	 * @param fadeOutTime
 	 *            time in ms for the current audio to fade out for
 	 */
-	public void stopMusic(boolean resetTimer, int fadeOutTime);
+	void stopMusic(boolean resetTimer, int fadeOutTime);
 
 	/**
 	 * 
 	 * @param build
 	 */
-	public void setBuildVersion(int build);
+	void setBuildVersion(int build);
 
 	/**
 	 * 
 	 */
-	public void onTick();
+	void onTick();
 
 	/**
 	 * 
 	 */
-	public void updateWaypoints();
+	void updateWaypoints();
 }

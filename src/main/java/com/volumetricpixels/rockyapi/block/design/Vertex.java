@@ -24,10 +24,10 @@ package com.volumetricpixels.rockyapi.block.design;
  */
 public class Vertex {
 
-	protected int index;
-	protected float x, y, z;
-	protected float tX, tY;
-	protected float color;
+	private int index;
+	private float x, y, z;
+	private float tX, tY;
+	private float color;
 
 	/**
 	 * 

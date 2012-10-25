@@ -50,7 +50,7 @@ public class KeyBinding {
 		this.description = description;
 		this.plugin = plugin;
 		this.delegate = delegate;
-		this.setUniqueId(UUID.randomUUID());
+		this.uniqueId = UUID.randomUUID();
 	}
 
 	/**

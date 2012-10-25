@@ -187,14 +187,14 @@ public class GenericItem implements Item {
 		if (data != null) {
 			if (data.size() == 1) {
 				if (!pack.hasEntry(data.get(0))) {
-					throw new RuntimeException(
+					throw new IllegalArgumentException(
 							"Cannot find texture within package");
 				}
 				this.texture = new Texture(plugin, data.get(0),
 						pack.getInputStream(data.get(0)));
 			} else if (data.size() == 3) {
 				if (!pack.hasEntry(data.get(0))) {
-					throw new RuntimeException(
+					throw new IllegalArgumentException(
 							"Cannot find texture within package");
 				}
 				this.texture = new Texture(plugin, data.get(0),

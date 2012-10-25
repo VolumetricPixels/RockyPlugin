@@ -33,13 +33,13 @@ import com.volumetricpixels.rockyapi.resource.Texture;
  */
 public class GenericBlockDesign implements BlockDesign {
 
-	protected Texture texture;
-	protected Quad[] quadList;
-	protected BoundingBox boundingBox = new BoundingBox();
-	protected float maxBrightness = 1.0f;
-	protected float minBrightness = 0.0f;
-	protected float brightness = 0.5f;
-	protected BlockRenderOrder renderPass = BlockRenderOrder.OPAQUE;
+	private Texture texture;
+	private Quad[] quadList;
+	private BoundingBox boundingBox = new BoundingBox();
+	private float maxBrightness = 1.0f;
+	private float minBrightness = 0.0f;
+	private float brightness = 0.5f;
+	private BlockRenderOrder renderPass = BlockRenderOrder.OPAQUE;
 
 	/**
 	 * 
@@ -130,6 +130,7 @@ public class GenericBlockDesign implements BlockDesign {
 		this.boundingBox.set(boundingBox.getX(), boundingBox.getY(),
 				boundingBox.getZ(), boundingBox.getX2(), boundingBox.getY2(),
 				boundingBox.getZ2());
+		this.brightness = clone.brightness;
 		this.maxBrightness = clone.maxBrightness;
 		this.minBrightness = clone.minBrightness;
 		this.renderPass = clone.renderPass;
@@ -244,8 +245,8 @@ public class GenericBlockDesign implements BlockDesign {
 						+ (z1 * rotmatrix[2][2]);
 
 				tmpQuad.setColor(quad.getColor());
-				tmpQuad.addVertex(new Vertex(i, x2, y2, z2, v0.tX, v0.tY,
-						v0.color));
+				tmpQuad.addVertex(new Vertex(i, x2, y2, z2, v0.getTextureX(), v0.getTextureY(),
+						v0.getColor()));
 			}
 			block.setQuad(tmpQuad);
 		}

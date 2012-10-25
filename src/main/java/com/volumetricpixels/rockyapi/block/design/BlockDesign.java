@@ -2,19 +2,19 @@
  * This file is part of RockyPlugin.
  *
  * Copyright (c) 2011-2012, VolumetricPixels <http://www.volumetricpixels.com/>
- * RockyPlugin is licensed under the GNU Lesser General Public License.
+ * RockyPlugin is licensed under the GNU Lesser General License.
  *
  * RockyPlugin is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
+ * it under the terms of the GNU Lesser General License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * RockyPlugin is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * GNU Lesser General License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
+ * You should have received a copy of the GNU Lesser General License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.volumetricpixels.rockyapi.block.design;
@@ -24,7 +24,7 @@ import com.volumetricpixels.rockyapi.resource.Texture;
 /**
  * 
  */
-public interface BlockDesign {
+interface BlockDesign {
 	/**
 	 * Sets the maximum brightness of the block
 	 * 
@@ -32,7 +32,7 @@ public interface BlockDesign {
 	 *            to set
 	 * @return this
 	 */
-	public BlockDesign setMaxBrightness(float maxBrightness);
+	BlockDesign setMaxBrightness(float maxBrightness);
 
 	/**
 	 * Sets the minimum brightness of the block
@@ -41,7 +41,7 @@ public interface BlockDesign {
 	 *            to set
 	 * @return this
 	 */
-	public BlockDesign setMinBrightness(float minBrightness);
+	BlockDesign setMinBrightness(float minBrightness);
 
 	/**
 	 * Sets the fixed brightness of the block
@@ -50,7 +50,7 @@ public interface BlockDesign {
 	 *            to set
 	 * @return this
 	 */
-	public BlockDesign setBrightness(float brightness);
+	BlockDesign setBrightness(float brightness);
 
 	/**
 	 * Sets the number of render passes of the block
@@ -59,13 +59,13 @@ public interface BlockDesign {
 	 *            to set
 	 * @return this
 	 */
-	public BlockDesign setRenderOrder(BlockRenderOrder renderPass);
+	BlockDesign setRenderOrder(BlockRenderOrder renderPass);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public BlockRenderOrder getRenderOrder();
+	BlockRenderOrder getRenderOrder();
 
 	/**
 	 * Sets the specified Texture for this BlockDesign
@@ -76,7 +76,7 @@ public interface BlockDesign {
 	 *            to set
 	 * @return this
 	 */
-	public BlockDesign setTexture(Texture texture);
+	BlockDesign setTexture(Texture texture);
 
 	/**
 	 * Sets the bounding box for this block
@@ -95,14 +95,14 @@ public interface BlockDesign {
 	 *            of the second corner
 	 * @return this
 	 */
-	public BlockDesign setBoundingBox(float lowX, float lowY, float lowZ,
+	BlockDesign setBoundingBox(float lowX, float lowY, float lowZ,
 			float highX, float highY, float highZ);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public BoundingBox getBoundingBox();
+	BoundingBox getBoundingBox();
 	
 	/**
 	 * Sets the number of quads or faces for this block
@@ -111,7 +111,7 @@ public interface BlockDesign {
 	 *            to set
 	 * @return this
 	 */
-	public BlockDesign setQuadNumber(int quads);
+	BlockDesign setQuadNumber(int quads);
 
 	/**
 	 * Sets the specified quad or face
@@ -120,26 +120,26 @@ public interface BlockDesign {
 	 *            to set there
 	 * @return this
 	 */
-	public BlockDesign setQuad(Quad quad);
+	BlockDesign setQuad(Quad quad);
 
 	/**
 	 * 
 	 * @param index
 	 * @return
 	 */
-	public Quad getQuad(int index);
+	Quad getQuad(int index);
 
 	/**
 	 * Gets the Texture associated with this BlockDesign
 	 * 
 	 * @return the texture
 	 */
-	public Texture getTexture();
+	Texture getTexture();
 
 	/**
 	 * 
 	 * @param degrees
 	 * @return
 	 */
-	public BlockDesign rotate(int degrees);
+	BlockDesign rotate(int degrees);
 }

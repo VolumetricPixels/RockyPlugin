@@ -35,52 +35,52 @@ public interface PlayerManager {
 	 * 
 	 * @param achievement
 	 */
-	public void registerAchievement(RockyAchievement achievement);
+	void registerAchievement(RockyAchievement achievement);
 	
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public RockyAchievement getAchievement(int id);
+	RockyAchievement getAchievement(int id);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public Collection<RockyAchievement> getAchievements();
+	Collection<RockyAchievement> getAchievements();
 	
 	/**
 	 * 
 	 * @param player
 	 * @return
 	 */
-	public RockyPlayer getPlayer(Player player);
+	RockyPlayer getPlayer(Player player);
 
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public RockyPlayer getPlayer(UUID id);
+	RockyPlayer getPlayer(UUID id);
 
 	/**
 	 * 
 	 * @param entityId
 	 * @return
 	 */
-	public RockyPlayer getPlayer(int entityId);
+	RockyPlayer getPlayer(int entityId);
 
 	/**
 	 * 
 	 * @return
 	 */
-	public RockyPlayer[] getOnlinePlayers();
+	RockyPlayer[] getOnlinePlayers();
 
 	/**
 	 * 
 	 * @param player
 	 * @param version
 	 */
-	public void setPlayerVersion(RockyPlayer player, String version);
+	void setPlayerVersion(RockyPlayer player, String version);
 }

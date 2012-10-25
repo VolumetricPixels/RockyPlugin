@@ -19,21 +19,8 @@
  */
 package com.volumetricpixels.rockyapi.entity;
 
-import com.volumetricpixels.rockyapi.math.Vector3f;
-import com.volumetricpixels.rockyapi.resource.Texture;
-
 /**
  * 
  */
 public class RockyEntity {
-
-	protected String name;
-	protected Vector3f size;
-	protected boolean isFireProof;
-	//TODO: Design of the entity
-	protected Texture texture;
-	protected int damage;
-	protected int defense;
-	protected int life;
-	
 }
