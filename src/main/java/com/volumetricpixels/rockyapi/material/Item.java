@@ -27,7 +27,7 @@ import com.volumetricpixels.rockyapi.resource.Texture;
 /**
  * 
  */
-interface Item extends Material {
+public interface Item extends Material {
 	/**
 	 * 
 	 * @return

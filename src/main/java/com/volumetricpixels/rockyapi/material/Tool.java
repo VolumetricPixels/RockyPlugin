@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 
  */
-interface Tool extends Item {
+public interface Tool extends Item {
 	/**
 	 * 
 	 * @return

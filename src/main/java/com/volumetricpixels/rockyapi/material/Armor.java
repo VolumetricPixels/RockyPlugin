@@ -24,7 +24,7 @@ import com.volumetricpixels.rockyapi.resource.Texture;
 /**
  * 
  */
-interface Armor extends Item {
+public interface Armor extends Item {
 	/**
 	 * 
 	 * @param durability

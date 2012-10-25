@@ -22,7 +22,7 @@ package com.volumetricpixels.rockyapi.material;
 /**
  * 
  */
-interface Weapon extends Item {
+public interface Weapon extends Item {
 	/**
 	 * 
 	 * @return

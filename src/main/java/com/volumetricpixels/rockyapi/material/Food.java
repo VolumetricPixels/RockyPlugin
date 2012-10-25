@@ -22,7 +22,7 @@ package com.volumetricpixels.rockyapi.material;
 /**
  * 
  */
-interface Food extends Item {
+public interface Food extends Item {
 	/**
 	 * 
 	 * @return

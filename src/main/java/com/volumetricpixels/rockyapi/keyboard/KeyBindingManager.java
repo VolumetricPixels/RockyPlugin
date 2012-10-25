@@ -29,7 +29,7 @@ import com.volumetricpixels.rockyapi.player.RockyPlayer;
 /**
  * 
  */
-interface KeyBindingManager {
+public interface KeyBindingManager {
 	/**
 	 * Registers a new kind binding
 	 * 
