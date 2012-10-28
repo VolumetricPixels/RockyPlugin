@@ -465,7 +465,7 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f mult(Vector3f vec) {
-		return mult(vec, null);
+		return mult(vec, vec);
 	}
 
 	/**
