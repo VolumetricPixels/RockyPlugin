@@ -35,11 +35,11 @@ public class Color {
 	/**
 	 * the color black (0,0,0).
 	 */
-	public static final Color BLACK = new Color(0f, 0f, 0f, 1f);
+	public static final Color BLACK = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 	/**
 	 * the color white (1,1,1).
 	 */
-	public static final Color WHITE = new Color(1f, 1f, 1f, 1f);
+	public static final Color WHITE = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 	/**
 	 * the color gray (.2,.2,.2).
 	 */
@@ -55,45 +55,45 @@ public class Color {
 	/**
 	 * the color red (1,0,0).
 	 */
-	public static final Color RED = new Color(1f, 0f, 0f, 1f);
+	public static final Color RED = new Color(1.0f, 0.0f, 0.0f, 1.0f);
 	/**
 	 * the color green (0,1,0).
 	 */
-	public static final Color GREEN = new Color(0f, 1f, 0f, 1f);
+	public static final Color GREEN = new Color(0.0f, 1.0f, 0.0f, 1.0f);
 	/**
 	 * the color blue (0,0,1).
 	 */
-	public static final Color BLUE = new Color(0f, 0f, 1f, 1f);
+	public static final Color BLUE = new Color(0.0f, 0.0f, 1.0f, 1.0f);
 	/**
 	 * the color yellow (1,1,0).
 	 */
-	public static final Color YELLOW = new Color(1f, 1f, 0f, 1f);
+	public static final Color YELLOW = new Color(1.0f, 1.0f, 0.0f, 1.0f);
 	/**
 	 * the color magenta (1,0,1).
 	 */
-	public static final Color MAGENTA = new Color(1f, 0f, 1f, 1f);
+	public static final Color MAGENTA = new Color(1.0f, 0.0f, 1.0f, 1.0f);
 	/**
 	 * the color cyan (0,1,1).
 	 */
-	public static final Color CYAN = new Color(0f, 1f, 1f, 1f);
+	public static final Color CYAN = new Color(0.0f, 1.0f, 1.0f, 1.0f);
 	/**
 	 * the color orange (251/255, 130/255,0).
 	 */
-	public static final Color ORANGE = new Color(251f / 255f, 130f / 255f, 0f,
+	public static final Color ORANGE = new Color(251.0f / 255.0f, 130.0f / 255.0f, 0.0f,
 			1f);
 	/**
 	 * the color brown (65/255, 40/255, 25/255).
 	 */
-	public static final Color BROWN = new Color(65f / 255f, 40f / 255f,
+	public static final Color BROWN = new Color(65.0f / 255.0f, 40.0f / 255.0f,
 			25f / 255f, 1f);
 	/**
 	 * the color pink (1, 0.68, 0.68).
 	 */
-	public static final Color PINK = new Color(1f, 0.68f, 0.68f, 1f);
+	public static final Color PINK = new Color(1.0f, 0.68f, 0.68f, 1.0f);
 	/**
 	 * the black color with no alpha (0, 0, 0, 0);
 	 */
-	public static final Color BLACK_NO_ALPHA = new Color(0f, 0f, 0f, 0f);
+	public static final Color BLACK_NO_ALPHA = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 	/**
 	 * The red component of the color.
 	 */
@@ -110,7 +110,7 @@ public class Color {
 	 * the alpha component of the color. 0 is transparent and 1 is opaque
 	 */
 	private float a;
-
+	
 	/**
 	 * 
 	 * @param floatBits

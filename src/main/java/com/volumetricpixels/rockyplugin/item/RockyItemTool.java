@@ -43,26 +43,25 @@ public class RockyItemTool extends ItemTool implements RockyItemType {
 	 * @param material
 	 */
 	public RockyItemTool(Material material) {
-		this((Tool)material);
+		this((Tool) material);
 	}
-	
+
 	/**
 	 * 
 	 * @param item
 	 */
 	public RockyItemTool(Tool item) {
-		super(item.getId() - 256, 0,
-				EnumToolMaterial.DIAMOND, null);
-		
+		super(item.getId() - 256, 0, EnumToolMaterial.DIAMOND, null);
+
 		destroySpeed = item.getDestroyMap();
-		
-		Reflection.field("bY").ofType(int.class).in(this)
-				.set(item.getDamage());
+
 		Reflection.field("maxStackSize").ofType(int.class).in(this)
 				.set(item.isStackable() ? 64 : 1);
 		setMaxDurability(item.getDurability());
 		Reflection.field("name").ofType(String.class).in(this)
 				.set("name." + item.getName());
+		Reflection.field("damage").ofType(int.class).in(this)
+				.set((int) item.getDamage());
 	}
 
 	/**

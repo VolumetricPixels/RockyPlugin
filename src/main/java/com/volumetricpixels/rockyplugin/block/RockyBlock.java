@@ -36,20 +36,19 @@ public class RockyBlock extends Block {
 	 * @param material
 	 */
 	public RockyBlock(Material material) {
-		this((com.volumetricpixels.rockyapi.material.Block)material);
+		this((com.volumetricpixels.rockyapi.material.Block) material);
 	}
-	
+
 	/**
 	 * 
 	 * @param material
 	 */
-	public RockyBlock(
-			com.volumetricpixels.rockyapi.material.Block material) {
+	public RockyBlock(com.volumetricpixels.rockyapi.material.Block material) {
 		super(material.getId(), material.getMaterial());
 
 		Reflection.field("frictionFactor").ofType(float.class).in(this)
 				.set(material.getFriction());
-		Reflection.field("co").ofType(float.class).in(this)
+		Reflection.field("strength").ofType(float.class).in(this)
 				.set(material.getHardness());
 
 		BoundingBox bb = material.getBlockDesign().getBoundingBox();
@@ -58,12 +57,11 @@ public class RockyBlock extends Block {
 				.withParameterTypes(float.class, float.class, float.class,
 						float.class, float.class, float.class)
 				.in(this)
-				.invoke(bb.getX(), bb.getY(), bb.getZ(),
-						bb.getX2(), bb.getY2(), bb.getZ2());
+				.invoke(bb.getX(), bb.getY(), bb.getZ(), bb.getX2(),
+						bb.getY2(), bb.getZ2());
 		Reflection.method("a").withParameterTypes(float.class).in(this)
 				.invoke(material.getLightLevel());
 		Reflection.field("stepSound").ofType(StepSound.class).in(this)
 				.set(new StepSound(material.getStepSound(), 1.0f, 1.0f));
 	}
-
 }

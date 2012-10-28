@@ -113,5 +113,5 @@ public class RockyPlayerServerManager extends PlayerManager {
 		Reflection.field("e").ofType(int.class).in(this)
 				.set(distance.getValue());
 	}
-	
+
 }

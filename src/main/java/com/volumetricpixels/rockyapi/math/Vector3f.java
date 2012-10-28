@@ -120,10 +120,6 @@ public final class Vector3f implements Cloneable {
 	 * @return the resultant vector.
 	 */
 	public Vector3f add(Vector3f vec) {
-		if (vec == null) {
-			throw new IllegalArgumentException(
-					"Provided vector is null, null returned.");
-		}
 		return new Vector3f(x + vec.x, y + vec.y, z + vec.z);
 	}
 
@@ -155,10 +151,6 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f addLocal(Vector3f vec) {
-		if (null == vec) {
-			throw new IllegalArgumentException(
-					"Provided vector is null, null returned.");
-		}
 		x += vec.x;
 		y += vec.y;
 		z += vec.z;
@@ -441,10 +433,6 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f multLocal(Vector3f vec) {
-		if (vec == null) {
-			throw new IllegalArgumentException(
-					"Provided vector is null, null returned.");
-		}
 		x *= vec.x;
 		y *= vec.y;
 		z *= vec.z;
@@ -477,10 +465,6 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f mult(Vector3f vec) {
-		if (vec == null) {
-			throw new IllegalArgumentException(
-					"Provided vector is null, null returned.");
-		}
 		return mult(vec, null);
 	}
 
@@ -496,10 +480,6 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f mult(Vector3f vec, Vector3f store) {
-		if (vec == null) {
-			throw new IllegalArgumentException(
-					"Provided vector is null, null returned.");
-		}
 		return store.set(x * vec.x, y * vec.y, z * vec.z);
 	}
 
@@ -609,10 +589,6 @@ public final class Vector3f implements Cloneable {
 	 * @return this
 	 */
 	public Vector3f subtractLocal(Vector3f vec) {
-		if (null == vec) {
-			throw new IllegalArgumentException(
-					"Provided vector is null, null returned.");
-		}
 		x -= vec.x;
 		y -= vec.y;
 		z -= vec.z;

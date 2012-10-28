@@ -223,12 +223,7 @@ public class RockyPacketHandler extends NetServerHandler {
 			}
 			break;
 		case 0x15:
-			if (((Packet21PickupSpawn) packet).h >= RockyMaterialManager.DEFAULT_ITEM_PLACEHOLDER_ID) {
-				((Packet20NamedEntitySpawn) packet).h = RockyManager
-						.getMaterialManager()
-						.getItem(((Packet20NamedEntitySpawn) packet).h)
-						.getDefaultId();
-			}
+			stack = ((Packet21PickupSpawn) packet).h;
 			break;
 		case 0x67:
 			stack = ((Packet103SetSlot) packet).c;

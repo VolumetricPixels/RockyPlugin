@@ -32,7 +32,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetServerHandler;
 import net.minecraft.server.Packet250CustomPayload;
-import net.minecraft.server.PlayerManager;
+import net.minecraft.server.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -46,7 +46,6 @@ import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.fest.reflect.core.Reflection;
-import org.fest.reflect.field.Invoker;
 
 import com.volumetricpixels.rockyapi.math.Color;
 import com.volumetricpixels.rockyapi.packet.Packet;
@@ -174,10 +173,9 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 	 */
 	@Override
 	public void setRenderDistance(RenderDistance distance) {
-		Invoker<PlayerManager> pm = Reflection.field("manager")
-				.ofType(PlayerManager.class).in(getHandle().world);
-		((RockyPlayerServerManager) pm.get()).removePlayer(getHandle());
-		
+		((WorldServer) getHandle().world).getPlayerManager().removePlayer(
+				getHandle());
+
 		if (distance.ordinal() > minimumDistance.ordinal()) {
 			currentDistance = minimumDistance;
 		} else if (distance.ordinal() < maximumDistance.ordinal()) {
@@ -185,7 +183,8 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 		} else {
 			currentDistance = distance;
 		}
-		((RockyPlayerServerManager) pm.get()).addPlayer(getHandle());
+		((WorldServer) getHandle().world).getPlayerManager().addPlayer(
+				getHandle());
 	}
 
 	/**
@@ -446,7 +445,7 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 					"Kick messages may not contain the : symbol");
 		}
 		if (port == 25565) {
- 			this.kickPlayer(clientMessage + " : " + hostname);
+			this.kickPlayer(clientMessage + " : " + hostname);
 		} else {
 			this.kickPlayer(clientMessage + " : " + hostname + ":" + port);
 		}
@@ -1034,7 +1033,7 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 
 		List<NetServerHandler> handleList = (List<NetServerHandler>) Reflection
 				.field("d").ofType(List.class)
-				.in(((DedicatedServer) MinecraftServer.getServer()).ac()).get();
+				.in(((DedicatedServer) MinecraftServer.getServer()).ae()).get();
 		handleList.remove(oldHandler);
 		handleList.add(handler);
 
@@ -1049,10 +1048,8 @@ public class RockyPlayerHandler extends CraftPlayer implements RockyPlayer {
 		if (Rocky.getInstance().getConfiguration().authenticateSpout()) {
 			return;
 		}
-		Packet250CustomPayload loginPacket = new Packet250CustomPayload();
-		loginPacket.tag = "TM|Rocky";
-		loginPacket.length = 4;
-		loginPacket.data = new byte[] { 0x00, (byte) 0xF0, (byte) 0x0F, 0x0F };
+		Packet250CustomPayload loginPacket = new Packet250CustomPayload(
+				"TM|Rocky", new byte[] { 0x00, 0x05, 0x50, 0x00 });
 		((RockyPlayerHandler) player).getNetServerHandler()
 				.sendImmediatePacket(loginPacket);
 	}

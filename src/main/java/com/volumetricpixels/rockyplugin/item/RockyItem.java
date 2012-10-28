@@ -34,15 +34,15 @@ import com.volumetricpixels.rockyapi.material.Material;
 public class RockyItem extends Item implements RockyItemType {
 
 	private boolean isThrowable;
-	
+
 	/**
 	 * 
 	 * @param material
 	 */
 	public RockyItem(Material material) {
-		this((com.volumetricpixels.rockyapi.material.Item)material);
+		this((com.volumetricpixels.rockyapi.material.Item) material);
 	}
-	
+
 	/**
 	 * 
 	 * @param item
@@ -76,5 +76,4 @@ public class RockyItem extends Item implements RockyItemType {
 
 		return itemstack;
 	}
-
 }

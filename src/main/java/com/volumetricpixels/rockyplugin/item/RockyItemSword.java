@@ -47,7 +47,6 @@ public class RockyItemSword extends ItemSword implements RockyItemType {
 	public RockyItemSword(Weapon item) {
 		super(item.getId() - 256, EnumToolMaterial.DIAMOND);
 
-		
 		Reflection.field("maxStackSize").ofType(int.class).in(this)
 				.set(item.isStackable() ? 64 : 1);
 		setMaxDurability(item.getDurability());

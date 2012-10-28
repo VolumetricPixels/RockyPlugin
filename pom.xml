@@ -7,7 +7,7 @@
 	<name>RockyPlugin</name>
 	<groupId>com.volumetricpixels</groupId>
 	<artifactId>rockyplugin</artifactId>
-	<version>1.3.2-R1.0-SNAPSHOT</version>
+	<version>1.4.2-R0.1-SNAPSHOT</version>
 	<url>http://www.volumetricpixels.com</url>
 	<inceptionYear>2011</inceptionYear>
 	<description>RockyPlugin</description>
@@ -16,8 +16,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<currentYear>2012</currentYear>
-		<craftbukkitVersion>1.3.2-R1.0</craftbukkitVersion>
-		<minecraftVersion>1.3.2</minecraftVersion>
+		<craftbukkitVersion>1.4.2-R0.1-SNAPSHOT</craftbukkitVersion>
+		<minecraftVersion>1.4.2</minecraftVersion>
 		<buildNumber>120</buildNumber>
 	</properties>
 
@@ -50,16 +50,12 @@
 	</ciManagement>
 	
 	<!-- Dependency repositories -->
-	<repositories>
-		<repository>
-			<id>spout-repo</id>
-			<url>http://repo.spout.org</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
+    <repositories>
+      <repository>
+        <id>repobo-snap</id>
+        <url>http://repo.bukkit.org/content/groups/public</url>
+      </repository>
+    </repositories>
 
 	<!-- Project dependencies -->
 	<dependencies>

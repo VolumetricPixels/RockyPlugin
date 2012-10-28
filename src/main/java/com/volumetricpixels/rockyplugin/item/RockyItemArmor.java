@@ -35,24 +35,23 @@ public class RockyItemArmor extends ItemArmor implements RockyItemType {
 	/**
 	 * 
 	 */
-	private static int lastUsedIdForArmorId = 4;
-	
+	private static int LAST_ARMOR_ID = 4;
+
 	/**
 	 * 
 	 * @param material
 	 */
 	public RockyItemArmor(Material material) {
-		this((Armor)material);
+		this((Armor) material);
 	}
-	
+
 	/**
 	 * 
 	 * @param arg0
 	 * @param item
 	 */
 	public RockyItemArmor(Armor item) {
-		super(item.getId() - 256,
-				EnumArmorMaterial.DIAMOND, 0, 0);
+		super(item.getId() - 256, EnumArmorMaterial.DIAMOND, 0, 0);
 
 		Reflection.field("maxStackSize").ofType(int.class).in(this)
 				.set(item.isStackable() ? 64 : 1);
@@ -67,8 +66,8 @@ public class RockyItemArmor extends ItemArmor implements RockyItemType {
 				.field("c")
 				.ofType(int.class)
 				.in(this)
-				.set(item.getType() == ArmorType.BODY ? ++lastUsedIdForArmorId
-						: lastUsedIdForArmorId);
+				.set(item.getType() == ArmorType.BODY ? ++LAST_ARMOR_ID
+						: LAST_ARMOR_ID);
 	}
 
 }
