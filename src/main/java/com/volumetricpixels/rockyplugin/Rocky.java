@@ -26,13 +26,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.server.Packet;
+import org.fest.reflect.core.Reflection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.fest.reflect.core.Reflection;
+
+import net.minecraft.server.Packet;
+
 import com.volumetricpixels.rockyapi.RockyManager;
 import com.volumetricpixels.rockyapi.event.RockyEnableEvent;
 import com.volumetricpixels.rockyapi.event.RockyFailedEvent;
@@ -49,7 +52,11 @@ import com.volumetricpixels.rockyplugin.player.RockyPlayerHandler;
 import com.volumetricpixels.rockyplugin.player.RockyPlayerManager;
 
 /**
- * 
+ * The main class for RockyPlugin
+ *
+ * RockyPlugin provides an API for Bukkit developers to use to create awesome new
+ * items, blocks, animations, GUIs and more, as well as having a native material loader
+ * from the .smp file format
  */
 public class Rocky extends JavaPlugin implements Runnable {
 	private static Rocky instance;
@@ -58,7 +65,7 @@ public class Rocky extends JavaPlugin implements Runnable {
 	private Map<String, Integer> playerTimer = new HashMap<String, Integer>();
 
 	/**
-	 * 
+	 * Constructs a new instance of Rocky
 	 */
 	public Rocky() {
 		instance = this;
@@ -126,11 +133,11 @@ public class Rocky extends JavaPlugin implements Runnable {
 						MaterialEnumType.BLOCK);
 			}
 		} catch (FileNotFoundException e) {
+			RockyManager.printConsole("The configuration file wasn't found!");
 		} catch (IOException e) {
-			RockyManager.printConsole("Can't read the configuration file");
+			RockyManager.printConsole("Can't read the configuration file!");
 		} catch (InvalidConfigurationException e) {
-			RockyManager
-					.printConsole("The configuration file contains an illegal expresion");
+			RockyManager.printConsole("The configuration file is invalid!");
 		}
 
 		Bukkit.getServer().getPluginManager()
@@ -170,14 +177,6 @@ public class Rocky extends JavaPlugin implements Runnable {
 	 */
 	public RockyConfig getConfiguration() {
 		return configuration;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public static final Rocky getInstance() {
-		return instance;
 	}
 
 	/**
@@ -225,8 +224,9 @@ public class Rocky extends JavaPlugin implements Runnable {
 	}
 
 	/**
-	 * 
-	 * @param player
+	 * Handles player authentication
+	 *
+	 * @param player The RockyPlayer to authenticate
 	 */
 	public void handlePlayerAuthentication(RockyPlayer player) {
 		playerTimer.remove(player.getName());
@@ -252,4 +252,13 @@ public class Rocky extends JavaPlugin implements Runnable {
 		player.updateWaypoints();
 	}
 
+
+	/**
+	 * Gets the instance of Rocky
+	 *
+	 * @return The current instance of Rocky
+	 */
+	public static final Rocky getInstance() {
+		return instance;
+	}
 }
