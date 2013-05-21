@@ -1,0 +1,35 @@
+name: RockyPlugin
+version: ${buildNumber}
+description: RockyPlugin is a plugin for Bukkit Minecraft that's designed to increase functionality, efficiency, and overall usability for the development community.
+author: VolumetricPixels
+website: http://www.volumetricpixels.com
+
+main: com.volumetricpixels.rockyplugin.Rocky
+load: startup
+mcversion: ${minecraftVersion}
+
+commands:
+    rocky:
+        aliases: [rockycommand, rockycmd, rkcmd, rc]
+        description: Various Rocky commands.
+        usage: |
+            Usage: /<command> waypoint [Name]
+            Usage: /<command> item [ID] (Amount) (Player)
+            Usage: /<command> view-distance [Player] [Tiny, Short, Normal, Far, Very_Far, Extreme]
+            Usage: /<command> cache-info
+permissions:
+    rocky.plugin.force:
+        description: Forces players to join with Rocky even if the server doesn't force Rocky in the config.
+        default: false
+    rocky.plugin.waypoint:
+        description: Allows players to use waypoint command.
+        default: false
+    rocky.plugin.item:
+        description: Allows players to use item command.
+        default: false
+    rocky.plugin.changeview:
+        description: Allows players to use view-distance command.
+        default: false
+    rocky.plugin.chunkinfo:
+        description: Allows players to see network debug data.
+        default: false

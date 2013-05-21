@@ -1,0 +1,35 @@
+Reflection:
+   Bukkit:
+      PlayerChunkMap: manager
+      PlayerChunkMap#World: world
+      PlayerChunkMap#Distance: e
+      PlayerChunkMap#ManagedPlayers: managedPlayers
+      PlayerChunkMap#LongHashMap: c
+      PlayerChunkMap#Queue: d
+      PlayerConnection: connection
+      PlayerConnection#List: c
+      Player#Locale: e
+      PlayerPacketHandler#Y: y
+      PacketLocaleView#B: b
+      PacketBulkChunk#BuildBuffer: buildBuffer
+      PacketChunk#Buffer: buffer
+      PacketChunk#Size: size
+      PacketChunk#Inflated: inflatedBuffer
+      PacketEntityEquipment#Item: c
+   MCPC:
+      PlayerChunkMap: K
+      PlayerChunkMap#World: a
+      PlayerChunkMap#Distance: e
+      PlayerChunkMap#ManagedPlayers: b
+      PlayerChunkMap#LongHashMap: c
+      PlayerChunkMap#Queue: d
+      PlayerConnection: r
+      PlayerConnection#List: d 
+      Player#Locale: d
+      PlayerPacketHandler#Y: y
+      PacketLocaleView#B: b
+      PacketBulkChunk#BuildBuffer: i
+      PacketChunk#Buffer: f
+      PacketChunk#Size: h
+      PacketChunk#Inflated: g
+      PacketEntityEquipment#Item: c
