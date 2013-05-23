@@ -30,7 +30,7 @@ For those using [Maven](http://maven.apache.org/download.html) to manage project
     <dependency>
         <groupId>com.volumetricpixels</groupId>
         <artifactId>rockyplugin</artifactId>
-        <version>1.4.7-R1.1-SNAPSHOT</version>
+        <version>1.5.2-R0.2-SNAPSHOT</version>
     </dependency>
 
 ## Coding and Pull Request Conventions
